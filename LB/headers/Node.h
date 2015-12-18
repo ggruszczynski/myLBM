@@ -22,7 +22,7 @@ class Node {
 protected:
 	//D2Q9Constants  *d2q9Constants;
 
-	bool isWall;// = false;
+	//bool isWall;// = false;
 	vector<double> fIn; // probability distribution function
 	vector<double> feq;// = 0;
 	vector<double> fOut; // probability distribution function - temporary variable
@@ -45,10 +45,13 @@ public:
 
 	void ZouHeVelocity_Lid();
 
-	Node(): isWall(false) , fIn(9, 0), feq(9, 0), fOut(9, 0), rho(1), uSqr(0),c(1)
+	//Node(): fIn(9, 0), feq(9, 0), fOut(9, 0), rho(1), uSqr(0),c(1),u(0,0)
+	Node() :fIn(D2Q9Constants::w), feq(D2Q9Constants::w), fOut(D2Q9Constants::w),  rho(1), u(0, 0), uSqr(0), c(1)
 	{
+		//fIn = D2Q9Constants::w;
+
 		//d2q9Constants = D2Q9Constants::GetInstance();
-		u << 0, 0;
+		//u << 0, 0;
 		
 		
 		//d2q9Constants->w[1] = 666;

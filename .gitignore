@@ -48,3 +48,8 @@ Temporary Items
 Debug/LB.exe
 Debug/LB.pdb
 *.obj
+/Debug/LB.ilk
+/Debug/LB.pdb
+/Debug/LB.exe
+/Debug/*.ilk
+/.vs

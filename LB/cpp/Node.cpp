@@ -53,6 +53,7 @@ void Node::ComputefEq()
 
 void Node::Collision()
 {
+	cout << "Node :: Collision()" << endl;
 	for (unsigned i = 0; i < fOut.size(); ++i)
 	{
 		fOut[i] = (1. - D2Q9Constants::omega)* fIn[i] + D2Q9Constants::omega* fIn[i];

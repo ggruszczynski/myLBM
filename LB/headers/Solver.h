@@ -12,31 +12,34 @@
 #include "Wall.h"
 #include "MovingWall.h"
 
+#include <iostream>
+#include <memory>
 
 class Solver {
 private:
 	D2Q9Constants  *d2q9Constants;
 	double omega; //relaxation parameter
-	vector<Node> vcol;
-	vector< vector<Node> >  mesh;
+	//vector<Node> vcol666;
+	//vector< vector<Node> >  mesh666;
 
 
+	vector< shared_ptr <Node>> vcol;
+	vector< vector<shared_ptr <Node>> > mesh;
 
 public:
 	void NaiveCollision();
 	void StreamToNeighbour(const int &x, const int &y);
 	void Update();
 
-	Solver(const int & set_n_rows, const int & set_n_cols) : omega(1), vcol(set_n_rows), mesh(set_n_cols, vcol )
+	shared_ptr <Node> GetNode(const int &x, const int &y);
+	void ReplaceNode(const int &x, const int &y, shared_ptr <Node>);
+	void InsertNode(const int &x, const int &y, Node & newNode);
+	void MakeLidDrivenCavityMesh(const unsigned & set_n_rows, const unsigned & set_n_cols);
+
+	Solver(const unsigned & set_n_rows, const unsigned & set_n_cols) : omega(1)//, vcol666(set_n_cols), mesh666(set_n_rows, vcol666 )
 	{
-		
-		vector<Node> vcol2(set_n_rows);
-		mesh.push_back(vcol2);
-		//vector< vector<int> > A;
-		//std::vector<std::vector<int>> A(dimension, std::vector<int>(dimension));
-
-		//d2q9Constants = D2Q9Constants::GetInstance();
-
+		MakeLidDrivenCavityMesh(set_n_rows, set_n_cols);
+		d2q9Constants = D2Q9Constants::GetInstance();
 	}
 
 
