@@ -7,7 +7,7 @@
 
 #include "../headers/Solver.h"
 
-void Solver::NaiveCollision()
+void Solver::Collisions()
 {
 
 	for ( auto& inner : mesh) {
@@ -15,22 +15,25 @@ void Solver::NaiveCollision()
 			node->ComputeRho();
 			node->ComputeU();
 			node->ComputefEq();
-			//ComputeNodeProperties(node);
-			node->Collision();
-			//for (int i = 0; i < node.fOut.size(); ++i)
-			//{
-			//	node.fOut[i] = (1. - omega)* node.fIn[i] + omega* node.fIn[i];
-			//}
-			//for_each(item.fOut.begin(), item.fOut.end(), )
 
+			node->NodeCollision(omega);
 		}
 	}
 
 }
 
+void Solver::Stream()
+{
+	for (unsigned x = 0; x < mesh.size(); ++x) {
+		for (unsigned y = 0; y < mesh[x].size(); ++y) {
+			StreamToNeighbour(x, y);
+		}
+	}
+}
+
 void Solver::StreamToNeighbour(const int& x, const int& y)
 {
-	unsigned nextX, nextY;
+	int nextX, nextY;
 	for (unsigned i = 0; i < d2q9Constants->e.size(); ++i)
 	{
 		nextX = x + d2q9Constants->e[i](0); 
@@ -43,12 +46,30 @@ void Solver::StreamToNeighbour(const int& x, const int& y)
 	}
 }
 
-void Solver::Update()
-{ 
-	for (unsigned x = 0; x < mesh.size(); ++x) {
-		for (unsigned y = 0; y < mesh[x].size(); ++y) {
-			StreamToNeighbour(x, y);
+
+
+void Solver::Run()
+{
+	//mesh[5][5]-> u[0] = 4;
+	//mesh[5][5]-> u[1] = 6;
+
+	//cout << mesh[5][5]->u[0] << endl;
+	//cout << mesh[6][5]->u[0] << endl;
+
+	unsigned t = 0;
+	while (t < totalTime)
+	{
+	/*	if (t%50 == 0)
+		cout << "time: " << t << endl;*/
+		if (t%timeSave == 0)
+		{
+			cout << "Saved at time: " << t << endl;
+			writer->writeVTK(mesh, t, "output", "mojeLB");
 		}
+		this->Collisions();
+		this->Stream();
+
+		++t;
 	}
 }
 
@@ -79,50 +100,119 @@ void Solver::InsertNode(const int& x, const int& y, Node& newNode)
 	throw std::exception("not implemented");
 }
 
-void Solver::MakeLidDrivenCavityMesh(const unsigned& set_n_rows, const unsigned& set_n_cols)
+
+void Solver::MakeLidDrivenCavityMesh(const unsigned& set_x, const unsigned& set_y)
 {
-	vector< shared_ptr <Node>> bottomWall; // (set_n_cols); how to add in place instead of after the last element... why pushback doesnt work?
+	 // (set_y); how to add in place instead of after the last element... why pushback doesnt work?
+
+	mesh.reserve(set_x);
+	for (unsigned i = 0; i < set_x; ++i)
+	{
+			vector< shared_ptr <Node>>vec_pion;
+			vec_pion.reserve(set_y);
+			for (unsigned j = 0; j < set_y; ++j) 
+				vec_pion.emplace_back(new Node);
+			
+		mesh.emplace_back(vec_pion);
+	}
+
+	for (unsigned i = 0; i < mesh.size(); ++i) // top/bottom
+	{
+		mesh[i][0] = std::move(std::make_shared<Wall>());
+		mesh[i][mesh[i].size() - 1] = std::move(std::make_shared<MovingWall>(uLid,0));
+	}
+
+	for (unsigned i = 0; i < mesh[0].size(); ++i) // sides
+	{
+		mesh[0][i] = std::move(std::make_shared<Wall>());
+		mesh[mesh.size() - 1][i] = std::move(std::make_shared<Wall>());
+	}
+}
+
+void Solver::MakeChannelMesh(const unsigned& set_x, const unsigned& set_y)
+{
+
+
+	mesh.reserve(set_x);
+	for (unsigned i = 0; i < set_x; ++i) 
+	{
+			vector< shared_ptr <Node>>vec_pion;
+			vec_pion.reserve(set_y);
+			for (unsigned j = 0; j < set_y; ++j)
+			{
+				vec_pion.emplace_back(new Node);
+			}
+		mesh.emplace_back(vec_pion);
+	}
+
+	for (unsigned i = 0; i < mesh[0].size(); ++i) // sides
+	{
+		mesh[0][i] = std::move(std::make_shared<VelocityInlet>(uInlet,0));
+		mesh[mesh.size() - 1][i] = std::move(std::make_shared<PressureOutlet>());
+	}
+
+	for (unsigned i = 0; i < mesh.size(); ++i) // top/bottom
+	{
+		mesh[i][0] = std::move(std::make_shared<Wall>());
+		mesh[i][mesh[i].size() - 1] = std::move(std::make_shared<Wall>());
+	}
+
+	//obstacle
+	unsigned height = (unsigned)mesh[0].size() / 4;
+	unsigned fromInlet = (unsigned)mesh.size() / 4;
+	for (unsigned i = 0; i < height; ++i) // sides
+	{
+		mesh[fromInlet][i] = std::move(std::make_shared<Wall>());
+	}
+
+}
+
+void Solver::MakeLidDrivenCavityMesh_old(const unsigned& set_x, const unsigned& set_y) //obsolete
+{
+	vector< shared_ptr <Node>>vec_pion;
+	vector< shared_ptr <Node>> bottomWall; // (set_y); how to add in place instead of after the last element... why pushback doesnt work?
 	vector< shared_ptr <Node>> lid;
-	vcol.reserve(set_n_cols);
-	for (unsigned i = 0; i < set_n_cols; ++i) {
-		vcol.emplace_back(new Node);
+	vec_pion.reserve(set_y);
+	for (unsigned i = 0; i < set_y; ++i) {
+		vec_pion.emplace_back(new Node);
 		bottomWall.emplace_back(new Wall);
-		lid.emplace_back(new MovingWall);
+		lid.emplace_back(new MovingWall(uLid, 0));
 	}
 
 	// TODO push_back vs emplace_back
-	//shared_ptr <Wall> ptr(new Wall); OK
+	//shared_ptr <Wall> ptr(new WallType); OK
 	//bottomWall.push_back(ptr); OK
 	//bottomWall.push_back(new Wall); ERROR
 
-	mesh.reserve(set_n_rows);
+	mesh.reserve(set_x);
 	mesh.emplace_back(bottomWall);
-	for (unsigned i = 0; i < set_n_rows - 2; ++i)
-		mesh.emplace_back(vcol);
+	for (unsigned i = 0; i < set_x - 2; ++i)
+		mesh.emplace_back(vec_pion);
 
 	//mesh.push_back(bottomWall); //OK
 	//mesh.emplace_back(bottomWall); //OK
 	mesh.push_back(lid); //OK
 
-	for (unsigned i = 1; i < mesh.size() - 1; ++i) // what about corners? lid ws wall? 
+						 // transpozycje
+						 //vector<vector<double>> outtrans(out[0].size(),	vector<double>(out.size()));
+						 //for (size_t i = 0; i < out.size(); ++i)
+						 //	for (size_t j = 0; j < out[0].size(); ++j)
+						 //		outtrans[j][i] = out[i][j];
+
+
+	for (unsigned i = 1; i < mesh.size() - 1; ++i) // TODO what about corners? lid ws wall? 
 	{
 		mesh[i][0] = std::move(std::make_shared<Wall>());
 		mesh[i][mesh[i].size() - 1] = std::move(std::make_shared<Wall>());
 	}
 
 
-	//vector<Node> mojvec(set_n_cols); 
+	//vector<Node> mojvec(set_y); 
 	//mesh666.push_back(mojvec);
 	////vector< vector<int> > A;
 	////std::vector<std::vector<int>> A(dimension, std::vector<int>(dimension));
 }
 
-//Solver::Solver() {
-//	// TODO Auto-generated constructor stub
-//
-//}
 
-Solver::~Solver() {
-	// TODO Auto-generated destructor stub
-}
+Solver::~Solver() {}
 

@@ -12,14 +12,18 @@
 #include <vector>
 #include <numeric>
 #include "D2Q9Constants.h"
+#include "../Enums.h"
 using namespace std;
 
 #include <Eigen/Dense>
 using namespace Eigen;
 
+
 class Node {
 
 protected:
+	NodeType nodeType;
+
 	//D2Q9Constants  *d2q9Constants;
 
 	//bool isWall;// = false;
@@ -30,38 +34,27 @@ protected:
 	double rho; // density
 	Eigen::Matrix<double, 2, 1, Eigen::DontAlign> u;
 	// see http://eigen.tuxfamily.org/dox/group__TopicUnalignedArrayAssert.html and http://eigen.tuxfamily.org/dox/group__TopicStructHavingEigenMembers.html
-	// Vector2d  u; // velocity
-	double uSqr; // u*u
+
 	
 	double c; 
 
 public:
 	EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
-	void ComputeRho();
-	void ComputeU();
-	void ComputefEq();
-	virtual void Collision();
-
-	void ZouHeVelocity_Lid();
+	virtual void ComputeRho();
+	virtual void ComputeU();
+    void ComputefEq();
+	virtual void NodeCollision(double const& omega);
 
 	//Node(): fIn(9, 0), feq(9, 0), fOut(9, 0), rho(1), uSqr(0),c(1),u(0,0)
-	Node() :fIn(D2Q9Constants::w), feq(D2Q9Constants::w), fOut(D2Q9Constants::w),  rho(1), u(0, 0), uSqr(0), c(1)
+	Node(): fIn(D2Q9Constants::w), feq(D2Q9Constants::w), fOut(D2Q9Constants::w),  rho(1), u(0, 0), c(1)
 	{
-		//fIn = D2Q9Constants::w;
-
-		//d2q9Constants = D2Q9Constants::GetInstance();
-		//u << 0, 0;
-		
-		
-		//d2q9Constants->w[1] = 666;
-		//cout << "inside Node " << d2q9Constants->w[1]<< endl ;
-		//d2q9Constants = new D2Q9Constants();
+		nodeType = FluidType;
 	}
 
 	virtual ~Node();
 
-
+	friend class Writer;
 	friend class Solver;
 };
 

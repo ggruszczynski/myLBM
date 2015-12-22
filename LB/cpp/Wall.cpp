@@ -1,22 +1,12 @@
 #include "../headers/Wall.h"
 
 
-void Wall::Collision()
+void Wall::NodeCollision(double const & omega)
 {
-	cout << "Wall :: Collision()" << endl;
 
-	unsigned N = fOut.size();
-	for (unsigned i = 0; i < fOut.size(); ++i)
+	for (unsigned i = 0; i < fOut.size() ; ++i)
 	{
-		fOut[i] = fIn[N-i];
+		fOut[i] = fIn[opposite[i]];
 	}
 }
 
-Wall::Wall()
-{
-}
-
-
-Wall::~Wall()
-{
-}

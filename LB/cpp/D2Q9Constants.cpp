@@ -27,17 +27,19 @@ D2Q9Constants* D2Q9Constants::GetInstance()
 }
 
 const double  D2Q9Constants :: cs2 = 1 / 3;
-double const D2Q9Constants :: omega = 1; // these are not pointers, thus const double = double const
+//double  D2Q9Constants :: omega; // these are not pointers, thus const double = double const
 
 vector <double>  D2Q9Constants:: w = [] {
 	vector <double> tempVec;
 
 	tempVec.reserve(9);
 	tempVec.push_back(4. / 9);
+
 	tempVec.push_back(1. / 9);
 	tempVec.push_back(1. / 9);
 	tempVec.push_back(1. / 9);
 	tempVec.push_back(1. / 9);
+
 	tempVec.push_back(1. / 36);
 	tempVec.push_back(1. / 36);
 	tempVec.push_back(1. / 36);

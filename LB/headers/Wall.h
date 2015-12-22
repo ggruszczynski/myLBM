@@ -3,10 +3,13 @@
 class Wall :
 	public Node
 {
-public:
-	void Collision() override; //bounce back
+private:
+	int opposite[9] = { 0, 3, 4, 1, 2, 7, 8, 5, 6 };
 
-	Wall();
-	~Wall();
+public:
+	void NodeCollision(double const & omega) override; //bounce back
+
+	Wall(){ nodeType = NodeType::WallType; };
+	~Wall() { }; // TODO why not delete[] opposite ?;
 };
 

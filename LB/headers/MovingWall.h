@@ -1,13 +1,8 @@
 #pragma once
 #include "Node.h"
 
-enum CardinalDirections
-{
-	North,	
-	East,
-	South,
-	West,
-};
+
+#include "../Enums.h"
 
 class MovingWall :	public Node
 {
@@ -18,12 +13,16 @@ private:
 public:
 	//EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
-	void Collision() override; // moving wall
-	
+	void ComputeRho() override;
+	void ComputeU() override;
+	void NodeCollision(double const & omega) override;
+	void SetUWall(double setU, double setV);
 
-	MovingWall() : cardinal_directions(North)
+
+	MovingWall(double setU, double setV) : cardinal_directions(North)
 	{
-		uWall << 0.05, 0;
+		nodeType = NodeType::MovingWallType ;
+		uWall << setU, setV;
 	};
 	~MovingWall();
 };

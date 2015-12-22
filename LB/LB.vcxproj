@@ -68,7 +68,9 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>D:\STUDIA\MEIL_MGR\LBM\mojeLB\LB\eigen;D:\STUDIA\MEIL_MGR\LBM\mojeLB\LB\eigen\Eigen;$(IncludePath)</IncludePath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -124,16 +126,24 @@
     <ClCompile Include="cpp\Node.cpp" />
     <ClCompile Include="cpp\Solver.cpp" />
     <ClCompile Include="cpp\Wall.cpp" />
+    <ClCompile Include="cpp\Writer.cpp" />
     <ClCompile Include="MAIN.cpp" />
-    <ClCompile Include="Writer.cpp" />
+    <ClCompile Include="PressureOutlet.cpp" />
+    <ClCompile Include="VelocityInlet.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Enums.h" />
     <ClInclude Include="headers\D2Q9Constants.h" />
     <ClInclude Include="headers\MovingWall.h" />
     <ClInclude Include="headers\Node.h" />
     <ClInclude Include="headers\Solver.h" />
     <ClInclude Include="headers\Wall.h" />
-    <ClInclude Include="Writer.h" />
+    <ClInclude Include="headers\Writer.h" />
+    <ClInclude Include="PressureOutlet.h" />
+    <ClInclude Include="VelocityInlet.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

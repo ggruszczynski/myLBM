@@ -30,7 +30,7 @@ public:
 	static vector<Vector2d, Eigen::aligned_allocator<Eigen::Vector2d> > e; // velocities directions				
 	static vector <double> w;   // weigths
 	static const double cs2;			// lattice speed ^2 //  TODO (where shall I store it?)
-	static const double omega;
+	//static double omega;
 
 	static D2Q9Constants* GetInstance();
 	virtual ~D2Q9Constants(){ instanceFlag = false; };
