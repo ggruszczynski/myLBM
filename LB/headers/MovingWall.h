@@ -1,8 +1,6 @@
 #pragma once
 #include "Node.h"
-
-
-#include "../Enums.h"
+#include "Enums.h"
 
 class MovingWall :	public Node
 {

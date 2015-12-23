@@ -2,6 +2,7 @@
 #include "../headers/Writer.h"
 
 
+
 void Writer::WriteDensity(vector<vector<shared_ptr<Node>>> mesh, FILE *dataFile, int &nx, int &ny, int &nz)
 {
 	int x, y, z;
@@ -77,6 +78,12 @@ void Writer::writeVTK(vector<vector<shared_ptr<Node>>> mesh, int t, string direc
 	const char* filename = filename_.c_str();
 	//---------------------------------------
 
+
+	/*if (!boost::filesystem::exists("myfile.txt"))
+	{
+		std::cout << "Can't find my file!" << std::endl;
+	}*/
+
 	dir = _mkdir(directory);
 	if (dir == 0) printf("Error: Can't create output directory!\n");
 	//sprintf(dataFileName, "%s/%s_%07d.vti", directory, filename, t);
@@ -108,6 +115,28 @@ void Writer::writeVTK(vector<vector<shared_ptr<Node>>> mesh, int t, string direc
 
 	fprintf(dataFile, "</VTKFile>\n");
 	fclose(dataFile);
+}
+
+
+void Writer:: ClearDirectory(string folderPath_)
+{
+	const char* folderPath = folderPath_.c_str();
+	fs::path myFolder(folderPath);
+	fs::remove_all(myFolder);
+
+	bool success = boost::filesystem::create_directories(myFolder);
+	/*if (boost::filesystem::create_directories(myFolder)) {
+		std::cout << "Success" << "\n";
+	}*/
+
+	//fs::path myFolder("foobar");
+	//fs::remove_all("foobar");
+	//fs::create_directory("foobar");
+	//ofstream file("foobar/cheeze");
+	//file << "tastes good!\n";
+	//file.close();
+	//if (!fs::exists("foobar/cheeze"))
+	//std::cout << "Something is rotten in foobar\n";
 }
 
 

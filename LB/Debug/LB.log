@@ -1,5 +1,8 @@
-﻿  Solver.cpp
-d:\studia\meil_mgr\lbm\mojelb\lb\cpp\solver.cpp(39): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-d:\studia\meil_mgr\lbm\mojelb\lb\cpp\solver.cpp(40): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-d:\studia\meil_mgr\lbm\mojelb\lb\cpp\solver.cpp(42): warning C4018: '<': signed/unsigned mismatch
-  LB.vcxproj -> D:\STUDIA\MEIL_MGR\LBM\mojeLB\Debug\LB.exe
+﻿  Writer.cpp
+  Solver.cpp
+e:\lbm\mojelb\lb\cpp\solver.cpp(39): warning C4244: '=': conversion from 'double' to 'unsigned int', possible loss of data
+e:\lbm\mojelb\lb\cpp\solver.cpp(40): warning C4244: '=': conversion from 'double' to 'unsigned int', possible loss of data
+e:\lbm\mojelb\lb\cpp\solver.cpp(178): warning C4018: '<=': signed/unsigned mismatch
+  MAIN.cpp
+  Generating Code...
+  LB.vcxproj -> E:\LBM\mojeLB\Debug\LB.exe

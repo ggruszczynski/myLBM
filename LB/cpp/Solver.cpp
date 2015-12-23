@@ -33,7 +33,7 @@ void Solver::Stream()
 
 void Solver::StreamToNeighbour(const int& x, const int& y)
 {
-	int nextX, nextY;
+	unsigned nextX, nextY;
 	for (unsigned i = 0; i < d2q9Constants->e.size(); ++i)
 	{
 		nextX = x + d2q9Constants->e[i](0); 
@@ -50,11 +50,13 @@ void Solver::StreamToNeighbour(const int& x, const int& y)
 
 void Solver::Run()
 {
-	//mesh[5][5]-> u[0] = 4;
-	//mesh[5][5]-> u[1] = 6;
+	boost::posix_time::ptime now = boost::posix_time::second_clock::universal_time();
+	string nowAsString = to_iso_string(now);
 
-	//cout << mesh[5][5]->u[0] << endl;
-	//cout << mesh[6][5]->u[0] << endl;
+	const string fileName = "mojeLB";
+	string outputDirectory = "output";
+	writer->ClearDirectory(outputDirectory);
+	//outputDirectory += "/" + nowAsString;
 
 	unsigned t = 0;
 	while (t < totalTime)
@@ -64,7 +66,7 @@ void Solver::Run()
 		if (t%timeSave == 0)
 		{
 			cout << "Saved at time: " << t << endl;
-			writer->writeVTK(mesh, t, "output", "mojeLB");
+			writer->writeVTK(mesh, t, outputDirectory, fileName);
 		}
 		this->Collisions();
 		this->Stream();
@@ -104,22 +106,23 @@ void Solver::InsertNode(const int& x, const int& y, Node& newNode)
 void Solver::MakeLidDrivenCavityMesh(const unsigned& set_x, const unsigned& set_y)
 {
 	 // (set_y); how to add in place instead of after the last element... why pushback doesnt work?
-
 	mesh.reserve(set_x);
 	for (unsigned i = 0; i < set_x; ++i)
 	{
-			vector< shared_ptr <Node>>vec_pion;
-			vec_pion.reserve(set_y);
-			for (unsigned j = 0; j < set_y; ++j) 
-				vec_pion.emplace_back(new Node);
-			
+		vector< shared_ptr <Node>>vec_pion;
+		vec_pion.reserve(set_y);
+		for (unsigned j = 0; j < set_y; ++j)
+		{
+			vec_pion.emplace_back(new Node);
+		}
 		mesh.emplace_back(vec_pion);
 	}
 
+
 	for (unsigned i = 0; i < mesh.size(); ++i) // top/bottom
 	{
-		mesh[i][0] = std::move(std::make_shared<Wall>());
 		mesh[i][mesh[i].size() - 1] = std::move(std::make_shared<MovingWall>(uLid,0));
+		mesh[i][0] = std::move(std::make_shared<Wall>());
 	}
 
 	for (unsigned i = 0; i < mesh[0].size(); ++i) // sides
@@ -157,13 +160,59 @@ void Solver::MakeChannelMesh(const unsigned& set_x, const unsigned& set_y)
 		mesh[i][mesh[i].size() - 1] = std::move(std::make_shared<Wall>());
 	}
 
-	//obstacle
-	unsigned height = (unsigned)mesh[0].size() / 4;
-	unsigned fromInlet = (unsigned)mesh.size() / 4;
-	for (unsigned i = 0; i < height; ++i) // sides
-	{
-		mesh[fromInlet][i] = std::move(std::make_shared<Wall>());
+	//--------------------obstacle-------------------------
+	//unsigned height = (unsigned)mesh[0].size() / 4;
+	//unsigned fromInlet = (unsigned)mesh.size() / 4;
+	//for (unsigned i = 0; i < height; ++i) // sides
+	//{
+	//	mesh[fromInlet][i] = std::move(std::make_shared<Wall>());
+	//}
+
+
+	unsigned obst_x = set_x / 5 + 1;   // position of the cylinder; (exact
+	unsigned	obst_y = set_y / 2 + 3;   // y - symmetry is avoided)
+	unsigned obst_r = set_y / 10 + 1;  //radius of the cylinder
+
+	for (unsigned x = 0; x < mesh.size(); ++x) {
+		for (unsigned y = 0; y < mesh[x].size(); ++y) {
+			if ((x - obst_x)*(x - obst_x) + (y - obst_y)*(y - obst_y) <= obst_r*obst_r)
+				mesh[x][y] = std::move(std::make_shared<Wall>());
+		}
 	}
+
+	//---------------------initialize----------------------
+	double eu; 
+	vector<double> newFIn(9,0);
+	double rho = 1;
+	Eigen::Matrix<double, 2, 1, Eigen::DontAlign> u;
+	u << uInlet, 0;
+	double u2 = u.dot(u);
+	double c = 1;
+	double c2 = c*c;
+	double c4 = c2 * c2;
+	for (unsigned i = 0; i < newFIn.size(); ++i)
+	{
+		//eu = 3* u.dot(D2Q9Constants::e[i]);
+		//newFIn[i] = rho*  D2Q9Constants::w[i] * (1 + eu + 0.5 *eu*eu - 1.5 *u2);
+		eu = u.dot(D2Q9Constants::e[i]);
+		newFIn[i] = 1 + 3 * eu / c2;
+		newFIn[i] += 4.5 * eu*eu / c4;
+		newFIn[i] -= 1.5 * u2 / c2;
+		newFIn[i] *= rho * D2Q9Constants::w[i];
+	}
+
+	for (unsigned x = 0; x < mesh.size(); ++x) {
+		for (unsigned y = 0; y < mesh[x].size(); ++y) {
+			if (mesh[x][y]->nodeType == FluidType)
+			{			
+				mesh[x][y]->SetU(uInlet, 0);
+				mesh[x][y]->SetFIn(newFIn);
+			}
+		}
+	}
+
+	double nu = uInlet * 2*obst_r / Re;  // kinematic viscosity
+	omega = 1 / (3 * nu + 0.5);      // relaxation parameter
 
 }
 

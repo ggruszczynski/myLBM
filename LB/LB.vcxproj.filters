@@ -36,10 +36,10 @@
     <ClCompile Include="cpp\Writer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="VelocityInlet.cpp">
+    <ClCompile Include="cpp\PressureOutlet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PressureOutlet.cpp">
+    <ClCompile Include="cpp\VelocityInlet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

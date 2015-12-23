@@ -50,5 +50,15 @@ void Node::NodeCollision(double const & omega)
 	}
 }
 
+void Node::SetU(const double& setU, const double& setV)
+{
+	u << setU, setV;
+}
+
+void Node::SetFIn(vector<double> newFIn)
+{
+	fIn = newFIn;
+}
+
 Node::~Node() {}
 

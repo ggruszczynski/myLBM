@@ -5,8 +5,9 @@
 
 using namespace std;
 
-//#include <Eigen/Dense>
-//using namespace Eigen;
+//#define BOOST_ALL_NO_LIB 
+
+#include <iostream>
 
 
 
@@ -17,10 +18,10 @@ int main() {
 
 	start = std::clock();
 
-	const unsigned x = 300; //width x
-	const unsigned y = 60; //height y
-	const unsigned totalTime = 1000;
-	const unsigned timeSave = 10;
+	const unsigned x = 400; //width x
+	const unsigned y = 100; //height y
+	const unsigned totalTime = 4000;
+	const unsigned timeSave = 25;
 
 
 	Solver solver(x, y, totalTime, timeSave);
@@ -28,9 +29,10 @@ int main() {
 	solver.Run();
 
 
+
+
 	duration = (std::clock() - start) / (double)CLOCKS_PER_SEC;
 	cout << "duration: " << duration << endl;
-
     cout <<"-------------------------------------THE END---------------------------------\n"<<endl;
 	system("PAUSE");
 	return 0;

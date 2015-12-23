@@ -12,7 +12,7 @@
 #include <vector>
 #include <numeric>
 #include "D2Q9Constants.h"
-#include "../Enums.h"
+#include "Enums.h"
 using namespace std;
 
 #include <Eigen/Dense>
@@ -45,6 +45,8 @@ public:
 	virtual void ComputeU();
     void ComputefEq();
 	virtual void NodeCollision(double const& omega);
+	void SetU(const double &setU, const double &setV);
+	void SetFIn(vector<double> newFIn);
 
 	//Node(): fIn(9, 0), feq(9, 0), fOut(9, 0), rho(1), uSqr(0),c(1),u(0,0)
 	Node(): fIn(D2Q9Constants::w), feq(D2Q9Constants::w), fOut(D2Q9Constants::w),  rho(1), u(0, 0), c(1)
