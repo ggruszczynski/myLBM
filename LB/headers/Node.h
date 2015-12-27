@@ -12,6 +12,7 @@
 #include <vector>
 #include <numeric>
 #include "D2Q9Constants.h"
+#include "D2Q5Constants.h"
 #include "Enums.h"
 using namespace std;
 
@@ -22,6 +23,9 @@ using namespace Eigen;
 class Node {
 
 protected:
+	DdQqConstants<D2Q9Constants>*d2q9Constants;
+	DdQqConstants<D2Q5Constants>*d2q5Constants;
+
 	NodeType nodeType;
 
 	//D2Q9Constants  *d2q9Constants;
@@ -49,8 +53,16 @@ public:
 	void SetFIn(vector<double> newFIn);
 
 	//Node(): fIn(9, 0), feq(9, 0), fOut(9, 0), rho(1), uSqr(0),c(1),u(0,0)
-	Node(): fIn(D2Q9Constants::w), feq(D2Q9Constants::w), fOut(D2Q9Constants::w),  rho(1), u(0, 0), c(1)
+	Node():  rho(1), u(0, 0), c(1)
 	{
+		d2q9Constants = DdQqConstants<D2Q9Constants>::get_instance();
+		d2q5Constants = DdQqConstants<D2Q5Constants>::get_instance();
+
+
+		fIn = d2q9Constants->w;
+		feq = d2q9Constants->w;
+		fOut = d2q9Constants->w;
+
 		nodeType = FluidType;
 	}
 

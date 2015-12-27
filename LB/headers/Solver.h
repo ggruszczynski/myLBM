@@ -8,6 +8,7 @@
 #ifndef SOLVER_H_
 #define SOLVER_H_
 
+#include "D2Q9Constants.h"
 #include  "Writer.h"
 #include "Node.h"
 #include "Wall.h"
@@ -33,7 +34,8 @@ private:
 	double nu; // kinematic viscosity
 
 	shared_ptr <Writer> writer;
-	D2Q9Constants  *d2q9Constants;
+	DdQqConstants<D2Q9Constants>*d2q9Constants;
+	DdQqConstants<D2Q5Constants>*d2q5Constants;
 
 	//vector< shared_ptr <Node>> vec_pion;
 	vector< vector<shared_ptr <Node>> > mesh;
@@ -54,7 +56,16 @@ public:
 
 	Solver(const unsigned & set_x, const unsigned & set_y, const unsigned & set_totalTime, const unsigned & set_timeSave) : 
 		omega(1), totalTime(set_totalTime), timeSave(set_timeSave), writer(new Writer)
-	{
+	{	
+		
+		d2q9Constants = DdQqConstants<D2Q9Constants>::get_instance();
+		d2q5Constants = DdQqConstants<D2Q5Constants>::get_instance();
+
+		//DdQqConstants<D2Q5Constants>*test = DdQqConstants<D2Q5Constants>::get_instance();
+		//test->w[0] = 123;
+
+		//Node testnode;// = Node;
+
 	    Re = 100;	 // Reynolds number
 		uLid = 0.05;
 		//double nu = uLid * set_x / Re;  
@@ -65,8 +76,7 @@ public:
 		uInlet = 0.1;
 		//omega = 1.5;
 		MakeChannelMesh(set_x, set_y);
-
-		d2q9Constants = D2Q9Constants::GetInstance();
+	
 	}
 
 

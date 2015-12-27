@@ -20,7 +20,7 @@ void Node::ComputeU()
 	//D2Q9Constants ::e.begin()
 	u << 0, 0; // reset velocities
 	auto it_f = this->fIn.begin();
-	for (auto it_e = D2Q9Constants::e.begin(); it_e != D2Q9Constants::e.end(); ++it_e, ++it_f)
+	for (auto it_e = d2q9Constants->e.begin(); it_e != d2q9Constants->e.end(); ++it_e, ++it_f)
 		u += c* *it_f* *it_e;
 
 	u = u / this->rho;
@@ -34,11 +34,11 @@ void Node::ComputefEq()
 	double c4 = c*c*c*c;
 	for (unsigned i = 0; i < fIn.size(); ++i)
 	{
-		eu = u.dot(D2Q9Constants::e[i]);
+		eu = u.dot(d2q9Constants->e[i]);
 		feq[i] = 1 + 3 * eu / c2;
 		feq[i] += 4.5 * eu*eu /c4;
 		feq[i] -= 1.5 * u2 / c2;
-		feq[i] *= rho * D2Q9Constants::w[i];
+		feq[i] *= rho * d2q9Constants->w[i];
 	}
 }
 

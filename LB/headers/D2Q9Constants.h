@@ -8,6 +8,8 @@
 #ifndef D2Q9CONSTANTS_H_
 #define D2Q9CONSTANTS_H_
 
+#include "DdQqConstants.h"
+
 #include <iostream>
 #include <vector>
 
@@ -16,30 +18,58 @@
 using namespace Eigen;
 using namespace std;
 
-class D2Q9Constants  // Singleton
+class D2Q9Constants : public DdQqConstants<D2Q9Constants>// Singleton
 {
 private:
-	static bool instanceFlag;
-	static D2Q9Constants *single;
+	//static bool instanceFlag;
+	//static D2Q9Constants *single;
+	friend class DdQqConstants<D2Q9Constants>;
+	D2Q9Constants() :DdQqConstants<D2Q9Constants>()
+	{
+		w.reserve(9);
+		w.push_back(4. / 9);
 
-	D2Q9Constants() {}
+		w.push_back(1. / 9);
+		w.push_back(1. / 9);
+		w.push_back(1. / 9);
+		w.push_back(1. / 9);
+
+		w.push_back(1. / 36);
+		w.push_back(1. / 36);
+		w.push_back(1. / 36);
+		w.push_back(1. / 36);
+
+
+
+		e.reserve(9);
+
+		e.push_back(Eigen::Vector2d(0, 0));
+
+		e.push_back(Eigen::Vector2d(1, 0));
+		e.push_back(Eigen::Vector2d(0, 1));
+		e.push_back(Eigen::Vector2d(-1, 0));
+		e.push_back(Eigen::Vector2d(0, -1));
+
+		e.push_back(Eigen::Vector2d(1, 1));
+		e.push_back(Eigen::Vector2d(-1, 1));
+		e.push_back(Eigen::Vector2d(-1, -1));
+		e.push_back(Eigen::Vector2d(1, -1));
+	}
 
 public:
 
 	//vector<vector <double> > e; // velocities directions
-	static vector<Vector2d, Eigen::aligned_allocator<Eigen::Vector2d> > e; // velocities directions				
-	static vector <double> w;   // weigths
-	static const double cs2;			// lattice speed ^2 //  TODO (where shall I store it?)
+	//static vector<Vector2d, Eigen::aligned_allocator<Eigen::Vector2d> > e; // velocities directions				
+	//static vector <double> w;   // weigths
+	//static const double cs2;			// lattice speed ^2 //  TODO (where shall I store it?)
 	//static double omega;
 
-	static D2Q9Constants* GetInstance();
-	virtual ~D2Q9Constants(){ instanceFlag = false; };
+	//static D2Q9Constants* GetInstance();
+	//virtual ~D2Q9Constants(){ instanceFlag = false; };
 
-	//static int D;
-	//static int Q;
 
-	D2Q9Constants(D2Q9Constants const&) = delete;
-	void operator=(D2Q9Constants const&) = delete;
+	//D2Q9Constants(D2Q9Constants const&) = delete;
+	//void operator=(D2Q9Constants const&) = delete;
 	// Make sure they are unacceptable otherwise you may accidentally get copies of
 	// your singleton appearing.
 	// Note: Scott Meyers mentions in his Effective Modern

@@ -194,11 +194,11 @@ void Solver::MakeChannelMesh(const unsigned& set_x, const unsigned& set_y)
 	{
 		//eu = 3* u.dot(D2Q9Constants::e[i]);
 		//newFIn[i] = rho*  D2Q9Constants::w[i] * (1 + eu + 0.5 *eu*eu - 1.5 *u2);
-		eu = u.dot(D2Q9Constants::e[i]);
+		eu = u.dot(d2q9Constants->e[i]);
 		newFIn[i] = 1 + 3 * eu / c2;
 		newFIn[i] += 4.5 * eu*eu / c4;
 		newFIn[i] -= 1.5 * u2 / c2;
-		newFIn[i] *= rho * D2Q9Constants::w[i];
+		newFIn[i] *= rho * d2q9Constants->w[i];
 	}
 
 	for (unsigned x = 0; x < mesh.size(); ++x) {

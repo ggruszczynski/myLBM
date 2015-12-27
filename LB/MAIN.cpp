@@ -20,8 +20,8 @@ int main() {
 
 	const unsigned x = 400; //width x
 	const unsigned y = 100; //height y
-	const unsigned totalTime = 4000;
-	const unsigned timeSave = 25;
+	const unsigned totalTime = 1000;
+	const unsigned timeSave = 10;
 
 
 	Solver solver(x, y, totalTime, timeSave);

@@ -42,6 +42,9 @@
     <ClCompile Include="cpp\VelocityInlet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="cpp\DdQqConstants.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="headers\D2Q9Constants.h">
@@ -62,13 +65,19 @@
     <ClInclude Include="headers\Writer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="VelocityInlet.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="PressureOutlet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Enums.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\DdQqConstants.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\VelocityInlet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\D2Q5Constants.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
