@@ -23,19 +23,24 @@ using namespace Eigen;
 class Node {
 
 protected:
-	DdQqConstants<D2Q9Constants>*d2q9Constants;
-	DdQqConstants<D2Q5Constants>*d2q5Constants;
+	Singleton<D2Q9Constants>*d2q9Constants;
+	Singleton<D2Q5Constants>*d2q5Constants;
+	//DdQqConstants*d2q9Constants;
+	//DdQqConstants*d2q5Constants;
 
 	NodeType nodeType;
 
-	//D2Q9Constants  *d2q9Constants;
-
-	//bool isWall;// = false;
 	vector<double> fIn; // probability distribution function
-	vector<double> feq;// = 0;
+	vector<double> feq; // 
 	vector<double> fOut; // probability distribution function - temporary variable
 
+	vector<double> TIn; // probability distribution function
+	vector<double> Teq; // 
+	vector<double> TOut; // probability distribution function - temporary variable
+
+
 	double rho; // density
+	double T; // Passive Scalar
 	Eigen::Matrix<double, 2, 1, Eigen::DontAlign> u;
 	// see http://eigen.tuxfamily.org/dox/group__TopicUnalignedArrayAssert.html and http://eigen.tuxfamily.org/dox/group__TopicStructHavingEigenMembers.html
 
@@ -48,20 +53,31 @@ public:
 	virtual void ComputeRho();
 	virtual void ComputeU();
     void ComputefEq();
-	virtual void NodeCollision(double const& omega);
+	virtual void NodeCollisionFout(double const& omega);
 	void SetU(const double &setU, const double &setV);
 	void SetFIn(vector<double> newFIn);
 
+	void ComputeT();
+	void ComputeTeq();
+	virtual void NodeCollisionTout(double const& omegaT);
+
 	//Node(): fIn(9, 0), feq(9, 0), fOut(9, 0), rho(1), uSqr(0),c(1),u(0,0)
-	Node():  rho(1), u(0, 0), c(1)
+	Node():  rho(1), T(0), u(0, 0), c(1)
 	{
-		d2q9Constants = DdQqConstants<D2Q9Constants>::get_instance();
-		d2q5Constants = DdQqConstants<D2Q5Constants>::get_instance();
+	
+		//d2q9Constants = D2Q9Constants::get_instance();
+		//d2q5Constants = D2Q5Constants::get_instance();
+		d2q9Constants = Singleton<D2Q9Constants>::get_instance();
+		d2q5Constants = Singleton<D2Q5Constants>::get_instance();
 
 
 		fIn = d2q9Constants->w;
 		feq = d2q9Constants->w;
 		fOut = d2q9Constants->w;
+
+		TIn = d2q5Constants->w;
+		Teq = d2q5Constants->w;
+		TOut = d2q5Constants->w;
 
 		nodeType = FluidType;
 	}

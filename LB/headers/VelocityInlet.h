@@ -14,7 +14,7 @@ private:
 public:
 	void ComputeRho() override;
 	void ComputeU() override;
-	void NodeCollision(double const & omega) override;
+	void NodeCollisionFout(double const & omega) override;
 
 
 	VelocityInlet(double setU, double setV) : cardinal_directions(East)

@@ -8,14 +8,15 @@ private:
 	CardinalDirections cardinal_directions;
 	Eigen::Matrix<double, 2, 1, Eigen::DontAlign> uWall;
 
+	int oppositeT[5] = { 0, 3, 4, 1, 2 };
 public:
 	//EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
 	void ComputeRho() override;
 	void ComputeU() override;
-	void NodeCollision(double const & omega) override;
+	void NodeCollisionFout(double const & omega) override;
 	void SetUWall(double setU, double setV);
-
+	void NodeCollisionTout(double const& omega) override;
 
 	MovingWall(double setU, double setV) : cardinal_directions(North)
 	{

@@ -11,7 +11,7 @@ private:
 public:
 	void ComputeRho() override;
 	void ComputeU() override;
-	void NodeCollision(double const & omega) override;
+	void NodeCollisionFout(double const & omega) override;
 
 	PressureOutlet() : cardinal_directions(West)
 	{

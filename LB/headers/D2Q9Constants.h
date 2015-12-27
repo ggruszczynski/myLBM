@@ -8,24 +8,30 @@
 #ifndef D2Q9CONSTANTS_H_
 #define D2Q9CONSTANTS_H_
 
-#include "DdQqConstants.h"
 
 #include <iostream>
 #include <vector>
 
 #include <Eigen/StdVector>
+#include "Singleton.h"
+
+#include "DdQqConstants.h"
+#include "D2Q5Constants.h"
+
 //#include <Eigen/Dense>
+
 using namespace Eigen;
 using namespace std;
 
-class D2Q9Constants : public DdQqConstants<D2Q9Constants>// Singleton
+class D2Q9Constants : public Singleton<D2Q9Constants>
 {
 private:
 	//static bool instanceFlag;
 	//static D2Q9Constants *single;
-	friend class DdQqConstants<D2Q9Constants>;
-	D2Q9Constants() :DdQqConstants<D2Q9Constants>()
-	{
+	friend class Singleton<D2Q9Constants>;
+
+	D2Q9Constants() : Singleton<D2Q9Constants>()
+	{ 
 		w.reserve(9);
 		w.push_back(4. / 9);
 

@@ -42,7 +42,13 @@
     <ClCompile Include="cpp\VelocityInlet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="cpp\Singleton.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="cpp\DdQqConstants.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DConstantsTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -71,13 +77,19 @@
     <ClInclude Include="Enums.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="headers\DdQqConstants.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="headers\VelocityInlet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="headers\D2Q5Constants.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\Singleton.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\DdQqConstants.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DConstantsTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

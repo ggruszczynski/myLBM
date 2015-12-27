@@ -2,16 +2,34 @@
 #include "../headers/Writer.h"
 
 
+void Writer::WritePassiveScalar(vector<vector<shared_ptr<Node>>> mesh, FILE* dataFile)
+{
+	int x, y, z;
+	fprintf(dataFile, "      <DataArray type=\"Float32\" Name=\"PassiveScalar\" NumberOfComponents=\"1\" format=\"ascii\">\n");
+	for (z = 0; z < this-> nz; z++)
+	{
+		for (y = 0; y < this-> ny; y++)
+		{
+			for (x = 0; x < this->nx; x++)
+			{
+				fprintf(dataFile, "%.4e ", mesh[x][y]->T);
+				//fprintf(dataFile, "%.4e ", rho[x][y][z]);
+			}
+			fprintf(dataFile, "\n");
+		}
+	}
+	fprintf(dataFile, "      </DataArray>\n");
+}
 
-void Writer::WriteDensity(vector<vector<shared_ptr<Node>>> mesh, FILE *dataFile, int &nx, int &ny, int &nz)
+void Writer::WriteDensity(vector<vector<shared_ptr<Node>>> mesh, FILE *dataFile)
 {
 	int x, y, z;
 	fprintf(dataFile, "      <DataArray type=\"Float32\" Name=\"Density\" NumberOfComponents=\"1\" format=\"ascii\">\n");
-	for (z = 0; z < nz; z++)
+	for (z = 0; z < this->nz; z++)
 	{
-		for (y = 0; y < ny; y++)
+		for (y = 0; y < this->ny; y++)
 		{
-			for (x = 0; x < nx; x++)
+			for (x = 0; x <  this->nx; x++)
 			{
 				fprintf(dataFile, "%.4e ", mesh[x][y]->rho);
 				//fprintf(dataFile, "%.4e ", rho[x][y][z]);
@@ -22,16 +40,16 @@ void Writer::WriteDensity(vector<vector<shared_ptr<Node>>> mesh, FILE *dataFile,
 	fprintf(dataFile, "      </DataArray>\n");
 }
 
-void Writer::WriteNodeType(vector<vector<shared_ptr<Node>>> mesh, FILE* dataFile, int& nx, int& ny, int& nz)
+void Writer::WriteNodeType(vector<vector<shared_ptr<Node>>> mesh, FILE* dataFile)
 {
 	int x, y, z;
 
 	fprintf(dataFile, "      <DataArray type=\"Float32\" Name=\"NodeType\" NumberOfComponents=\"1\" format=\"ascii\">\n");
-	for (z = 0; z < nz; z++)
+	for (z = 0; z < this->nz; z++)
 	{
-		for (y = 0; y < ny; y++)
+		for (y = 0; y < this->ny; y++)
 		{
-			for (x = 0; x < nx; x++)
+			for (x = 0; x < this->nx; x++)
 			{
 				fprintf(dataFile, "%.4e ", (double)mesh[x][y]->nodeType);
 				//cout << "mesh[" << x << "][" << y << "] nodeType ->" << (double)mesh[x][y]->nodeType << endl;
@@ -42,15 +60,15 @@ void Writer::WriteNodeType(vector<vector<shared_ptr<Node>>> mesh, FILE* dataFile
 	fprintf(dataFile, "      </DataArray>\n");
 }
 
-void Writer::WriteVelocity(vector<vector<shared_ptr<Node>>> mesh, FILE* dataFile, int& nx, int& ny, int& nz)
+void Writer::WriteVelocity(vector<vector<shared_ptr<Node>>> mesh, FILE* dataFile)
 {
 	int x, y, z;
 	fprintf(dataFile, "      <DataArray type=\"Float32\" Name=\"Velocity\" NumberOfComponents=\"3\" format=\"ascii\">\n");
-	for (z = 0; z < nz; z++)
+	for (z = 0; z < this->nz; z++)
 	{
-		for (y = 0; y < ny; y++)
+		for (y = 0; y < this->ny; y++)
 		{
-			for (x = 0; x < nx; x++)
+			for (x = 0; x < this->nx; x++)
 			{
 				fprintf(dataFile, "%.4e ", mesh[x][y]->u[0]);
 				fprintf(dataFile, "%.4e ", mesh[x][y]->u[1]);
@@ -70,9 +88,9 @@ void Writer::writeVTK(vector<vector<shared_ptr<Node>>> mesh, int t, string direc
 
 	//------------updates-------------------
 	//assume rectangular lattice ;p
-	int nx = mesh.size();                //lattice size x
-	int ny = mesh[0].size();             //lattice size y 
-	int nz = 2;
+	this -> nx = mesh.size();                //lattice size x
+	this -> ny = mesh[0].size();             //lattice size y 
+	this -> nz = 2;
 
 	const char* directory = directory_.c_str();
 	const char* filename = filename_.c_str();
@@ -101,10 +119,10 @@ void Writer::writeVTK(vector<vector<shared_ptr<Node>>> mesh, int t, string direc
 	fprintf(dataFile, "    <PointData Scalars=\"scalars\">\n");
 
 
-	WriteDensity(mesh, dataFile, nx, ny, nz);
-	WriteNodeType(mesh, dataFile, nx, ny, nz);
-	WriteVelocity(mesh, dataFile, nx, ny, nz);
-
+	WriteDensity(mesh, dataFile);
+	WriteNodeType(mesh, dataFile);
+	WriteVelocity(mesh, dataFile);
+	WritePassiveScalar(mesh, dataFile);
 
 	fprintf(dataFile, "    </PointData>\n");
 

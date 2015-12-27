@@ -13,7 +13,7 @@ void VelocityInlet::ComputeU()
 	u = uInlet;
 }
 
-void VelocityInlet::NodeCollision(double const& omega)
+void VelocityInlet::NodeCollisionFout(double const& omega)
 {
 	switch (this->cardinal_directions)
 	{

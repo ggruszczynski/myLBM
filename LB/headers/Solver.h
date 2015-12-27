@@ -7,6 +7,7 @@
 
 #ifndef SOLVER_H_
 #define SOLVER_H_
+#include "../DConstantsTest.h"
 
 #include "D2Q9Constants.h"
 #include  "Writer.h"
@@ -34,8 +35,11 @@ private:
 	double nu; // kinematic viscosity
 
 	shared_ptr <Writer> writer;
-	DdQqConstants<D2Q9Constants>*d2q9Constants;
-	DdQqConstants<D2Q5Constants>*d2q5Constants;
+	Singleton<D2Q9Constants>*d2q9Constants;
+	Singleton<D2Q5Constants>*d2q5Constants;
+
+	//DdQqConstants *d2q9Constants;
+	//Singleton<D2Q5Constants> *d2q5Constants;
 
 	//vector< shared_ptr <Node>> vec_pion;
 	vector< vector<shared_ptr <Node>> > mesh;
@@ -43,6 +47,8 @@ private:
 
 public:
 	void Collisions();
+	//template <typename T> void StreamToNeighbour(const int &x, const int &y, typename Singleton<T>::Singleton* ddqq_constants);
+
 	void StreamToNeighbour(const int &x, const int &y);
 	void Stream();
 	void Run();
@@ -58,13 +64,15 @@ public:
 		omega(1), totalTime(set_totalTime), timeSave(set_timeSave), writer(new Writer)
 	{	
 		
-		d2q9Constants = DdQqConstants<D2Q9Constants>::get_instance();
-		d2q5Constants = DdQqConstants<D2Q5Constants>::get_instance();
+		d2q9Constants = Singleton<D2Q9Constants>::get_instance();
+		d2q5Constants = Singleton<D2Q5Constants>::get_instance();
 
-		//DdQqConstants<D2Q5Constants>*test = DdQqConstants<D2Q5Constants>::get_instance();
-		//test->w[0] = 123;
+		//auto constants_test = DConstantsTest::get_instance();
+		//constants_test->InitializeMe();
+		//constants_test->wtest[0] = 666;
+		//cout << constants_test->wtest[0] << endl;
 
-		//Node testnode;// = Node;
+	
 
 	    Re = 100;	 // Reynolds number
 		uLid = 0.05;

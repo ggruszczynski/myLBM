@@ -16,11 +16,12 @@ void Solver::Collisions()
 			node->ComputeU();
 			node->ComputefEq();
 
-			node->NodeCollision(omega);
+			node->NodeCollisionFout(omega);
 		}
 	}
 
 }
+
 
 void Solver::Stream()
 {
@@ -31,19 +32,34 @@ void Solver::Stream()
 	}
 }
 
+//template <typename T>
+//void Solver::StreamToNeighbour(const int& x, const int& y, typename Singleton<T>::Singleton* ddqq_constants)
+
+
 void Solver::StreamToNeighbour(const int& x, const int& y)
 {
 	unsigned nextX, nextY;
 	for (unsigned i = 0; i < d2q9Constants->e.size(); ++i)
 	{
-		nextX = x + d2q9Constants->e[i](0); 
+		nextX = x + d2q9Constants->e[i](0);
 		nextY = y + d2q9Constants->e[i](1);
 
-		if (nextX >= 0  && nextX < mesh.size() && nextY >= 0 && nextY < mesh[x].size() ) 
+		if (nextX >= 0 && nextX < mesh.size() && nextY >= 0 && nextY < mesh[x].size())
 			mesh[nextX][nextY]->fIn[i] = mesh[x][y]->fOut[i];
 
 		//cout << d2q9Constants->e[i](0) << endl;
 	}
+
+
+	for (unsigned i = 0; i < d2q5Constants->e.size(); ++i) //Passive Scalar
+	{
+		nextX = x + d2q5Constants->e[i](0);
+		nextY = y + d2q5Constants->e[i](1);
+
+		if (nextX >= 0 && nextX < mesh.size() && nextY >= 0 && nextY < mesh[x].size())
+			mesh[nextX][nextY]->TIn[i] = mesh[x][y]->TOut[i];
+	}
+
 }
 
 
@@ -187,18 +203,19 @@ void Solver::MakeChannelMesh(const unsigned& set_x, const unsigned& set_y)
 	Eigen::Matrix<double, 2, 1, Eigen::DontAlign> u;
 	u << uInlet, 0;
 	double u2 = u.dot(u);
-	double c = 1;
-	double c2 = c*c;
-	double c4 = c2 * c2;
 	for (unsigned i = 0; i < newFIn.size(); ++i)
 	{
-		//eu = 3* u.dot(D2Q9Constants::e[i]);
-		//newFIn[i] = rho*  D2Q9Constants::w[i] * (1 + eu + 0.5 *eu*eu - 1.5 *u2);
 		eu = u.dot(d2q9Constants->e[i]);
-		newFIn[i] = 1 + 3 * eu / c2;
-		newFIn[i] += 4.5 * eu*eu / c4;
-		newFIn[i] -= 1.5 * u2 / c2;
+		newFIn[i] = 1 + 3 * eu;
+		newFIn[i] += 0.5 * eu*eu;
+		newFIn[i] -= 1.5 * u2;
 		newFIn[i] *= rho * d2q9Constants->w[i];
+
+		//eu = u.dot(d2q9Constants->e[i]);
+		//newFIn[i] = 1 + 3 * eu / c2;
+		//newFIn[i] += 4.5 * eu*eu / c4;
+		//newFIn[i] -= 1.5 * u2 / c2;
+		//newFIn[i] *= rho * d2q9Constants->w[i];
 	}
 
 	for (unsigned x = 0; x < mesh.size(); ++x) {
@@ -213,6 +230,9 @@ void Solver::MakeChannelMesh(const unsigned& set_x, const unsigned& set_y)
 
 	double nu = uInlet * 2*obst_r / Re;  // kinematic viscosity
 	omega = 1 / (3 * nu + 0.5);      // relaxation parameter
+
+
+	 //---------------------initialize Temp----------------------
 
 }
 

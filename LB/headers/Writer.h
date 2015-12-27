@@ -20,9 +20,12 @@ namespace fs = boost::filesystem;
 class Writer
 {
 private:
-	void WriteDensity(vector<vector<shared_ptr<Node>>> mesh, FILE *dataFile, int &nx, int &ny, int &nz);
-	void WriteNodeType(vector<vector<shared_ptr<Node>>> mesh, FILE *dataFile, int &nx, int &ny, int &nz);
-	void WriteVelocity(vector<vector<shared_ptr<Node>>> mesh, FILE *dataFile, int &nx, int &ny, int &nz);
+	int nx, ny, nz; //mesh dimensions
+
+	void WritePassiveScalar(vector<vector<shared_ptr<Node>>> mesh, FILE *dataFile);
+	void WriteDensity(vector<vector<shared_ptr<Node>>> mesh, FILE *dataFile);
+	void WriteNodeType(vector<vector<shared_ptr<Node>>> mesh, FILE *dataFile);
+	void WriteVelocity(vector<vector<shared_ptr<Node>>> mesh, FILE *dataFile);
 public:
 	void writeVTK(vector< vector<shared_ptr<Node>> > mesh, int t, string directory, string filename);
 	void ClearDirectory(string folderPath);

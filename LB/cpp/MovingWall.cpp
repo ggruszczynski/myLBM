@@ -15,7 +15,7 @@ void MovingWall::ComputeU()
 
 
 
-void MovingWall::NodeCollision(double const & omega)
+void MovingWall::NodeCollisionFout(double const & omega)
 {
 
 	switch (this->cardinal_directions)
@@ -60,6 +60,14 @@ void MovingWall::NodeCollision(double const & omega)
 void MovingWall::SetUWall(double setU, double setV)
 {
 	uWall << setU, setV;
+}
+
+void MovingWall::NodeCollisionTout(double const& omega)
+{
+	for (unsigned i = 0; i < TOut.size(); ++i)
+	{
+		TOut[i] = TIn[oppositeT[i]];
+	}
 }
 
 

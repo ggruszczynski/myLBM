@@ -15,7 +15,7 @@ void PressureOutlet::ComputeU()
 	this->u[1] = 0;
 }
 
-void PressureOutlet::NodeCollision(double const& omega)
+void PressureOutlet::NodeCollisionFout(double const& omega)
 {
 	switch (this->cardinal_directions)
 	{
