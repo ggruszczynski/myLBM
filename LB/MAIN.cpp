@@ -18,13 +18,13 @@ int main() {
 
 	start = std::clock();
 
-	const unsigned x = 400; //width x
-	const unsigned y = 100; //height y
-	const unsigned totalTime = 1000;
-	const unsigned timeSave = 10;
+	//const unsigned x = 400; //width x
+	//const unsigned y = 100; //height y
+	//const unsigned totalTime = 10;
+	//const unsigned timeSave = 1;
 
 
-	Solver solver(x, y, totalTime, timeSave);
+	Solver solver;
 	//auto solver = new Solver(n_rows, n_col);
 	solver.Run();
 

@@ -126,6 +126,7 @@
   <ItemGroup>
     <ClCompile Include="cpp\D2Q9Constants.cpp" />
     <ClCompile Include="cpp\DdQqConstants.cpp" />
+    <ClCompile Include="cpp\Mesher.cpp" />
     <ClCompile Include="cpp\Singleton.cpp" />
     <ClCompile Include="cpp\MovingWall.cpp" />
     <ClCompile Include="cpp\Node.cpp" />
@@ -139,10 +140,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DConstantsTest.h" />
-    <ClInclude Include="Enums.h" />
+    <ClInclude Include="headers\Case.h" />
     <ClInclude Include="headers\D2Q5Constants.h" />
     <ClInclude Include="headers\D2Q9Constants.h" />
     <ClInclude Include="headers\DdQqConstants.h" />
+    <ClInclude Include="headers\Enums.h" />
+    <ClInclude Include="headers\Mesher.h" />
     <ClInclude Include="headers\Singleton.h" />
     <ClInclude Include="headers\MovingWall.h" />
     <ClInclude Include="headers\Node.h" />

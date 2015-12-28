@@ -86,6 +86,7 @@ public:
 
 	friend class Writer;
 	friend class Solver;
+	friend class Mesher;
 };
 
 #endif /* NODE_H_ */

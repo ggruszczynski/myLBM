@@ -28,7 +28,7 @@
 //}
 
 //const double  D2Q9Constants :: cs2 = 1 / 3;
-////double  D2Q9Constants :: omega; // these are not pointers, thus const double = double const
+////double  D2Q9Constants :: omegaNS; // these are not pointers, thus const double = double const
 //
 //vector <double>  D2Q9Constants:: w = [] {
 //	vector <double> tempVec;
