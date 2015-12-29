@@ -6,6 +6,7 @@ e:\lbm\mojelb\lb\cpp\solver.cpp(46): warning C4244: '=': conversion from 'double
 e:\lbm\mojelb\lb\cpp\solver.cpp(47): warning C4244: '=': conversion from 'double' to 'unsigned int', possible loss of data
 e:\lbm\mojelb\lb\cpp\solver.cpp(58): warning C4244: '=': conversion from 'double' to 'unsigned int', possible loss of data
 e:\lbm\mojelb\lb\cpp\solver.cpp(59): warning C4244: '=': conversion from 'double' to 'unsigned int', possible loss of data
-  Mesher.cpp
   Generating Code...
+  Skipping... (no relevant changes detected)
+  Mesher.cpp
   LB.vcxproj -> E:\LBM\mojeLB\Debug\LB.exe

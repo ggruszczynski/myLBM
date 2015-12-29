@@ -23,7 +23,7 @@ int main() {
 	solver.Run();
 
 	duration = (std::clock() - start) / (double)CLOCKS_PER_SEC;
-	cout << "duration: " << duration << endl;
+	cout << "duration: " << duration << " [s]"<< endl;
     cout <<"-------------------------------------THE END---------------------------------\n"<<endl;
 	system("PAUSE");
 	return 0;

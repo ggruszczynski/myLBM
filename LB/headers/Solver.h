@@ -17,6 +17,8 @@
 #include "MovingWall.h"
 #include "VelocityInlet.h"
 #include "PressureOutlet.h"
+#include "CaseDirector.h"
+#include "ChannelCaseBuilder.h"
 
 #include <iostream>
 #include <memory>
@@ -27,12 +29,12 @@
 
 class Solver {
 private:
-	Case mycase;
+	Case *mycase;
 	double omegaNS; //relaxation parameter
 	double omegaT; //relaxation parameter - passive scalar
 	//double uLid; //Lid velocity
 	//unsigned totalTime; // number of timeSteps
-	//unsigned timeSave; // after timeSave amount of steps -> save
+	//unsigned timeToSave; // after timeToSave amount of steps -> save
 	//double uInlet; //inlet velocity (channel flow)
 
 	//double Re; //Reynolds number
@@ -68,9 +70,15 @@ public:
 	//void MakeChannelMesh(const unsigned & set_n_rows, const unsigned & set_n_cols);
 
 	Solver() : writer(new Writer)
+	{	
+		CaseDirector caseDirector;
+		ChannelCaseBuilder channelCaseBuilder;
+		caseDirector.setBuilder(&channelCaseBuilder);
 
-	{	omegaT  = 1 / (2 * mycase.passive_scalar_blobb_.K + 0.5 );
-		omegaNS = 1 / (3 * mycase.bcValues.nu + 0.5);      //NS relaxation parameter
+		mycase = caseDirector.GetCase();
+
+		omegaT  = 1. / (2 * mycase -> passive_scalar_blobb_.K + 0.5 );
+		omegaNS = 1. / (3 * mycase ->bcValues_.nu + 0.5);      //NS relaxation parameter
 		//omegaNS = 1.5;
 		cout << "omegaNS = " << omegaNS << endl;
 
@@ -82,12 +90,12 @@ public:
 		//constants_test->wtest[0] = 666;
 		//cout << constants_test->wtest[0] << endl;
 
-		mesh = mesher.MakeChannelMesh(mycase.x, mycase.y, mycase);
+		mesh = mesher.MakeChannelMesh(mycase->meshGeom_.x, mycase->meshGeom_.y, *mycase);
 		//mesh = mesher.MakeLidDrivenCavityMesh(mycase.x, mycase.y, mycase);
 	}
 
 
-	virtual ~Solver();
+	 ~Solver();
 
 };
 

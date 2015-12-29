@@ -18,7 +18,7 @@ public:
 	vector< vector<shared_ptr<Node>> > MakeChannelMesh(const unsigned& set_x, const unsigned& set_y, const Case & somecase);
 	vector<vector<shared_ptr<Node>>> MakeLidDrivenCavityMesh(const unsigned& set_x, const unsigned& set_y, const Case& somecase);
 
-	//void InitializeChannelMesh(vector< vector<shared_ptr<Node>> > mesh, const BCValues & bcValues );
+	//void InitializeChannelMesh(vector< vector<shared_ptr<Node>> > mesh, const BCValues & bcValues_ );
 
 	Mesher()
 	{

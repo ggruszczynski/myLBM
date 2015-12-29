@@ -37,7 +37,6 @@ void Solver::Stream()
 //template <typename T>
 //void Solver::StreamToNeighbour(const int& x, const int& y, typename Singleton<T>::Singleton* ddqq_constants)
 
-
 void Solver::StreamToNeighbour(const int& x, const int& y)
 {
 	unsigned nextX, nextY;
@@ -71,22 +70,28 @@ void Solver::Run()
 	boost::posix_time::ptime now = boost::posix_time::second_clock::universal_time();
 	string nowAsString = to_iso_string(now);
 
-	const string fileName = "mojeLB";
+	const string fileNameVTK = "mojeLB";
 	string outputDirectory = "output";
+	string fileNamePointData = "PointData";
 	writer->ClearDirectory(outputDirectory);
 	//outputDirectory += "/" + nowAsString;
 
 	unsigned t = 0;
-	while (t < mycase.totalTime)
+	while (t < mycase ->timer_.totalTime)
 	{
 	/*	if (t%50 == 0)
 		cout << "time: " << t << endl;*/
+		writer->writePointData(mesh, t, mycase ->meshGeom_.x/2, mycase -> meshGeom_.y/2, outputDirectory, fileNamePointData);
 
-
-		if (t%mycase.timeSave == 0)
+		if (t%mycase->timer_.timeToSave == 0)
 		{
 			cout << "Saved at time_step: " << t << endl;
-			writer->writeVTK(mesh, t, outputDirectory, fileName);
+			try { writer->writeVTK(mesh, t, outputDirectory, fileNameVTK); }
+			catch (exception& e)
+			{
+				cout << "Standard exception: " << e.what() << endl;
+				break;
+			}
 		}
 		this->Collisions();
 		this->Stream();
@@ -108,7 +113,7 @@ double Solver::GetAverageT()
 		}
 	}
 
-	return Ttotal / mycase.numberOfNodes;
+	return Ttotal / mycase->meshGeom_.numberOfNodes;
 }
 
 double Solver::GetVarT()
@@ -201,5 +206,10 @@ void Solver::InsertNode(const int& x, const int& y, Node& newNode)
 //}
 //
 
-Solver::~Solver() {}
+Solver::~Solver()
+{
+	delete mycase;
+	delete d2q5Constants;
+	delete d2q9Constants;
+}
 

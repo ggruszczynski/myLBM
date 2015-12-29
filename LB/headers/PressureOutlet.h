@@ -13,7 +13,7 @@ public:
 	void ComputeU() override;
 	void NodeCollisionFout(double const & omega) override;
 
-	PressureOutlet() : cardinal_directions(West)
+	PressureOutlet() : cardinal_directions(East)
 	{
 		nodeType = NodeType::PressureOutletType;
 	}; 

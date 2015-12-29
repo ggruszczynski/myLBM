@@ -2,7 +2,8 @@
 #include "../headers/Writer.h"
 
 
-void Writer::WritePassiveScalar(vector<vector<shared_ptr<Node>>> mesh, FILE* dataFile)
+
+void Writer::WritePassiveScalar(vector<vector<shared_ptr<Node>>> &mesh, FILE* dataFile)
 {
 	int x, y, z;
 	fprintf(dataFile, "      <DataArray type=\"Float32\" Name=\"PassiveScalar\" NumberOfComponents=\"1\" format=\"ascii\">\n");
@@ -21,7 +22,7 @@ void Writer::WritePassiveScalar(vector<vector<shared_ptr<Node>>> mesh, FILE* dat
 	fprintf(dataFile, "      </DataArray>\n");
 }
 
-void Writer::WriteDensity(vector<vector<shared_ptr<Node>>> mesh, FILE *dataFile)
+void Writer::WriteDensity(vector<vector<shared_ptr<Node>>> &mesh, FILE *dataFile)
 {
 	int x, y, z;
 	fprintf(dataFile, "      <DataArray type=\"Float32\" Name=\"Density\" NumberOfComponents=\"1\" format=\"ascii\">\n");
@@ -37,7 +38,6 @@ void Writer::WriteDensity(vector<vector<shared_ptr<Node>>> mesh, FILE *dataFile)
 					string oups = "to big rho = " + std::to_string(mesh[x][y]->rho);
 					throw std::exception(oups.c_str());
 				}
-					//cout << "oups" << endl;
 				//cout << "mesh[" << x << "][" << y << "] rho ->" << mesh[x][y]->rho << endl;
 				//fprintf(dataFile, "%.4e ", rho[x][y][z]);
 			}
@@ -47,7 +47,7 @@ void Writer::WriteDensity(vector<vector<shared_ptr<Node>>> mesh, FILE *dataFile)
 	fprintf(dataFile, "      </DataArray>\n");
 }
 
-void Writer::WriteNodeType(vector<vector<shared_ptr<Node>>> mesh, FILE* dataFile)
+void Writer::WriteNodeType(vector<vector<shared_ptr<Node>>>& mesh, FILE* dataFile)
 {
 	int x, y, z;
 
@@ -67,7 +67,7 @@ void Writer::WriteNodeType(vector<vector<shared_ptr<Node>>> mesh, FILE* dataFile
 	fprintf(dataFile, "      </DataArray>\n");
 }
 
-void Writer::WriteVelocity(vector<vector<shared_ptr<Node>>> mesh, FILE* dataFile)
+void Writer::WriteVelocity(vector<vector<shared_ptr<Node>>> &mesh, FILE* dataFile)
 {
 	int x, y, z;
 	fprintf(dataFile, "      <DataArray type=\"Float32\" Name=\"Velocity\" NumberOfComponents=\"3\" format=\"ascii\">\n");
@@ -87,7 +87,7 @@ void Writer::WriteVelocity(vector<vector<shared_ptr<Node>>> mesh, FILE* dataFile
 	fprintf(dataFile, "      </DataArray>\n");
 }
 
-void Writer::writeVTK(vector<vector<shared_ptr<Node>>> mesh, int t, string directory_ = "output", string filename_ = "mojeLB")
+void Writer::writeVTK(vector<vector<shared_ptr<Node>>> &mesh, int t, string directory_ , string filename_ )
 {
 	int dir;
 	char dataFileName[255];
@@ -125,16 +125,16 @@ void Writer::writeVTK(vector<vector<shared_ptr<Node>>> mesh, int t, string direc
 	//fprintf(dataFile, "  <Piece Extent=\"0 %d 0 %d\">\n", nx - 1, ny - 1);
 	fprintf(dataFile, "    <PointData Scalars=\"scalars\">\n");
 
-	try {
+	//try {
 		WriteDensity(mesh, dataFile);
 		WriteNodeType(mesh, dataFile);
 		WriteVelocity(mesh, dataFile);
 		WritePassiveScalar(mesh, dataFile);
-	}
-	catch (exception& e)
-	{
-		cout << "Standard exception: " << e.what() << endl;
-	}
+	//}
+	//catch (exception& e)
+	//{
+	//	cout << "Standard exception: " << e.what() << endl;
+	//}
 
 	fprintf(dataFile, "    </PointData>\n");
 
@@ -147,6 +147,25 @@ void Writer::writeVTK(vector<vector<shared_ptr<Node>>> mesh, int t, string direc
 	fclose(dataFile);
 }
 
+void Writer::writePointData(vector<vector<shared_ptr<Node>>> &mesh, const int &t, const int &x, const int &y, string directory_ , string filename_ )
+{
+
+//	cout << t << "\t\t\t" << mesh[x][y]->u[0] << "\t\t\t" << mesh[x][y]->u[1] << endl;
+
+	//std::ofstream log("output/PointData.dat", std::ios_base::app | std::ios_base::out); //append mode
+	//log << t << "\t\t\t" << mesh[x][y]->u[0] << "\t\t\t" << mesh[x][y]->u[1] << endl;
+	const char* directory = directory_.c_str();
+	string nazwa = directory_ +"/"+ filename_ + ".dat";
+	 ofstream myfile;
+	 myfile.open(nazwa, ofstream::app);
+	 //myfile.open("output/PointData2.dat", ofstream::app);
+	 //myfile << "#Computed at" << __TIME__ << " " << __DATE__ << endl;
+	 // myfile << setiosflags(ios::fixed) << setprecision(2);  // fixed point << decimal part
+
+	 /// t, x, y, length
+	 myfile << t << "\t"  << mesh[x][y]->u[0] << "\t" << mesh[x][y]->u[1] << "\t" << sqrt(mesh[x][y]->u[0]* mesh[x][y]->u[0] + mesh[x][y]->u[1] * mesh[x][y]->u[1]) << endl;
+	myfile.close();
+}
 
 void Writer:: ClearDirectory(string folderPath_)
 {

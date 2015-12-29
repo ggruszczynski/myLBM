@@ -10,7 +10,10 @@ void PressureOutlet::ComputeRho()
 
 void PressureOutlet::ComputeU()
 {
-	this->u[0] = -1 + ((fIn[0] + fIn[2] + fIn[4]) + 2 * (fIn[1] + fIn[5] + fIn[8]))/rho;
+	//this->u[0] = 0; //what would it mean?
+	//this->u[0] = -1 + ((fIn[0] + fIn[1] + fIn[3]) + 2 * (fIn[1] + fIn[5] + fIn[8])) / rho; // w pracy WR
+
+	this->u[0] = -1 + ((fIn[0] + fIn[2] + fIn[4]) + 2 * (fIn[1] + fIn[5] + fIn[8]))/rho; 
 	this->u[1] = 0;
 }
 
@@ -18,18 +21,16 @@ void PressureOutlet::NodeCollisionFout(double const& omega)
 {
 	switch (this->cardinal_directions)
 	{
-	case West:
-		fIn[3] = fIn[1] - (2 / 3) * rho*u[0];
-		fIn[7] = fIn[5] + 0.5*(fIn[2] - fIn[4]) - (1 / 6) * rho*u[0];
-		fIn[6] = fIn[8] + 0.5*(fIn[4] - fIn[2]) - (1 / 6) * rho*u[0];
+	case East:
+		fIn[3] = fIn[1] - (2. / 3.) * rho*u[0];
+		fIn[7] = fIn[5] + 0.5*(fIn[2] - fIn[4]) - (1. / 6.) * rho*u[0];
+		fIn[6] = fIn[8] + 0.5*(fIn[4] - fIn[2]) - (1. / 6.) * rho*u[0];
 
 		/// since u[1] = 0 ...
-		//fIn[3] = fIn[1] - (2 / 3) * rho*u[0];
-		//fIn[7] = fIn[5] + 0.5*(fIn[2] - fIn[4]) - 0.5 * rho*u[1] - (1 / 6) * rho*u[0];
-		//fIn[6] = fIn[8] + 0.5*(fIn[4] - fIn[2]) + 0.5 * rho*u[1] - (1 / 6) * rho*u[0];
-
+		//fIn[3] = fIn[1] - (2. / 3.) * rho*u[0];
+		//fIn[7] = fIn[5] + 0.5*(fIn[2] - fIn[4]) - 0.5 * rho*u[1] - (1. / 6.) * rho*u[0];
+		//fIn[6] = fIn[8] + 0.5*(fIn[4] - fIn[2]) + 0.5 * rho*u[1] - (1. / 6.) * rho*u[0];
 		break;
-
 	default:
 		throw std::exception("not implemented");
 		break;
@@ -39,7 +40,6 @@ void PressureOutlet::NodeCollisionFout(double const& omega)
 	{
 		fOut[i] = (1. - omega)* fIn[i] + omega* feq[i];
 	}
-
 }
 
 

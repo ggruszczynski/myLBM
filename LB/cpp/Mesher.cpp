@@ -6,7 +6,7 @@ vector<vector<shared_ptr<Node>>> Mesher::MakeChannelMesh(const unsigned& set_x, 
 {
 	vector<vector<shared_ptr<Node>>> mesh;
 
-	auto bcValues = somecase.bcValues;
+	auto bcValues = somecase.bcValues_;
 	auto obstacle = somecase.obstacle_;
 	auto passiveScalarBlobb = somecase.passive_scalar_blobb_;
 
@@ -47,7 +47,7 @@ vector<vector<shared_ptr<Node>>> Mesher::MakeChannelMesh(const unsigned& set_x, 
 		Eigen::Matrix<double, 2, 1, Eigen::DontAlign> u;
 		vector<double> newFIn(9, 0);
 		double rho = 1;
-		double R = somecase.y / 2;
+		double R = somecase.meshGeom_.y / 2;
 		double uInProfile, eu, u2;
 		for (unsigned x = 0; x < mesh.size(); ++x) {
 			for (unsigned y = 0; y < mesh[x].size(); ++y) {
@@ -56,7 +56,7 @@ vector<vector<shared_ptr<Node>>> Mesher::MakeChannelMesh(const unsigned& set_x, 
 				{
 					//string s = typeid(*mesh[x][y]).name();
 					uInProfile = bcValues.uInlet *(2 * y* R - y*y) / (R*R); //poiseulle profile
-					//uInProfile = bcValues.uInlet;
+					//uInProfile = bcValues_.uInlet;
 					u << uInProfile, 0;
 					u2 = u.dot(u);
 					for (unsigned i = 0; i < newFIn.size(); ++i)
@@ -96,7 +96,7 @@ vector<vector<shared_ptr<Node>>> Mesher::MakeLidDrivenCavityMesh(const unsigned&
 {
 	vector<vector<shared_ptr<Node>>> mesh;
 
-	auto bcValues = somecase.bcValues;
+	auto bcValues = somecase.bcValues_;
 	auto obstacle = somecase.obstacle_;
 	auto passiveScalarBlobb = somecase.passive_scalar_blobb_;
 

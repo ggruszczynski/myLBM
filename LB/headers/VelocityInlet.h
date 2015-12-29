@@ -18,7 +18,7 @@ public:
 	void SetU(const double &setU, const double &setV) override;
 	//void SetU(const double &setU, const double &setV) override;
 
-	VelocityInlet(double setU, double setV) : cardinal_directions(East)
+	VelocityInlet(double setU, double setV) : cardinal_directions(West)
 	{
 		nodeType = NodeType::VelocityInletType;
 		uInlet << setU, setV;
