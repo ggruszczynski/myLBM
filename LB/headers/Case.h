@@ -61,7 +61,7 @@ struct Case
 	Case(): x(400),y(100),numberOfNodes(x*y), obstacle_(x,y),passive_scalar_blobb_(x,y)
 	{
 		 totalTime = 1000;
-		 timeSave = 25;
+		 timeSave = 10;
 
 		 bcValues.uLid = 0.05;
 
