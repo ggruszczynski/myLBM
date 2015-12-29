@@ -124,6 +124,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="cpp\CaseBuilder.cpp" />
     <ClCompile Include="cpp\D2Q9Constants.cpp" />
     <ClCompile Include="cpp\DdQqConstants.cpp" />
     <ClCompile Include="cpp\Mesher.cpp" />
@@ -142,6 +143,9 @@
   <ItemGroup>
     <ClInclude Include="DConstantsTest.h" />
     <ClInclude Include="headers\Case.h" />
+    <ClInclude Include="headers\CaseBuilder.h" />
+    <ClInclude Include="headers\CaseDirector.h" />
+    <ClInclude Include="headers\ChannelCaseBuilder.h" />
     <ClInclude Include="headers\D2Q5Constants.h" />
     <ClInclude Include="headers\D2Q9Constants.h" />
     <ClInclude Include="headers\DdQqConstants.h" />
