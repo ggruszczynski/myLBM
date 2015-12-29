@@ -6,12 +6,6 @@
 void Node::ComputeRho()
 {
 	rho = std::accumulate(fIn.begin(), fIn.end(), 0.0);
-
-	//rho = 0;
-	//for (auto iter = fIn.begin(); iter != fIn.end(); ++iter)
-	//{
-	//	rho += *iter;
-	//}
 }
 
 void Node::ComputeU()
@@ -21,7 +15,8 @@ void Node::ComputeU()
 	u << 0, 0; // reset velocities
 	auto it_f = this->fIn.begin();
 	for (auto it_e = d2q9Constants->e.begin(); it_e != d2q9Constants->e.end(); ++it_e, ++it_f)
-		u += c* *it_f* *it_e;
+		u += *it_f* *it_e;
+		//u += c* *it_f* *it_e; // c is assumed to be always = 1, thus it may be skipped
 
 	u = u / this->rho;
 }
@@ -81,11 +76,11 @@ void Node::ComputeTeq()
 {
 	double eu;
 
-	for (unsigned i = 0; i < fIn.size(); ++i)
+	for (unsigned i = 0; i < Teq.size(); ++i)
 	{
 		eu = u.dot(d2q5Constants->e[i]);
-		feq[i] = 1 + 3 * eu;
-		feq[i] *= T * d2q9Constants->w[i];
+		Teq[i] = 1 + 3 * eu;
+		Teq[i] *= T * d2q9Constants->w[i];
 	}
 }
 

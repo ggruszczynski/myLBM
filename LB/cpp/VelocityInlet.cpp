@@ -18,9 +18,15 @@ void VelocityInlet::NodeCollisionFout(double const& omega)
 	switch (this->cardinal_directions)
 	{
 	case East:
+
 		fIn[1] = fIn[3] + (2 / 3) * rho*u[0];
-		fIn[5] = fIn[7] + 0.5*(fIn[4] - fIn[2]) + 0.5 * rho*u[1] + (1 / 6) * rho*u[0];
-		fIn[8] = fIn[6] + 0.5*(fIn[2] - fIn[4]) - 0.5 * rho*u[1] + (1 / 6) * rho*u[0];
+		fIn[5] = fIn[7] + 0.5*(fIn[4] - fIn[2]) + (1 / 6) * rho*u[0];
+		fIn[8] = fIn[6] + 0.5*(fIn[2] - fIn[4])  + (1 / 6) * rho*u[0];
+
+		/// since u[1] = 0...
+		//fIn[1] = fIn[3] + (2 / 3) * rho*u[0];
+		//fIn[5] = fIn[7] + 0.5*(fIn[4] - fIn[2]) + 0.5 * rho*u[1] + (1 / 6) * rho*u[0];
+		//fIn[8] = fIn[6] + 0.5*(fIn[2] - fIn[4]) - 0.5 * rho*u[1] + (1 / 6) * rho*u[0];
 
 		break;
 
@@ -33,6 +39,12 @@ void VelocityInlet::NodeCollisionFout(double const& omega)
 	{
 		fOut[i] = (1. - omega)* fIn[i] + omega* feq[i];
 	}
+}
+
+void VelocityInlet::SetU(const double& setU, const double& setV)
+{
+	u << setU, setV;
+	uInlet << setU, setV;
 }
 
 VelocityInlet::~VelocityInlet()

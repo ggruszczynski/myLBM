@@ -9,7 +9,6 @@
 
 void Solver::Collisions()
 {
-
 	for ( auto& inner : mesh) {
 		for ( auto& node : inner) {
 			node->ComputeRho();
@@ -20,7 +19,6 @@ void Solver::Collisions()
 			node->ComputeT();
 			node->ComputeTeq();
 			node->NodeCollisionTout(omegaT);
-
 		}
 	}
 
@@ -83,18 +81,47 @@ void Solver::Run()
 	{
 	/*	if (t%50 == 0)
 		cout << "time: " << t << endl;*/
+
+
 		if (t%mycase.timeSave == 0)
 		{
-			cout << "Saved at time: " << t << endl;
+			cout << "Saved at time_step: " << t << endl;
 			writer->writeVTK(mesh, t, outputDirectory, fileName);
 		}
 		this->Collisions();
 		this->Stream();
 
-
-
 		++t;
 	}
+}
+
+
+
+double Solver::GetAverageT()
+{
+	double Ttotal = 0;
+
+	for (auto& inner : mesh) {
+		for (auto& node : inner) {
+			//node->ComputeT();
+			Ttotal += node->T;
+		}
+	}
+
+	return Ttotal / mycase.numberOfNodes;
+}
+
+double Solver::GetVarT()
+{
+	double VarT = 0;
+	double Tavg = this->GetAverageT();
+
+	for (auto& inner : mesh) {
+		for (auto& node : inner) {
+			VarT += (node->T - Tavg)*(node->T - Tavg);
+		}
+	}
+	return VarT;
 }
 
 shared_ptr<Node> Solver::GetNode(const int& x, const int& y)

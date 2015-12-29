@@ -15,6 +15,6 @@ void Wall::NodeCollisionTout(double const& omega)
 {
 	for (unsigned i = 0; i < TOut.size(); ++i)
 	{
-		TOut[i] = TIn[oppositeF[i]];
+		TOut[i] = TIn[oppositeT[i]];
 	}
 }

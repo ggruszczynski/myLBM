@@ -18,18 +18,9 @@ int main() {
 
 	start = std::clock();
 
-	//const unsigned x = 400; //width x
-	//const unsigned y = 100; //height y
-	//const unsigned totalTime = 10;
-	//const unsigned timeSave = 1;
-
-
 	Solver solver;
 	//auto solver = new Solver(n_rows, n_col);
 	solver.Run();
-
-
-
 
 	duration = (std::clock() - start) / (double)CLOCKS_PER_SEC;
 	cout << "duration: " << duration << endl;

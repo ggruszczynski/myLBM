@@ -57,6 +57,8 @@ public:
 	void StreamToNeighbour(const int &x, const int &y);
 	void Stream();
 	void Run();
+	double GetAverageT();
+	double GetVarT();
 
 	shared_ptr <Node> GetNode(const int &x, const int &y);
 	void ReplaceNode(const int &x, const int &y, shared_ptr <Node>);
@@ -66,10 +68,11 @@ public:
 	//void MakeChannelMesh(const unsigned & set_n_rows, const unsigned & set_n_cols);
 
 	Solver() : writer(new Writer)
-	{	
 
-		omegaNS = 1 / (3 * mycase.bcValues.nu + 0.5);      // relaxation parameter
-		omegaT = 0.5;
+	{	omegaT  = 1 / (2 * mycase.passive_scalar_blobb_.K + 0.5 );
+		omegaNS = 1 / (3 * mycase.bcValues.nu + 0.5);      //NS relaxation parameter
+		//omegaNS = 1.5;
+		cout << "omegaNS = " << omegaNS << endl;
 
 		d2q9Constants = Singleton<D2Q9Constants>::get_instance();
 		d2q5Constants = Singleton<D2Q5Constants>::get_instance();
@@ -79,8 +82,8 @@ public:
 		//constants_test->wtest[0] = 666;
 		//cout << constants_test->wtest[0] << endl;
 
-		//mesh = mesher.MakeChannelMesh(mycase.x, mycase.y, mycase);
-		mesh = mesher.MakeLidDrivenCavityMesh(mycase.x, mycase.y, mycase);
+		mesh = mesher.MakeChannelMesh(mycase.x, mycase.y, mycase);
+		//mesh = mesher.MakeLidDrivenCavityMesh(mycase.x, mycase.y, mycase);
 	}
 
 

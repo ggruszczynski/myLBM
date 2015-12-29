@@ -137,6 +137,7 @@
     <ClCompile Include="cpp\Writer.cpp" />
     <ClCompile Include="DConstantsTest.cpp" />
     <ClCompile Include="MAIN.cpp" />
+    <ClCompile Include="MeshBuilder.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DConstantsTest.h" />
@@ -153,6 +154,7 @@
     <ClInclude Include="headers\VelocityInlet.h" />
     <ClInclude Include="headers\Wall.h" />
     <ClInclude Include="headers\Writer.h" />
+    <ClInclude Include="MeshBuilder.h" />
     <ClInclude Include="PressureOutlet.h" />
   </ItemGroup>
   <ItemGroup>

@@ -43,38 +43,36 @@ vector<vector<shared_ptr<Node>>> Mesher::MakeChannelMesh(const unsigned& set_x, 
 			}
 		}
 
-		//---------------------initialize----------------------
-		double eu;
+		//---------------------initialize velocity----------------------
+		Eigen::Matrix<double, 2, 1, Eigen::DontAlign> u;
 		vector<double> newFIn(9, 0);
 		double rho = 1;
-		Eigen::Matrix<double, 2, 1, Eigen::DontAlign> u;
-		u << bcValues.uInlet, 0;
-		double u2 = u.dot(u);
-		for (unsigned i = 0; i < newFIn.size(); ++i)
-		{
-			eu = u.dot(d2q9Constants->e[i]);
-			newFIn[i] = 1 + 3 * eu;
-			newFIn[i] += 0.5 * eu*eu;
-			newFIn[i] -= 1.5 * u2;
-			newFIn[i] *= rho * d2q9Constants->w[i];
-
-			//eu = u.dot(d2q9Constants->e[i]);
-			//newFIn[i] = 1 + 3 * eu / c2;
-			//newFIn[i] += 4.5 * eu*eu / c4;
-			//newFIn[i] -= 1.5 * u2 / c2;
-			//newFIn[i] *= rho * d2q9Constants->w[i];
-		}
-
+		double R = somecase.y / 2;
+		double uInProfile, eu, u2;
 		for (unsigned x = 0; x < mesh.size(); ++x) {
 			for (unsigned y = 0; y < mesh[x].size(); ++y) {
-				if (mesh[x][y]->nodeType == FluidType)
+				if (mesh[x][y]->nodeType == FluidType || mesh[x][y]->nodeType == VelocityInletType)
+				//if(typeid(*mesh[x][y]) != typeid(Wall))
 				{
-					mesh[x][y]->SetU(bcValues.uInlet, 0);
+					//string s = typeid(*mesh[x][y]).name();
+					uInProfile = bcValues.uInlet *(2 * y* R - y*y) / (R*R); //poiseulle profile
+					//uInProfile = bcValues.uInlet;
+					u << uInProfile, 0;
+					u2 = u.dot(u);
+					for (unsigned i = 0; i < newFIn.size(); ++i)
+					{
+						eu = u.dot(d2q9Constants->e[i]);
+						newFIn[i] = 1 + 3 * eu;
+						newFIn[i] += 4.5 * eu*eu;
+						newFIn[i] -= 1.5 * u2;
+						newFIn[i] *= rho * d2q9Constants->w[i];
+					}
+
+					mesh[x][y]->SetU(uInProfile, 0);
 					mesh[x][y]->SetFIn(newFIn);
 				}
 			}
 		}
-
 
 
 	 //---------------------initialize Temp----------------------

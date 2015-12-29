@@ -30,12 +30,12 @@ protected:
 
 	NodeType nodeType;
 
-	vector<double> fIn; // probability distribution function
-	vector<double> feq; // 
+	vector<double> fIn; //NS: probability distribution function
+	vector<double> feq; 
 	vector<double> fOut; // probability distribution function - temporary variable
 
-	vector<double> TIn; // probability distribution function
-	vector<double> Teq; // 
+	vector<double> TIn; //PassiveScalar: probability distribution function 
+	vector<double> Teq; 
 	vector<double> TOut; // probability distribution function - temporary variable
 
 
@@ -45,7 +45,7 @@ protected:
 	// see http://eigen.tuxfamily.org/dox/group__TopicUnalignedArrayAssert.html and http://eigen.tuxfamily.org/dox/group__TopicStructHavingEigenMembers.html
 
 	
-	double c; 
+	//double c; 
 
 public:
 	EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -54,7 +54,7 @@ public:
 	virtual void ComputeU();
     void ComputefEq();
 	virtual void NodeCollisionFout(double const& omega);
-	void SetU(const double &setU, const double &setV);
+	virtual void SetU(const double &setU, const double &setV);
 	void SetFIn(vector<double> newFIn);
 
 	void ComputeT();
@@ -62,7 +62,7 @@ public:
 	virtual void NodeCollisionTout(double const& omegaT);
 
 	//Node(): fIn(9, 0), feq(9, 0), fOut(9, 0), rho(1), uSqr(0),c(1),u(0,0)
-	Node():  rho(1), T(0), u(0, 0), c(1)
+	Node():  rho(1), T(0), u(0, 0)
 	{
 	
 		//d2q9Constants = D2Q9Constants::get_instance();

@@ -1,1 +1,12 @@
-﻿  LB.vcxproj -> E:\LBM\mojeLB\Release\LB.exe
+﻿  MAIN.cpp
+  Solver.cpp
+cpp\Solver.cpp(46): warning C4244: '=': conversion from 'double' to 'unsigned int', possible loss of data
+cpp\Solver.cpp(47): warning C4244: '=': conversion from 'double' to 'unsigned int', possible loss of data
+cpp\Solver.cpp(58): warning C4244: '=': conversion from 'double' to 'unsigned int', possible loss of data
+cpp\Solver.cpp(59): warning C4244: '=': conversion from 'double' to 'unsigned int', possible loss of data
+  Generating code
+  1 of 1340 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    9 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  LB.vcxproj -> E:\LBM\mojeLB\Release\LB.exe
