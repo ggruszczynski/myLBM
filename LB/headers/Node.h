@@ -88,6 +88,7 @@ public:
 	friend class Solver;
 
 	friend class MeshBuilder;
+	friend class LidMeshBuilder;
 	friend class ChannelMeshBuilder;
 	friend class MeshDirector;
 };

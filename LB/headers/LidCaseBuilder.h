@@ -10,8 +10,8 @@ public:
 
 	void SetBlockGeom()override
 	{
-		case_->meshGeom_.x = 100;
-		case_->meshGeom_.y = 100;
+		case_->meshGeom_.x = 200;
+		case_->meshGeom_.y = 200;
 		case_->meshGeom_.numberOfNodes = case_->meshGeom_.x * case_->meshGeom_.y;
 	};
 
@@ -36,7 +36,7 @@ public:
 	{
 		case_->bcValues_.uLid = 0.5;
 		case_->bcValues_.uInlet = NULL;
-		case_->bcValues_.nu = 0.022;
+		case_->bcValues_.nu = 1./6.;
 
 		// double  Re = 100;
 		// bcValues_.nu = bcValues_.uInlet * 2 * obstacle_.r / bcValues_.Re;  // kinematic viscosity
@@ -45,8 +45,8 @@ public:
 
 	void SetTimer() override
 	{
-		case_->timer_.totalTime = 1000; // number of timeSteps
-		case_->timer_.timeToSave = 25; // after timeSave amount of steps -> save
+		case_->timer_.totalTime = 8000; // number of timeSteps
+		case_->timer_.timeToSave = 20; // after timeSave amount of steps -> save
 	};
 
 	virtual ~LidCaseBuilder() {};

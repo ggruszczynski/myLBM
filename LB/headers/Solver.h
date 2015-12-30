@@ -10,11 +10,6 @@
 #include "../DConstantsTest.h"
 
 #include "Writer.h"
-#include "Node.h"
-
-#include "CaseDirector.h"
-#include "ChannelCaseBuilder.h"
-#include "LidCaseBuilder.h"
 
 #include <iostream>
 #include <memory>
@@ -23,10 +18,10 @@
 #include <boost/date_time/posix_time/posix_time_io.hpp>
 #include "MeshDirector.h"
 #include "ChannelMeshBuider.h"
+#include "LidMeshBuilder.h"
 
 class Solver {
-private:
-	Case *mycase;
+private:	
 	double omegaNS; //relaxation parameter
 	double omegaT; //relaxation parameter - passive scalar
 
@@ -39,6 +34,7 @@ private:
 
 	vector< vector<shared_ptr <Node>> > mesh;
 
+	Case *mycase;
 	MeshDirector meshDirector;
 public:
 	void Collisions();
@@ -54,14 +50,10 @@ public:
 
 	Solver() : writer(new Writer)
 	{	
-		//CaseDirector caseDirector;
-		//ChannelCaseBuilder channelCaseBuilder;
-		//LidCaseBuilder lidCaseBuilder;
-
-		//caseDirector.setBuilder(&channelCaseBuilder);
-		//mycase = caseDirector.GetCase();
 		ChannelMeshBuilder channel_mesh_builder;
-		meshDirector.SetBuilder(&channel_mesh_builder);
+		LidMeshBuilder lid_mesh_builder;
+		meshDirector.SetBuilder(&lid_mesh_builder);
+		//meshDirector.SetBuilder(&channel_mesh_builder);
 
 		mycase = meshDirector.GetCase();
 		omegaT  = 1. / (2 * mycase -> passive_scalar_blobb_.K + 0.5 );
@@ -77,10 +69,7 @@ public:
 		//constants_test->wtest[0] = 666;
 		//cout << constants_test->wtest[0] << endl;
 
-	
 		mesh = meshDirector.MakeMesh();
-
-		//mesh = meshDirector.MakeLidDrivenCavityMesh( *mycase);
 	}
 
 
