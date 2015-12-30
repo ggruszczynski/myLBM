@@ -11,6 +11,6 @@ public:
 	void NodeCollisionTout(double const & omega) override; //bounce back
 
 	Wall(){ nodeType = NodeType::WallType; };
-	~Wall() { }; // TODO why not delete[] oppositeF ?;
+	~Wall() { }; // TODO: why not delete[] oppositeF ?;
 };
 

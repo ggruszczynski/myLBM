@@ -19,11 +19,10 @@ int main() {
 	start = std::clock();
 
 	Solver solver;
-	//auto solver = new Solver(n_rows, n_col);
 	solver.Run();
 
 	duration = (std::clock() - start) / (double)CLOCKS_PER_SEC;
-	cout << "duration: " << duration << " [s]"<< endl;
+	cout << "duration: " << duration << " [s] = "<< duration/60 << " min" << endl;
     cout <<"-------------------------------------THE END---------------------------------\n"<<endl;
 	system("PAUSE");
 	return 0;

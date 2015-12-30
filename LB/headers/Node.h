@@ -86,7 +86,10 @@ public:
 
 	friend class Writer;
 	friend class Solver;
-	friend class Mesher;
+
+	friend class MeshBuilder;
+	friend class ChannelMeshBuilder;
+	friend class MeshDirector;
 };
 
 #endif /* NODE_H_ */

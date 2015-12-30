@@ -1,12 +1,14 @@
 ﻿  MAIN.cpp
+  ChannelMeshBuilder.cpp
+cpp\ChannelMeshBuilder.cpp(38): warning C4101: 'yPhys': unreferenced local variable
   Solver.cpp
 cpp\Solver.cpp(45): warning C4244: '=': conversion from 'double' to 'unsigned int', possible loss of data
 cpp\Solver.cpp(46): warning C4244: '=': conversion from 'double' to 'unsigned int', possible loss of data
-cpp\Solver.cpp(57): warning C4244: '=': conversion from 'double' to 'unsigned int', possible loss of data
-cpp\Solver.cpp(58): warning C4244: '=': conversion from 'double' to 'unsigned int', possible loss of data
+cpp\Solver.cpp(55): warning C4244: '=': conversion from 'double' to 'unsigned int', possible loss of data
+cpp\Solver.cpp(56): warning C4244: '=': conversion from 'double' to 'unsigned int', possible loss of data
   Generating code
-  1 of 1396 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
+  406 of 1425 functions (28.5%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    0 functions had inline decision re-evaluated but remain unchanged
+    171 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   LB.vcxproj -> E:\LBM\mojeLB\Release\LB.exe

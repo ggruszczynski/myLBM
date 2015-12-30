@@ -2,28 +2,25 @@
 
 #include "CaseBuilder.h"
 
-class ChannelCaseBuilder : public CaseBuilder
+class LidCaseBuilder : public CaseBuilder
 {
 public:
 
-	ChannelCaseBuilder(){};
+	LidCaseBuilder() {};
 
 	void SetBlockGeom()override
 	{
-		case_->meshGeom_.x = 400;
+		case_->meshGeom_.x = 100;
 		case_->meshGeom_.y = 100;
 		case_->meshGeom_.numberOfNodes = case_->meshGeom_.x * case_->meshGeom_.y;
 	};
 
-
-
 	void SetObstacle() override
 	{
-		case_->obstacle_.y = case_->meshGeom_.y / 2;// +3;
-		case_->obstacle_.x = case_->meshGeom_.x / 5;// +1;
-		case_->obstacle_.r = 15;// 10 + 1;
+		case_->obstacle_.y = NULL; 
+		case_->obstacle_.x = NULL; 
+		case_->obstacle_.r = NULL; 
 	};
-
 
 	void SetPassiveScalarBlobb()override
 	{
@@ -37,7 +34,8 @@ public:
 
 	void SetBCValues() override
 	{
-		case_->bcValues_.uInlet = 0.1;
+		case_->bcValues_.uLid = 0.5;
+		case_->bcValues_.uInlet = NULL;
 		case_->bcValues_.nu = 0.022;
 
 		// double  Re = 100;
@@ -47,11 +45,10 @@ public:
 
 	void SetTimer() override
 	{
-		case_->timer_.totalTime = 10; // number of timeSteps
-		case_->timer_.timeToSave = 1; // after timeSave amount of steps -> save
+		case_->timer_.totalTime = 1000; // number of timeSteps
+		case_->timer_.timeToSave = 25; // after timeSave amount of steps -> save
 	};
 
-
-	virtual ~ChannelCaseBuilder(){};
+	virtual ~LidCaseBuilder() {};
 };
 

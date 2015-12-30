@@ -4,16 +4,17 @@
 
 void PressureOutlet::ComputeRho()
 {
-	//this->rho = std::accumulate(fIn.begin(), fIn.end(), 0.0);
+	//this->rho = std::accumulate(fIn.begin(), fIn.end(), 0.0); 
 	this -> rho = 1;
 }
 
 void PressureOutlet::ComputeU()
 {
-	//this->u[0] = 0; //what would it mean?
+	// TODO: what would u = 0 at pressure outet mean? 
+	//this->u[0] = 0;
 	//this->u[0] = -1 + ((fIn[0] + fIn[1] + fIn[3]) + 2 * (fIn[1] + fIn[5] + fIn[8])) / rho; // w pracy WR
 
-	this->u[0] = -1 + ((fIn[0] + fIn[2] + fIn[4]) + 2 * (fIn[1] + fIn[5] + fIn[8]))/rho; 
+	this->u[0] = -1 + ((fIn[0] + fIn[2] + fIn[4]) + 2 * (fIn[1] + fIn[5] + fIn[8]))/rho;  
 	this->u[1] = 0;
 }
 

@@ -14,8 +14,8 @@ public:
 		caseBuilder = newBuilder;
 	}
 
-	Case* GetCase()
-	{ // order is important: first SetBlockGeom
+	Case* GetCase() const
+	{ // order is important: first createNewCase -> SetBlockGeom -> ...
 		caseBuilder->createNewCase();
 		caseBuilder->SetBlockGeom();
 		caseBuilder->SetTimer();

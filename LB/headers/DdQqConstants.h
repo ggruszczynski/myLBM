@@ -24,7 +24,7 @@ public:
 
 	//vector<Vector2d, Eigen::aligned_allocator<Eigen::Vector2d> > e; // velocities directions				
 	//vector <double> w;   // weigths
-	//					 //	 const double cs2;			// lattice speed ^2 //  TODO (where shall I store it?)
+	//					 //	 const double cs2;			// lattice speed ^2 //  TODO: (where shall I store it?)
 
 	//DdQqConstants();
 	//~DdQqConstants();
