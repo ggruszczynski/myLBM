@@ -71,7 +71,9 @@ void Solver::Run()
 	const string fileNameVTK = "mojeLB";
 	string outputDirectory = "output";
 	string fileNamePointData = "PointData";
+
 	writer->ClearDirectory(outputDirectory);
+	writer->WriteCaseInfo(mycase, outputDirectory, "caseInfoData");
 	//outputDirectory += "/" + nowAsString;
 
 	unsigned t = 0;

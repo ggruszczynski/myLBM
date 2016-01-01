@@ -7,6 +7,7 @@
 #include <memory>
 #include <iomanip>
 #include <iostream>    
+#include "Case.h"
 
 #include "boost/filesystem.hpp"    // includes all needed Boost.Filesystem declarations
 namespace fs = boost::filesystem;
@@ -24,6 +25,7 @@ private:
 	void WriteNodeType(vector<vector<shared_ptr<Node>>> &mesh, FILE *dataFile);
 	void WriteVelocity(vector<vector<shared_ptr<Node>>> &mesh, FILE *dataFile);
 public:
+	void WriteCaseInfo(Case *case_, string directory_, string filename_);
 	void writeVTK(vector< vector<shared_ptr<Node>> > &mesh, int t, string directory, string filename);
 	void writePointData(vector< vector<shared_ptr<Node>> > &mesh, const int &t,const int &x,const int &y, string directory, string filename);
 	void ClearDirectory(string folderPath);

@@ -87,6 +87,8 @@ void Writer::WriteVelocity(vector<vector<shared_ptr<Node>>> &mesh, FILE* dataFil
 	fprintf(dataFile, "      </DataArray>\n");
 }
 
+
+
 void Writer::writeVTK(vector<vector<shared_ptr<Node>>> &mesh, int t, string directory_ , string filename_ )
 {
 	int dir;
@@ -165,6 +167,28 @@ void Writer::writePointData(vector<vector<shared_ptr<Node>>> &mesh, const int &t
 	 /// t, x, y, length
 	 myfile << t << "\t"  << mesh[x][y]->u[0] << "\t" << mesh[x][y]->u[1] << "\t" << sqrt(mesh[x][y]->u[0]* mesh[x][y]->u[0] + mesh[x][y]->u[1] * mesh[x][y]->u[1]) << endl;
 	myfile.close();
+}
+
+void Writer::WriteCaseInfo(Case* case_, string directory_, string filename_ )
+{
+	const char* directory = directory_.c_str();
+	string nazwa = directory_ + "/" + filename_ + ".txt";
+	ofstream myfile;
+	myfile.open(nazwa);
+
+	myfile << " \t all info in Lattice Bolztmann units " << endl;
+	myfile << "Mesh Size: \t" << " x: "<< case_->meshGeom_.x <<  " y: "  << case_->meshGeom_.y << endl;
+	myfile << "BC: \t" <<" uInlet: " << case_->bcValues_.uInlet << " uLid: " << case_->bcValues_.uLid <<  " nu: " << case_->bcValues_.nu << endl;
+
+	myfile << "Obstacle: \t" <<" x: " << case_->obstacle_.x << " y: " << case_->obstacle_.y << " r: " << case_->obstacle_.r << endl;
+	myfile << "Passive Scalar Blobb: \t" <<" x: "<< case_->passive_scalar_blobb_.x << " y: " << case_->passive_scalar_blobb_.y <<  " r:" << case_->passive_scalar_blobb_.r << endl;
+	myfile << "Passive Scalar Blobb: \t" <<" K (thermal conductivity): "<< case_->passive_scalar_blobb_.K << " Temp: " << case_->passive_scalar_blobb_.T << endl;
+
+	myfile << "Timer: " << " totalTime: "<< case_->timer_.totalTime << " timeToSave: "  << case_->timer_.timeToSave << endl;
+
+
+	myfile.close();
+
 }
 
 void Writer:: ClearDirectory(string folderPath_)
