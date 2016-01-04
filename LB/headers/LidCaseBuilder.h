@@ -24,7 +24,7 @@ public:
 
 	void SetPassiveScalarBlobb()override
 	{
-		case_->passive_scalar_blobb_.T = 1500;
+		case_->passive_scalar_blobb_.T = 150;
 		case_->passive_scalar_blobb_.K = 0.25;
 
 		case_->passive_scalar_blobb_.x = case_->meshGeom_.x / 2;
@@ -45,8 +45,8 @@ public:
 
 	void SetTimer() override
 	{
-		case_->timer_.totalTime = 10; // number of timeSteps
-		case_->timer_.timeToSaveVTK = 1; // after timeSave amount of steps -> save
+		case_->timer_.totalTime = 1000; // number of timeSteps
+		case_->timer_.timeToSaveVTK = 25; // after timeSave amount of steps -> save
 		case_->timer_.timeToSavePointData = 1; // after timeSave amount of steps -> save
 	};
 

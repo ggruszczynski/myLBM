@@ -9,19 +9,17 @@
 
 void Solver::Collisions()
 {
-
-	//#pragma omp for☺
+	double omegaTurb;
 #pragma omp parallel for
-	for (int x = 0; x < mesh.size(); ++x) {
+	for (int x = 0; x < mesh.size(); ++x) { 
 		for (int y = 0; y < mesh[x].size(); ++y) {
 			mesh[x][y]->ComputeRho();
 			mesh[x][y]->ComputeRho();
 			mesh[x][y]->ComputeU();
 			mesh[x][y]->ComputefEq();
 
-			//double nuTurb = this->GetEddyViscosity(*mesh[x][y]);
 			//mesh[x][y]->CalcEddyViscosity(mycase->bcValues_.nu);
-			double omegaTurb = 1 / (3 * (mycase->bcValues_.nu + mesh[x][y]->nuTurb) + 0.5);
+			omegaTurb = 1. / (3 * (mycase->bcValues_.nu + mesh[x][y]->nuTurb) + 0.5);
 			mesh[x][y]->NodeCollisionFout(omegaTurb);
 
 			//mesh[x][y]->NodeCollisionFout(omegaNS);
@@ -52,7 +50,6 @@ void Solver::Collisions()
 void Solver::Stream()
 {
 
-	//#pragma omp for
 #pragma omp parallel for
 	for (int x = 0; x < mesh.size(); ++x) {
 		for (int y = 0; y < mesh[x].size(); ++y) {
@@ -164,37 +161,6 @@ double Solver::GetVarT()
 	return VarT;
 }
 
-double Solver::GetEddyViscosity(Node& node) const
-{
-
-
-	Matrix2d localStressTensor;
-	Matrix2d localStressTensor2; // coefficient wise product (each by each, ex a11* a11, a12*a12, a21*a21, a22*a22
-
-	//auto wtf = d2q9Constants->e[2];
-
-	for (unsigned i = 0; i < d2q9Constants->e.size(); ++i) //each node
-	{
-		localStressTensor(0, 0) = d2q9Constants->e[i](0)* d2q9Constants->e[i](0) * (node.fIn[i] - node.feq[i]);
-		localStressTensor(1, 0) = d2q9Constants->e[i](1)* d2q9Constants->e[i](0) * (node.fIn[i] - node.feq[i]);
-		localStressTensor(0, 1) = d2q9Constants->e[i](0)* d2q9Constants->e[i](1) * (node.fIn[i] - node.feq[i]);
-		localStressTensor(1, 1) = d2q9Constants->e[i](1)* d2q9Constants->e[i](1) * (node.fIn[i] - node.feq[i]);
-	}
-	localStressTensor2 = localStressTensor.cwiseProduct(localStressTensor);
-
-	double Q = sqrt(localStressTensor2.sum()); // magnitude of the non-equilibrium stress tensor
-
-
-	double S;
-	S = sqrt(this->mycase->bcValues_.nu * this->mycase->bcValues_.nu + 18 * d2q9Constants->CSmag2 *Q);
-	S -= this->mycase->bcValues_.nu;
-	S /= 6;// *d2q9Constants->CSmag2;
-
-	double nuTurb = S; // * d2q9Constants->CSmag2;
-
-	return nuTurb;
-}
-
 
 shared_ptr<Node> Solver::GetNode(const int& x, const int& y)
 {
@@ -215,11 +181,6 @@ void Solver::ReplaceNode(const int& x, const int& y, shared_ptr <Node> newNode)
 //	*mesh[x][y] = std::move(newNode); // TODO: which one is better?
 //	//mesh[x][y].reset(newNode);
 //}
-
-void Solver::InsertNode(const int& x, const int& y, Node& newNode)
-{
-	throw std::exception("not implemented");
-}
 
 
 Solver::~Solver()
