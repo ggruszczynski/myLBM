@@ -26,6 +26,8 @@ using namespace std;
 class D2Q9Constants : public Singleton<D2Q9Constants>
 {
 private:
+	
+
 	//static bool instanceFlag;
 	//static D2Q9Constants *single;
 	friend class Singleton<D2Q9Constants>;

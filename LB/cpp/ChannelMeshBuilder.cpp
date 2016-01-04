@@ -36,10 +36,10 @@ void ChannelMeshBuilder::InitializeVelocity()
 	Eigen::Matrix<double, 2, 1, Eigen::DontAlign> u;
 	vector<double> newFIn(9, 0);
 	double rho = 1;
-	double R = (case_->meshGeom_.y / 2) - 2; // -2: subtract top/bottom wall thickness
+	double R = (case_->meshGeom_.y / 2) - 1; // -2: subtract top/bottom wall thickness
 	double uInProfile, eu, u2;// , yPhys;
 	for (unsigned x = 0; x < mesh.size(); ++x) {
-		for (unsigned y = 1; y < mesh[x].size(); ++y) // from 1 (skip bottom wall)
+		for (unsigned y = 0; y < mesh[x].size()  - 1 ; ++y) // from 1 (skip bottom wall)
 		{
 
 			//if(typeid(*mesh[x][y]) != typeid(Wall))

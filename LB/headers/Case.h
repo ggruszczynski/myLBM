@@ -6,7 +6,6 @@ struct BCValues
 	double uInlet; //inlet velocity (channel flow)
 
 	double nu; // kinematic viscosity
-	double CSmag; // Smagorinsky Constant
 };
 
 struct Obstacle

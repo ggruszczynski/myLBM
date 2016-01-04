@@ -14,6 +14,8 @@ template <class T> class Singleton
 public:
 	vector<Vector2d, Eigen::aligned_allocator<Eigen::Vector2d> > e; // velocities directions				
 	vector <double> w;   // weigths
+	//double CSmag = 0.03;
+	double CSmag2 = 0.0009; // = CSmag * CSmag;
 
 
 	template <typename... Args>	static T* get_instance(Args... args)

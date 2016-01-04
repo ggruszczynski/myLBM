@@ -3,7 +3,7 @@
 
 
 
-void Writer::WritePassiveScalar(vector<vector<shared_ptr<Node>>> &mesh, FILE* dataFile)
+void Writer::WritePassiveScalar(vector<vector<shared_ptr<Node>>> &mesh, FILE* dataFile) const
 {
 	int x, y, z;
 	fprintf(dataFile, "      <DataArray type=\"Float32\" Name=\"PassiveScalar\" NumberOfComponents=\"1\" format=\"ascii\">\n");
@@ -22,7 +22,7 @@ void Writer::WritePassiveScalar(vector<vector<shared_ptr<Node>>> &mesh, FILE* da
 	fprintf(dataFile, "      </DataArray>\n");
 }
 
-void Writer::WriteDensity(vector<vector<shared_ptr<Node>>> &mesh, FILE *dataFile)
+void Writer::WriteDensity(vector<vector<shared_ptr<Node>>> &mesh, FILE *dataFile) const
 {
 	int x, y, z;
 	fprintf(dataFile, "      <DataArray type=\"Float32\" Name=\"Density\" NumberOfComponents=\"1\" format=\"ascii\">\n");
@@ -47,7 +47,7 @@ void Writer::WriteDensity(vector<vector<shared_ptr<Node>>> &mesh, FILE *dataFile
 	fprintf(dataFile, "      </DataArray>\n");
 }
 
-void Writer::WriteNodeType(vector<vector<shared_ptr<Node>>>& mesh, FILE* dataFile)
+void Writer::WriteNodeType(vector<vector<shared_ptr<Node>>>& mesh, FILE* dataFile) const
 {
 	int x, y, z;
 
@@ -67,7 +67,7 @@ void Writer::WriteNodeType(vector<vector<shared_ptr<Node>>>& mesh, FILE* dataFil
 	fprintf(dataFile, "      </DataArray>\n");
 }
 
-void Writer::WriteVelocity(vector<vector<shared_ptr<Node>>> &mesh, FILE* dataFile)
+void Writer::WriteVelocity(vector<vector<shared_ptr<Node>>> &mesh, FILE* dataFile) const
 {
 	int x, y, z;
 	fprintf(dataFile, "      <DataArray type=\"Float32\" Name=\"Velocity\" NumberOfComponents=\"3\" format=\"ascii\">\n");
@@ -87,6 +87,26 @@ void Writer::WriteVelocity(vector<vector<shared_ptr<Node>>> &mesh, FILE* dataFil
 	fprintf(dataFile, "      </DataArray>\n");
 }
 
+void Writer::WriteEddyViscosity(vector<vector<shared_ptr<Node>>>& mesh, FILE* dataFile) const
+{
+	int x, y, z;
+
+	fprintf(dataFile, "      <DataArray type=\"Float32\" Name=\"EddyViscosity\" NumberOfComponents=\"1\" format=\"ascii\">\n");
+	for (z = 0; z < this->nz; z++)
+	{
+		for (y = 0; y < this->ny; y++)
+		{
+			for (x = 0; x < this->nx; x++)
+			{
+				fprintf(dataFile, "%.4e ", (double)mesh[x][y]->nuTurb);
+				//cout << "mesh[" << x << "][" << y << "] nodeType ->" << (double)mesh[x][y]->nodeType << endl;
+			}
+			fprintf(dataFile, "\n");
+		}
+	}
+	fprintf(dataFile, "      </DataArray>\n");
+
+}
 
 
 void Writer::writeVTK(vector<vector<shared_ptr<Node>>> &mesh, int t, string directory_ , string filename_ )
@@ -128,10 +148,13 @@ void Writer::writeVTK(vector<vector<shared_ptr<Node>>> &mesh, int t, string dire
 	fprintf(dataFile, "    <PointData Scalars=\"scalars\">\n");
 
 	//try {
+
 		WriteDensity(mesh, dataFile);
 		WriteNodeType(mesh, dataFile);
 		WriteVelocity(mesh, dataFile);
 		WritePassiveScalar(mesh, dataFile);
+		//WriteEddyViscosity(mesh, dataFile);
+
 	//}
 	//catch (exception& e)
 	//{

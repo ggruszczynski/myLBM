@@ -41,6 +41,8 @@ protected:
 
 	double rho; // density
 	double T; // Passive Scalar
+	double nuTurb; //eddy Viscosity 
+
 	Eigen::Matrix<double, 2, 1, Eigen::DontAlign> u;
 	// see http://eigen.tuxfamily.org/dox/group__TopicUnalignedArrayAssert.html and http://eigen.tuxfamily.org/dox/group__TopicStructHavingEigenMembers.html
 
@@ -55,7 +57,7 @@ public:
     void ComputefEq();
 
 
-	double GetEddyViscosity();
+	void CalcEddyViscosity(double nu);
 
 	virtual void NodeCollisionFout(double const& omega);
 	virtual void SetU(const double &setU, const double &setV);
@@ -66,7 +68,7 @@ public:
 	virtual void NodeCollisionTout(double const& omegaT);
 
 	//Node(): fIn(9, 0), feq(9, 0), fOut(9, 0), rho(1), uSqr(0),c(1),u(0,0)
-	Node():  rho(1), T(0), u(0, 0)
+	Node():  rho(1), T(0), nuTurb(0), u(0, 0)
 	{
 	
 		//d2q9Constants = D2Q9Constants::get_instance();

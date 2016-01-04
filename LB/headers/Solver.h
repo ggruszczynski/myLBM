@@ -47,6 +47,7 @@ public:
 	double GetAverageT();
 	double GetVarT();
 
+	double GetEddyViscosity(Node &node) const;
 
 	shared_ptr <Node> GetNode(const int &x, const int &y);
 	void ReplaceNode(const int &x, const int &y, shared_ptr <Node>);
@@ -56,14 +57,15 @@ public:
 	{	
 		ChannelMeshBuilder channel_mesh_builder;
 		LidMeshBuilder lid_mesh_builder;
-		meshDirector.SetBuilder(&lid_mesh_builder);
-		//meshDirector.SetBuilder(&channel_mesh_builder);
+		//meshDirector.SetBuilder(&lid_mesh_builder);
+		meshDirector.SetBuilder(&channel_mesh_builder);
 
 		mycase = meshDirector.GetCase();
 		omegaT  = 1. / (2 * mycase -> passive_scalar_blobb_.K + 0.5 ); //Passive Scalar relaxation parameter
 		omegaNS = 1. / (3 * mycase -> bcValues_.nu + 0.5);      //NS relaxation parameter
 		//omegaNS = 4.5;
 		cout << "omegaNS = " << omegaNS << endl;
+		cout << "omegaT = " << omegaT << endl;
 
 		d2q9Constants = Singleton<D2Q9Constants>::get_instance();
 		d2q5Constants = Singleton<D2Q5Constants>::get_instance();

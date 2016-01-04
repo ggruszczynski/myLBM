@@ -20,10 +20,12 @@ class Writer
 private:
 	int nx, ny, nz; //mesh dimensions
 
-	void WritePassiveScalar(vector<vector<shared_ptr<Node>>> &mesh, FILE *dataFile);
-	void WriteDensity(vector<vector<shared_ptr<Node>>> &mesh, FILE *dataFile);
-	void WriteNodeType(vector<vector<shared_ptr<Node>>> &mesh, FILE *dataFile);
-	void WriteVelocity(vector<vector<shared_ptr<Node>>> &mesh, FILE *dataFile);
+	void WritePassiveScalar(vector<vector<shared_ptr<Node>>> &mesh, FILE *dataFile) const;
+	void WriteDensity(vector<vector<shared_ptr<Node>>> &mesh, FILE *dataFile) const;
+	void WriteNodeType(vector<vector<shared_ptr<Node>>> &mesh, FILE *dataFile) const;
+	void WriteVelocity(vector<vector<shared_ptr<Node>>> &mesh, FILE *dataFile) const;
+	void WriteEddyViscosity(vector<vector<shared_ptr<Node>>> &mesh, FILE *dataFile) const;
+
 public:
 	void WriteCaseInfo(Case *case_, string directory_, string filename_);
 	void writeVTK(vector< vector<shared_ptr<Node>> > &mesh, int t, string directory, string filename);

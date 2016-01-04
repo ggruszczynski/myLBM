@@ -32,7 +32,7 @@ public:
 	void SetLeft()override
 	{
 		for (unsigned i = 0; i < mesh[0].size(); ++i) // sides
-			mesh[0][i] = std::move(std::make_shared<VelocityInlet>(case_->bcValues_.uInlet, 0));
+			mesh[0][i] = std::move(std::make_shared<VelocityInlet>(0, 0)); // std::move(std::make_shared<VelocityInlet>(case_->bcValues_.uInlet, 0));
 	};
 
 	void SetRight()override

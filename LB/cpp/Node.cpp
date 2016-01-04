@@ -49,19 +49,28 @@ void Node::ComputefEq()
 	//}
 }
 
-double Node::GetEddyViscosity()
+void Node::CalcEddyViscosity(double nu)
 {
-	MatrixXd localStressTensor(2, 2);
-		
-	auto wtf = d2q9Constants->e[2];
+	Matrix2d localStressTensor;
+	Matrix2d localStressTensor2; // coefficient wise product (each by each, ex a11* a11, a12*a12, a21*a21, a22*a22
 
 	for (unsigned i = 0; i < d2q9Constants->e.size(); ++i) //each node
 	{
-
-
 		localStressTensor(0, 0) = d2q9Constants->e[i](0)* d2q9Constants->e[i](0) * (fIn[i] - feq[i]);
-
+		localStressTensor(1, 0) = d2q9Constants->e[i](1)* d2q9Constants->e[i](0) * (fIn[i] - feq[i]);
+		localStressTensor(0, 1) = d2q9Constants->e[i](0)* d2q9Constants->e[i](1) * (fIn[i] - feq[i]);
+		localStressTensor(1, 1) = d2q9Constants->e[i](1)* d2q9Constants->e[i](1) * (fIn[i] - feq[i]);
 	}
+	localStressTensor2 = localStressTensor.cwiseProduct(localStressTensor);
+
+	double Q = sqrt(localStressTensor2.sum()); // magnitude of the non-equilibrium stress tensor
+
+	double S;
+	S = sqrt(nu * nu + 18 * d2q9Constants->CSmag2 *Q);
+	S -= nu;
+	S /= 6;
+
+	this->nuTurb = S;
 }
 
 void Node::NodeCollisionFout(double const & omega)
