@@ -6,6 +6,7 @@ struct BCValues
 	double uInlet; //inlet velocity (channel flow)
 
 	double nu; // kinematic viscosity
+	double CSmag; // Smagorinsky Constant
 };
 
 struct Obstacle
@@ -30,7 +31,8 @@ struct PassiveScalarBlobb
 struct Timer
 {
 	unsigned totalTime; // number of timeSteps
-	unsigned timeToSave; // after timeToSave amount of steps -> save
+	unsigned timeToSaveVTK; // after timeToSaveVTK amount of steps -> save VTK
+	unsigned timeToSavePointData; // after timeToSaveVTK amount of steps -> save Point Data
 };
 
 struct BlockGeom

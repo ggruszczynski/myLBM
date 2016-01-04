@@ -11,6 +11,7 @@
 
 #include "Writer.h"
 
+#include <omp.h>
 #include <iostream>
 #include <memory>
 
@@ -24,6 +25,8 @@ class Solver {
 private:	
 	double omegaNS; //relaxation parameter
 	double omegaT; //relaxation parameter - passive scalar
+
+	//double omegaTturb;
 
 	shared_ptr <Writer> writer;
 	Singleton<D2Q9Constants>*d2q9Constants;
@@ -44,6 +47,7 @@ public:
 	double GetAverageT();
 	double GetVarT();
 
+
 	shared_ptr <Node> GetNode(const int &x, const int &y);
 	void ReplaceNode(const int &x, const int &y, shared_ptr <Node>);
 	void InsertNode(const int &x, const int &y, Node & newNode);
@@ -56,9 +60,9 @@ public:
 		//meshDirector.SetBuilder(&channel_mesh_builder);
 
 		mycase = meshDirector.GetCase();
-		omegaT  = 1. / (2 * mycase -> passive_scalar_blobb_.K + 0.5 );
-		omegaNS = 1. / (3 * mycase ->bcValues_.nu + 0.5);      //NS relaxation parameter
-		//omegaNS = 1.5;
+		omegaT  = 1. / (2 * mycase -> passive_scalar_blobb_.K + 0.5 ); //Passive Scalar relaxation parameter
+		omegaNS = 1. / (3 * mycase -> bcValues_.nu + 0.5);      //NS relaxation parameter
+		//omegaNS = 4.5;
 		cout << "omegaNS = " << omegaNS << endl;
 
 		d2q9Constants = Singleton<D2Q9Constants>::get_instance();

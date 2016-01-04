@@ -53,6 +53,10 @@ public:
 	virtual void ComputeRho();
 	virtual void ComputeU();
     void ComputefEq();
+
+
+	double GetEddyViscosity();
+
 	virtual void NodeCollisionFout(double const& omega);
 	virtual void SetU(const double &setU, const double &setV);
 	void SetFIn(vector<double> newFIn);

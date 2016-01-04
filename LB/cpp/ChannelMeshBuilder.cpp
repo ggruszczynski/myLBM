@@ -1,3 +1,5 @@
+
+#include "../stdafx.h"
 #include "../headers/ChannelMeshBuider.h"
 
 
@@ -35,7 +37,7 @@ void ChannelMeshBuilder::InitializeVelocity()
 	vector<double> newFIn(9, 0);
 	double rho = 1;
 	double R = (case_->meshGeom_.y / 2) - 2; // -2: subtract top/bottom wall thickness
-	double uInProfile, eu, u2, yPhys;
+	double uInProfile, eu, u2;// , yPhys;
 	for (unsigned x = 0; x < mesh.size(); ++x) {
 		for (unsigned y = 1; y < mesh[x].size(); ++y) // from 1 (skip bottom wall)
 		{

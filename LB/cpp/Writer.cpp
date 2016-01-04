@@ -184,8 +184,14 @@ void Writer::WriteCaseInfo(Case* case_, string directory_, string filename_ )
 	myfile << "Passive Scalar Blobb: \t" <<" x: "<< case_->passive_scalar_blobb_.x << " y: " << case_->passive_scalar_blobb_.y <<  " r:" << case_->passive_scalar_blobb_.r << endl;
 	myfile << "Passive Scalar Blobb: \t" <<" K (thermal conductivity): "<< case_->passive_scalar_blobb_.K << " Temp: " << case_->passive_scalar_blobb_.T << endl;
 
-	myfile << "Timer: " << " totalTime: "<< case_->timer_.totalTime << " timeToSave: "  << case_->timer_.timeToSave << endl;
+	myfile << "Timer: " << " totalTime: " << case_->timer_.totalTime << " timeToSaveVTK: " << case_->timer_.timeToSaveVTK << " timeToSavePointdata: " << case_->timer_.timeToSavePointData << endl;
 
+	double omegaT = 1. / (2 * case_->passive_scalar_blobb_.K + 0.5); //Passive Scalar relaxation parameter
+	double omegaNS = 1. / (3 * case_->bcValues_.nu + 0.5);      //NS relaxation parameter
+
+	myfile << "Relaxation Parameters: \t" << "omegaNS: " << omegaNS << " omegaT: " << omegaT << endl;
+
+	
 
 	myfile.close();
 

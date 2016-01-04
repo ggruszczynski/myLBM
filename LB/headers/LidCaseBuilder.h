@@ -46,7 +46,7 @@ public:
 	void SetTimer() override
 	{
 		case_->timer_.totalTime = 10; // number of timeSteps
-		case_->timer_.timeToSave = 1; // after timeSave amount of steps -> save
+		case_->timer_.timeToSaveVTK = 1; // after timeSave amount of steps -> save
 	};
 
 	virtual ~LidCaseBuilder() {};

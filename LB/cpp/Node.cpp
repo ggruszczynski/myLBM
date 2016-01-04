@@ -16,7 +16,7 @@ void Node::ComputeU()
 	auto it_f = this->fIn.begin();
 	for (auto it_e = d2q9Constants->e.begin(); it_e != d2q9Constants->e.end(); ++it_e, ++it_f)
 		u += *it_f* *it_e;
-		//u += c* *it_f* *it_e; // c is assumed to be always = 1, thus it may be skipped
+	//u += c* *it_f* *it_e; // c is assumed to be always = 1, thus it may be skipped
 
 	u = u / this->rho;
 }
@@ -47,6 +47,21 @@ void Node::ComputefEq()
 	//	feq[i] -= 1.5 * u2 / c2;
 	//	feq[i] *= rho * d2q9Constants->w[i];
 	//}
+}
+
+double Node::GetEddyViscosity()
+{
+	MatrixXd localStressTensor(2, 2);
+		
+	auto wtf = d2q9Constants->e[2];
+
+	for (unsigned i = 0; i < d2q9Constants->e.size(); ++i) //each node
+	{
+
+
+		localStressTensor(0, 0) = d2q9Constants->e[i](0)* d2q9Constants->e[i](0) * (fIn[i] - feq[i]);
+
+	}
 }
 
 void Node::NodeCollisionFout(double const & omega)

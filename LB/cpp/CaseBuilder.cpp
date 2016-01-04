@@ -1,5 +1,6 @@
 //
-//#include "../headers/CaseBuilder.h"
+#include "../stdafx.h"
+#include "../headers/CaseBuilder.h"
 //
 //
 //CaseBuilder::CaseBuilder()

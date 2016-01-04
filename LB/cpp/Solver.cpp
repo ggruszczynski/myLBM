@@ -9,26 +9,47 @@
 
 void Solver::Collisions()
 {
-	for ( auto& inner : mesh) {
-		for ( auto& node : inner) {
-			node->ComputeRho();
-			node->ComputeU();
-			node->ComputefEq();
-			node->NodeCollisionFout(omegaNS);
 
-			node->ComputeT();
-			node->ComputeTeq();
-			node->NodeCollisionTout(omegaT);
+#pragma omp parallel for
+	for (int x = 0; x < mesh.size(); ++x) {
+		for (int y = 0; y < mesh[x].size(); ++y) {
+			mesh[x][y]->ComputeRho();
+			mesh[x][y]->ComputeRho();
+			mesh[x][y]->ComputeU();
+			mesh[x][y]->ComputefEq();
+			mesh[x][y]->GetEddyViscosity();
+
+			mesh[x][y]->NodeCollisionFout(omegaNS);
+
+		/// disable ... when not needed
+			mesh[x][y]->ComputeT();
+			mesh[x][y]->ComputeTeq();
+			mesh[x][y]->NodeCollisionTout(omegaT);
 		}
 	}
+
+	//for ( auto& inner : mesh) {
+	//	for ( auto& node : inner) {
+	//		node->ComputeRho();
+	//		node->ComputeU();
+	//		node->ComputefEq();
+	//		node->NodeCollisionFout(omegaNS);
+
+	//		node->ComputeT();
+	//		node->ComputeTeq();
+	//		node->NodeCollisionTout(omegaT);
+	//	}
+	//}
 
 }
 
 
 void Solver::Stream()
 {
-	for (unsigned x = 0; x < mesh.size(); ++x) {
-		for (unsigned y = 0; y < mesh[x].size(); ++y) {
+
+#pragma omp parallel for
+	for (int x = 0; x < mesh.size(); ++x) {
+		for (int y = 0; y < mesh[x].size(); ++y) {
 			StreamToNeighbour(x, y);
 		}
 	}
@@ -49,7 +70,7 @@ void Solver::StreamToNeighbour(const int& x, const int& y)
 			mesh[nextX][nextY]->fIn[i] = mesh[x][y]->fOut[i];
 	}
 
-
+	/// disable ... when not needed
 	for (unsigned i = 0; i < d2q5Constants->e.size(); ++i) //Passive Scalar
 	{
 		nextX = x + d2q5Constants->e[i](0);
@@ -77,15 +98,22 @@ void Solver::Run()
 	//outputDirectory += "/" + nowAsString;
 
 	unsigned t = 0;
-	while (t < mycase ->timer_.totalTime)
+	while (t < mycase->timer_.totalTime)
 	{
-	/*	if (t%50 == 0)
-		cout << "time: " << t << endl;*/
-		writer->writePointData(mesh, t, mycase ->meshGeom_.x/2, mycase -> meshGeom_.y/2, outputDirectory, fileNamePointData);
+		/*	if (t%50 == 0)
+			cout << "time: " << t << endl;*/
 
-		if (t%mycase->timer_.timeToSave == 0)
+		if (t % mycase->timer_.timeToSavePointData == 0) 
 		{
-			cout << "Saved at time_step: " << t << endl;
+			cout << "Point Data Saved at time_step: " << t << endl;
+			writer->writePointData(mesh, t, mycase->meshGeom_.x / 2, mycase->meshGeom_.y / 2, outputDirectory, fileNamePointData);
+		}
+
+
+		if (t%mycase->timer_.timeToSaveVTK == 0)
+		{
+			cout << "VTK Saved at time_step: " << t << endl;
+
 			try { writer->writeVTK(mesh, t, outputDirectory, fileNameVTK); }
 			catch (exception& e)
 			{
@@ -127,6 +155,28 @@ double Solver::GetVarT()
 	}
 	return VarT;
 }
+
+//double Solver::GetEddyViscosity()
+//{
+//	MatrixXd localStressTensor(2, 2);
+//
+//	auto wtf = d2q9Constants->e[2];
+//
+//	for (auto& inner : mesh) {
+//		for (auto& node : inner) {
+//			
+//			for (unsigned i = 0; i < d2q9Constants->e.size(); ++i) //each node
+//			{
+//
+//
+//				localStressTensor(0, 0) = d2q9Constants->e[i](0)* d2q9Constants->e[i](0) * (node->fIn[i] - node->feq[i]);
+//
+//			}
+//
+//		}
+//	}
+//
+//}
 
 shared_ptr<Node> Solver::GetNode(const int& x, const int& y)
 {
