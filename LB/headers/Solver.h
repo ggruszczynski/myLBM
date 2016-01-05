@@ -23,7 +23,8 @@
 
 class Solver {
 private:	
-	double omegaNS; //relaxation parameter
+	double omegaNS; //NS relaxation parameter
+	double omegaNSTurb; 
 	double omegaT; //relaxation parameter - passive scalar
 
 	//double omegaTturb;
@@ -48,6 +49,8 @@ public:
 	double GetVarT();
 
 	shared_ptr <Node> GetNode(const int &x, const int &y);
+
+	void IsDensityValid();
 	void ReplaceNode(const int &x, const int &y, shared_ptr <Node>);
 
 	Solver() : writer(new Writer)

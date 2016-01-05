@@ -33,11 +33,6 @@ void Writer::WriteDensity(vector<vector<shared_ptr<Node>>> &mesh, FILE *dataFile
 			for (x = 0; x <  this->nx; x++)
 			{
 				fprintf(dataFile, "%.4e ", mesh[x][y]->rho);
-				if (mesh[x][y]->rho > 1000)
-				{
-					string oups = "to big rho = " + std::to_string(mesh[x][y]->rho);
-					throw std::exception(oups.c_str());
-				}
 				//cout << "mesh[" << x << "][" << y << "] rho ->" << mesh[x][y]->rho << endl;
 				//fprintf(dataFile, "%.4e ", rho[x][y][z]);
 			}
@@ -147,19 +142,12 @@ void Writer::writeVTK(vector<vector<shared_ptr<Node>>> &mesh, int t, string dire
 	//fprintf(dataFile, "  <Piece Extent=\"0 %d 0 %d\">\n", nx - 1, ny - 1);
 	fprintf(dataFile, "    <PointData Scalars=\"scalars\">\n");
 
-	//try {
-
-		WriteDensity(mesh, dataFile);
-		WriteNodeType(mesh, dataFile);
+		//WriteDensity(mesh, dataFile);
+		//WriteNodeType(mesh, dataFile);
 		WriteVelocity(mesh, dataFile);
 		WritePassiveScalar(mesh, dataFile);
 		//WriteEddyViscosity(mesh, dataFile);
 
-	//}
-	//catch (exception& e)
-	//{
-	//	cout << "Standard exception: " << e.what() << endl;
-	//}
 
 	fprintf(dataFile, "    </PointData>\n");
 

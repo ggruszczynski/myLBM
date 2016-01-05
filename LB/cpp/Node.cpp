@@ -104,7 +104,7 @@ void Node::ComputeTeq()
 	{
 		eu = u.dot(d2q5Constants->e[i]);
 		Teq[i] = 1 + 3 * eu;
-		Teq[i] *= T * d2q9Constants->w[i];
+		Teq[i] *= T * d2q5Constants->w[i];
 	}
 }
 

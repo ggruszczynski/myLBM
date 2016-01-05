@@ -8,8 +8,7 @@
 #include "../headers/Solver.h"
 
 void Solver::Collisions()
-{
-	double omegaTurb;
+{	
 #pragma omp parallel for
 	for (int x = 0; x < mesh.size(); ++x) { 
 		for (int y = 0; y < mesh[x].size(); ++y) {
@@ -19,12 +18,12 @@ void Solver::Collisions()
 			mesh[x][y]->ComputefEq();
 
 			//mesh[x][y]->CalcEddyViscosity(mycase->bcValues_.nu);
-			omegaTurb = 1. / (3 * (mycase->bcValues_.nu + mesh[x][y]->nuTurb) + 0.5);
-			mesh[x][y]->NodeCollisionFout(omegaTurb);
+			omegaNSTurb = 1. / (3 * (mycase->bcValues_.nu + mesh[x][y]->nuTurb) + 0.5);
+			mesh[x][y]->NodeCollisionFout(omegaNSTurb);
 
 			//mesh[x][y]->NodeCollisionFout(omegaNS);
 
-		/// disable thermal stuff... when not needed
+		//thermal stuff:
 			mesh[x][y]->ComputeT();
 			mesh[x][y]->ComputeTeq();
 			mesh[x][y]->NodeCollisionTout(omegaT);
@@ -73,7 +72,7 @@ void Solver::StreamToNeighbour(const int& x, const int& y)
 			mesh[nextX][nextY]->fIn[i] = mesh[x][y]->fOut[i];
 	}
 
-	/// disable thermal stuff ... when not needed
+	//thermal stuff:
 	for (unsigned i = 0; i < d2q5Constants->e.size(); ++i) //Passive Scalar
 	{
 		nextX = x + static_cast<int>(d2q5Constants->e[i](0));
@@ -106,29 +105,28 @@ void Solver::Run()
 		/*	if (t%50 == 0)
 			cout << "time: " << t << endl;*/
 
-		//if (t % mycase->timer_.timeToSavePointData == 0)
-		//{
-		//	cout << "Point Data Saved at time_step: " << t << endl;
-		//	writer->writePointData(mesh, t, mycase->meshGeom_.x / 2, mycase->meshGeom_.y / 2, outputDirectory, fileNamePointData);
-		//}
+		if (t % mycase->timer_.timeToSavePointData == 0)
+		{
+			cout << "Point Data Saved at time_step: " << t << endl;
+			writer->writePointData(mesh, t, mycase->meshGeom_.x / 2, mycase->meshGeom_.y / 2, outputDirectory, fileNamePointData);
+		}
 
 
 		if (t%mycase->timer_.timeToSaveVTK == 0)
 		{
-			cout << "VTK Saved at time_step: " << t << endl;
-
-			try { writer->writeVTK(mesh, t, outputDirectory, fileNameVTK); }
+			try { this->IsDensityValid(); }
 			catch (exception& e)
 			{
-				cout << "Standard exception: " << e.what() << endl;
+				cout << "Solver exception: " << e.what() << endl;
 				break;
-			}
-		}
+			}	
 
+			cout << "VTK Saved at time_step: " << t << endl;
+			writer->writeVTK(mesh, t, outputDirectory, fileNameVTK);
+		}
 
 		this->Collisions();
 		this->Stream();
-
 		++t;
 	}
 }
@@ -144,7 +142,6 @@ double Solver::GetAverageT()
 			Ttotal += node->T;
 		}
 	}
-
 	return Ttotal / mycase->meshGeom_.numberOfNodes;
 }
 
@@ -165,6 +162,20 @@ double Solver::GetVarT()
 shared_ptr<Node> Solver::GetNode(const int& x, const int& y)
 {
 	return mesh[x][y];
+}
+
+void Solver::IsDensityValid()
+{
+	for ( auto& inner : mesh) {
+		for ( auto& node : inner) {
+			if	(node->rho > 1000)
+			{
+				string oups = "to big rho = " + std::to_string(node->rho);
+				throw std::exception(oups.c_str());
+			}
+		}
+	}
+
 }
 
 void Solver::ReplaceNode(const int& x, const int& y, shared_ptr <Node> newNode)

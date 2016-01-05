@@ -41,7 +41,7 @@ public:
 			mesh[mesh.size() - 1][i] = std::move(std::make_shared<PressureOutlet>());
 	};
 
-	void SetObstacle() override;;
+	void SetObstacle() override;
 	void SetPassiveScalarBlobb() override;
 	void InitializeVelocity() override;//poiseulle profile	
 };

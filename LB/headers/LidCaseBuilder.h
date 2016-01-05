@@ -10,8 +10,8 @@ public:
 
 	void SetBlockGeom()override
 	{
-		case_->meshGeom_.x = 100;
-		case_->meshGeom_.y = 100;
+		case_->meshGeom_.x = 1000;
+		case_->meshGeom_.y = 1000;
 		case_->meshGeom_.numberOfNodes = case_->meshGeom_.x * case_->meshGeom_.y;
 	};
 
@@ -24,12 +24,12 @@ public:
 
 	void SetPassiveScalarBlobb()override
 	{
-		case_->passive_scalar_blobb_.T = 150;
+		case_->passive_scalar_blobb_.T = 300;
 		case_->passive_scalar_blobb_.K = 0.25;
 
 		case_->passive_scalar_blobb_.x = case_->meshGeom_.x / 2;
-		case_->passive_scalar_blobb_.y = case_->meshGeom_.y / 2;
-		case_->passive_scalar_blobb_.r = 15;
+		case_->passive_scalar_blobb_.y = case_->meshGeom_.y / 2 ; // 2./3.
+		case_->passive_scalar_blobb_.r = 10;
 	};
 
 	void SetBCValues() override
@@ -45,8 +45,8 @@ public:
 
 	void SetTimer() override
 	{
-		case_->timer_.totalTime = 1000; // number of timeSteps
-		case_->timer_.timeToSaveVTK = 25; // after timeSave amount of steps -> save
+		case_->timer_.totalTime = 100; // number of timeSteps
+		case_->timer_.timeToSaveVTK = 20; // after timeSave amount of steps -> save
 		case_->timer_.timeToSavePointData = 1; // after timeSave amount of steps -> save
 	};
 

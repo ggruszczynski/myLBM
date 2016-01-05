@@ -45,7 +45,16 @@ public:
 
 	};
 
-	void SetObstacle() override{}; //no obstacles
+	void SetObstacle() override //no obstacles
+	{
+		//int y;
+		//for (unsigned x = mesh.size()/4. ; x < 2./4.* mesh.size(); ++x) {
+		//	y = mesh[x].size() / 3.;
+		//	mesh[x][y] = std::move(std::make_shared<Wall>());
+		//}	
+	}; 
+
+
 	void SetPassiveScalarBlobb() override;
 	void InitializeVelocity() override{}; // at rest
 };

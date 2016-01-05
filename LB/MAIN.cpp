@@ -9,7 +9,9 @@ using namespace std;
 
 int main() {
 	cout << "!!!Hello World!!!" << endl;
-	//omp_set_num_threads(4);
+
+	//omp_set_num_threads(1);
+
 	std::clock_t start;
 	double duration;
 
@@ -20,7 +22,7 @@ int main() {
 
 	duration = (std::clock() - start) / (double)CLOCKS_PER_SEC;
 	cout << " \n duration: " << duration << " [s] = " << duration / 60 << " min" << endl;
-
+	//cout << " omp_get_num_threads(): " << omp_get_num_threads() << endl;
 
 	cout << "-------------------------------------THE END---------------------------------\n" << endl;
 	system("PAUSE");
