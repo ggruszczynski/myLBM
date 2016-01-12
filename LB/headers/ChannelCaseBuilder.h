@@ -10,8 +10,8 @@ public:
 
 	void SetBlockGeom()override
 	{
-		case_->meshGeom_.x = 400;
-		case_->meshGeom_.y = 100;
+		case_->meshGeom_.x = 800;
+		case_->meshGeom_.y = 200;
 		case_->meshGeom_.numberOfNodes = case_->meshGeom_.x * case_->meshGeom_.y;
 	};
 
@@ -47,8 +47,8 @@ public:
 
 	void SetTimer() override
 	{
-		case_->timer_.totalTime = 50; // number of timeSteps
-		case_->timer_.timeToSaveVTK = 1; // after timeSave amount of steps -> save
+		case_->timer_.totalTime = 1000; // number of timeSteps
+		case_->timer_.timeToSaveVTK = 25; // after timeSave amount of steps -> save
 		case_->timer_.timeToSavePointData = 10; // after timeSave amount of steps -> save
 	};
 

@@ -16,6 +16,8 @@ public:
 	void ComputeU() override;
 	void NodeCollisionFout(double const & omega) override;
 	void SetU(const double &setU, const double &setV) override;
+	shared_ptr<Node> CloneShrPtr() override { return make_shared<VelocityInlet>(*this); }
+
 	//void SetU(const double &setU, const double &setV) override;
 
 	VelocityInlet(double setU, double setV) : cardinal_directions(West)

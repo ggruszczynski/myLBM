@@ -14,6 +14,8 @@
 #include <omp.h>
 #include <iostream>
 #include <memory>
+#include <thread>
+
 
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/date_time/posix_time/posix_time_io.hpp>
@@ -30,6 +32,7 @@ private:
 	//double omegaTturb;
 
 	shared_ptr <Writer> writer;
+
 	Singleton<D2Q9Constants>*d2q9Constants;
 	Singleton<D2Q5Constants>*d2q5Constants;
 
@@ -53,12 +56,14 @@ public:
 	void IsDensityValid();
 	void ReplaceNode(const int &x, const int &y, shared_ptr <Node>);
 
+	vector< vector<shared_ptr <Node>> > CloneMesh();
+
 	Solver() : writer(new Writer)
 	{	
 		ChannelMeshBuilder channel_mesh_builder;
 		LidMeshBuilder lid_mesh_builder;
-		meshDirector.SetBuilder(&lid_mesh_builder);
-		//meshDirector.SetBuilder(&channel_mesh_builder);
+		//meshDirector.SetBuilder(&lid_mesh_builder);
+		meshDirector.SetBuilder(&channel_mesh_builder);
 
 		mycase = meshDirector.GetCase();
 		omegaNS = 1. / (3 * mycase -> bcValues_.nu + 0.5);      //NS relaxation parameter

@@ -17,12 +17,15 @@ public:
 	void NodeCollisionFout(double const & omega) override;
 	void SetUWall(double setU, double setV);
 	void NodeCollisionTout(double const& omega) override;
+	shared_ptr<Node> CloneShrPtr() override { return make_shared<MovingWall>(*this); }
 
 	MovingWall(double setU, double setV) : cardinal_directions(North)
 	{
 		nodeType = NodeType::MovingWallType ;
 		uWall << setU, setV;
 	};
+
+
 	~MovingWall();
 };
 

@@ -14,6 +14,7 @@
 #include "D2Q9Constants.h"
 #include "D2Q5Constants.h"
 #include "Enums.h"
+#include <memory>
 using namespace std;
 
 #include <Eigen/Dense>
@@ -48,7 +49,7 @@ protected:
 
 	
 	//double c; 
-
+	Node& operator=(const Node& cSource);
 public:
 	EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
@@ -89,6 +90,28 @@ public:
 	}
 
 	virtual ~Node();
+
+	//Node(const Node & nSource)
+	//{
+	//	fIn = nSource.fIn;
+	//	feq = nSource.feq;
+	//	fOut = nSource.fOut;
+
+	//	TIn = nSource.TIn;
+	//	Teq = nSource.Teq;
+	//	TOut = nSource.TOut;
+
+	//	rho = nSource.rho;
+	//	T = nSource.T;
+	//	nuTurb = nSource.nuTurb;
+
+	//	d2q9Constants = Singleton<D2Q9Constants>::get_instance();
+	//	d2q5Constants = Singleton<D2Q5Constants>::get_instance();
+	//	nodeType = nSource.nodeType;
+	//}
+
+	virtual shared_ptr<Node> CloneShrPtr(){ return make_shared<Node>(*this); }
+
 
 	friend class Writer;
 	friend class Solver;

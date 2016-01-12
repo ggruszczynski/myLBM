@@ -1,18 +1,12 @@
-﻿/*
- * Solver.cpp
- *
- *  Created on: Dec 12, 2015
- *      Author: muaddieb
- */
-
+﻿
 #include "../headers/Solver.h"
 
+
 void Solver::Collisions()
-{	
+{
 #pragma omp parallel for
-	for (int x = 0; x < mesh.size(); ++x) { 
+	for (int x = 0; x < mesh.size(); ++x) {
 		for (int y = 0; y < mesh[x].size(); ++y) {
-			mesh[x][y]->ComputeRho();
 			mesh[x][y]->ComputeRho();
 			mesh[x][y]->ComputeU();
 			mesh[x][y]->ComputefEq();
@@ -29,26 +23,11 @@ void Solver::Collisions()
 			mesh[x][y]->NodeCollisionTout(omegaT);
 		}
 	}
-
-	//for ( auto& inner : mesh) {
-	//	for ( auto& node : inner) {
-	//		node->ComputeRho();
-	//		node->ComputeU();
-	//		node->ComputefEq();
-	//		node->NodeCollisionFout(omegaNS);
-
-	//		node->ComputeT();
-	//		node->ComputeTeq();
-	//		node->NodeCollisionTout(omegaT);
-	//	}
-	//}
-
 }
 
 
 void Solver::Stream()
 {
-
 #pragma omp parallel for
 	for (int x = 0; x < mesh.size(); ++x) {
 		for (int y = 0; y < mesh[x].size(); ++y) {
@@ -56,9 +35,6 @@ void Solver::Stream()
 		}
 	}
 }
-
-//template <typename T>
-//void Solver::StreamToNeighbour(const int& x, const int& y, typename Singleton<T>::Singleton* ddqq_constants)
 
 void Solver::StreamToNeighbour(const int& x, const int& y)
 {
@@ -107,8 +83,8 @@ void Solver::Run()
 
 		if (t % mycase->timer_.timeToSavePointData == 0)
 		{
-			cout << "Point Data Saved at time_step: " << t << endl;
 			writer->writePointData(mesh, t, mycase->meshGeom_.x / 2, mycase->meshGeom_.y / 2, outputDirectory, fileNamePointData);
+			//	cout << "Average Temp: " << this->GetAverageT() << endl;
 		}
 
 
@@ -119,19 +95,42 @@ void Solver::Run()
 			{
 				cout << "Solver exception: " << e.what() << endl;
 				break;
-			}	
+			}
+			vector< vector<shared_ptr <Node>> > tempMesh = this->CloneMesh();
+			std::thread writingThread(&Writer::writeVTK, writer, tempMesh, t, outputDirectory, fileNameVTK); 
+			writingThread.detach(); 
 
-			cout << "VTK Saved at time_step: " << t << endl;
-			writer->writeVTK(mesh, t, outputDirectory, fileNameVTK);
+			///old way
+			//writer->writeVTK(mesh, t, outputDirectory, fileNameVTK);
 		}
 
 		this->Collisions();
 		this->Stream();
 		++t;
 	}
+
+	//std::vector<std::thread> threadList;
+	//for (int i = 0; i < 10; i++)
+	//{
+	//	threadList.push_back(std::thread(WorkerThread()));
+	//}
+
+	//   std::for_each(threadList.begin(),threadList.end(), std::mem_fn(&std::thread::join));
+	//   threadList.clear();
 }
 
+vector<vector<shared_ptr<Node>>> Solver::CloneMesh()
+{
+	vector< vector<shared_ptr <Node>> > tempMesh (this->mesh); // make a shallow copy
 
+	for (int x = 0; x < mesh.size(); ++x) {
+		for (int y = 0; y < mesh[x].size(); ++y) {
+			tempMesh[x][y] = std::move(mesh[x][y]->CloneShrPtr()); // change objects
+		}
+	}
+
+	return tempMesh;
+}
 
 double Solver::GetAverageT()
 {
@@ -166,9 +165,9 @@ shared_ptr<Node> Solver::GetNode(const int& x, const int& y)
 
 void Solver::IsDensityValid()
 {
-	for ( auto& inner : mesh) {
-		for ( auto& node : inner) {
-			if	(node->rho > 1000)
+	for (auto& inner : mesh) {
+		for (auto& node : inner) {
+			if (node->rho > 1000)
 			{
 				string oups = "to big rho = " + std::to_string(node->rho);
 				throw std::exception(oups.c_str());
@@ -184,6 +183,7 @@ void Solver::ReplaceNode(const int& x, const int& y, shared_ptr <Node> newNode)
 	mesh[x][y] = std::move(newNode); // TODO: move vs reset?
 									   //mesh[x][y].reset(newNode);
 }
+
 
 
 //void Solver::ReplaceNode(const int& x, const int& y, Node newNode) 

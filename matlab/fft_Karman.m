@@ -33,7 +33,7 @@ legend('x autocorr');
 xlabel('hmm')
 
 %fft from autocorrelation
- fs = 20;                                % Sample frequency (Hz)
+ fs = 1;                                % Sample frequency (Hz)
 % %t = 0:1/fs:10-1/fs;                      % 10 sec sample
 
 x = x_autocorr;
