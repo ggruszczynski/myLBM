@@ -5,8 +5,8 @@
 void Solver::Collisions()
 {
 #pragma omp parallel for
-	for (int x = 0; x < mesh.size(); ++x) {
-		for (int y = 0; y < mesh[x].size(); ++y) {
+	for (int x = 0; x < static_cast<int>(mesh.size()); ++x) {
+		for (int y = 0; y < static_cast<int>(mesh[x].size()); ++y) {
 			mesh[x][y]->ComputeRho();
 			mesh[x][y]->ComputeU();
 			mesh[x][y]->ComputefEq();
@@ -58,6 +58,24 @@ void Solver::StreamToNeighbour(const int& x, const int& y)
 			mesh[nextX][nextY]->TIn[i] = mesh[x][y]->TOut[i];
 	}
 
+
+	// E-->W brutal periodic BC: we know the direction of the fluid flow
+	if (mesh[x][y]->nodeType == NodeType::PeriodicType && x == mesh.size()-1) 
+	{
+		// periodic boundary conditions for east moving particles at east/west ends
+		mesh[0][y]->fIn[5] = mesh[x][y]->fOut[5];
+		mesh[0][y]->fIn[1] = mesh[x][y]->fOut[1];
+		mesh[0][y]->fIn[8] = mesh[x][y]->fOut[8];
+
+		mesh[0][y]->TIn[1] = mesh[x][y]->TOut[1];
+
+		// periodic boundary conditions for west moving particles at east/west ends
+		mesh[0][y]->fIn[6] = mesh[x][y]->fOut[6];
+		mesh[0][y]->fIn[3] = mesh[x][y]->fOut[3];
+		mesh[0][y]->fIn[7] = mesh[x][y]->fOut[7];
+
+		mesh[0][y]->TIn[3] = mesh[x][y]->TOut[3];
+	}
 }
 
 
@@ -69,7 +87,6 @@ void Solver::Run()
 
 	const string fileNameVTK = "mojeLB";
 	string outputDirectory = "output";
-	string fileNamePointData = "PointData";
 
 	writer->ClearDirectory(outputDirectory);
 	writer->WriteCaseInfo(mycase, outputDirectory, "caseInfoData");
@@ -83,7 +100,8 @@ void Solver::Run()
 
 		if (t % mycase->timer_.timeToSavePointData == 0)
 		{
-			writer->writePointData(mesh, t, mycase->meshGeom_.x / 2, mycase->meshGeom_.y / 2, outputDirectory, fileNamePointData);
+			writer->writePointData(mesh, t, mycase->meshGeom_.x / 2, mycase->meshGeom_.y / 2, outputDirectory, "PointData");
+			writer->WriteCrossSectionData(mesh, t, outputDirectory, "CrossSectionData");
 			//	cout << "Average Temp: " << this->GetAverageT() << endl;
 		}
 
@@ -96,7 +114,7 @@ void Solver::Run()
 				cout << "Solver exception: " << e.what() << endl;
 				break;
 			}
-			vector< vector<shared_ptr <Node>> > tempMesh = this->CloneMesh();
+			vector< vector<shared_ptr <Node>> > tempMesh = std::move(this->CloneMesh()) ;
 			std::thread writingThread(&Writer::writeVTK, writer, tempMesh, t, outputDirectory, fileNameVTK); 
 			writingThread.detach(); 
 
@@ -123,8 +141,10 @@ vector<vector<shared_ptr<Node>>> Solver::CloneMesh()
 {
 	vector< vector<shared_ptr <Node>> > tempMesh (this->mesh); // make a shallow copy
 
+#pragma omp parallel for
 	for (int x = 0; x < mesh.size(); ++x) {
 		for (int y = 0; y < mesh[x].size(); ++y) {
+			//tempMesh[x][y] = mesh[x][y]->CloneShrPtr(); // change objects // todo
 			tempMesh[x][y] = std::move(mesh[x][y]->CloneShrPtr()); // change objects
 		}
 	}

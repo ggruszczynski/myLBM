@@ -1,9 +1,7 @@
-
 #include "../headers/Writer.h"
 
 
-
-void Writer::WritePassiveScalar(vector<vector<shared_ptr<Node>>> &mesh, FILE* dataFile) const
+void Writer::WritePassiveScalar(const vector<vector<shared_ptr<Node>>> &mesh, FILE* dataFile) const
 {
 	int x, y, z;
 	fprintf(dataFile, "      <DataArray type=\"Float32\" Name=\"PassiveScalar\" NumberOfComponents=\"1\" format=\"ascii\">\n");
@@ -22,7 +20,7 @@ void Writer::WritePassiveScalar(vector<vector<shared_ptr<Node>>> &mesh, FILE* da
 	fprintf(dataFile, "      </DataArray>\n");
 }
 
-void Writer::WriteDensity(vector<vector<shared_ptr<Node>>> &mesh, FILE *dataFile) const
+void Writer::WriteDensity(const vector<vector<shared_ptr<Node>>> &mesh, FILE *dataFile) const
 {
 	int x, y, z;
 	fprintf(dataFile, "      <DataArray type=\"Float32\" Name=\"Density\" NumberOfComponents=\"1\" format=\"ascii\">\n");
@@ -42,7 +40,7 @@ void Writer::WriteDensity(vector<vector<shared_ptr<Node>>> &mesh, FILE *dataFile
 	fprintf(dataFile, "      </DataArray>\n");
 }
 
-void Writer::WriteNodeType(vector<vector<shared_ptr<Node>>>& mesh, FILE* dataFile) const
+void Writer::WriteNodeType(const vector<vector<shared_ptr<Node>>>& mesh, FILE* dataFile) const
 {
 	int x, y, z;
 
@@ -62,7 +60,7 @@ void Writer::WriteNodeType(vector<vector<shared_ptr<Node>>>& mesh, FILE* dataFil
 	fprintf(dataFile, "      </DataArray>\n");
 }
 
-void Writer::WriteVelocity(vector<vector<shared_ptr<Node>>> &mesh, FILE* dataFile) const
+void Writer::WriteVelocity(const vector<vector<shared_ptr<Node>>> &mesh, FILE* dataFile) const
 {
 	int x, y, z;
 	fprintf(dataFile, "      <DataArray type=\"Float32\" Name=\"Velocity\" NumberOfComponents=\"3\" format=\"ascii\">\n");
@@ -82,7 +80,7 @@ void Writer::WriteVelocity(vector<vector<shared_ptr<Node>>> &mesh, FILE* dataFil
 	fprintf(dataFile, "      </DataArray>\n");
 }
 
-void Writer::WriteEddyViscosity(vector<vector<shared_ptr<Node>>>& mesh, FILE* dataFile) const
+void Writer::WriteEddyViscosity(const vector<vector<shared_ptr<Node>>>& mesh, FILE* dataFile) const
 {
 	int x, y, z;
 
@@ -103,8 +101,26 @@ void Writer::WriteEddyViscosity(vector<vector<shared_ptr<Node>>>& mesh, FILE* da
 
 }
 
+void Writer::WriteCrossSectionData(const vector<vector<shared_ptr<Node>>> &mesh, const int &time, const string directory_, const string filename_) const
+{
+	const char* directory = directory_.c_str();
+	string nazwa = directory_ + "/" + filename_ + ".dat";
+	ofstream myfile;
+	myfile.open(nazwa, ofstream::app);
 
-void Writer::writeVTK(vector<vector<shared_ptr<Node>>> &mesh, const int &time,const string directory_, const string filename_)
+	/// time, nodes -> T
+	myfile << time << "\t";
+	int y = mesh[0].size() / 2;
+	for (int x = 0; x < mesh.size(); ++x)
+		myfile << mesh[x][y]->T << "\t";
+
+	myfile << endl;
+	myfile.close();
+
+	cout << "Cross Section Data Saved at time_step: " << time << endl;
+}
+
+void Writer::writeVTK(const vector<vector<shared_ptr<Node>>> &mesh, const int &time,const string directory_, const string filename_)
 {
 	//std::this_thread::sleep_for(std::chrono::milliseconds(20000));
 	//std::cout << "child thread id = " << std::this_thread::get_id() << std::endl;
@@ -146,7 +162,7 @@ void Writer::writeVTK(vector<vector<shared_ptr<Node>>> &mesh, const int &time,co
 	fprintf(dataFile, "    <PointData Scalars=\"scalars\">\n");
 
 	//WriteDensity(mesh, dataFile);
-	//WriteNodeType(mesh, dataFile);
+	WriteNodeType(mesh, dataFile);
 	WriteVelocity(mesh, dataFile);
 	WritePassiveScalar(mesh, dataFile);
 	//WriteEddyViscosity(mesh, dataFile);
@@ -165,7 +181,7 @@ void Writer::writeVTK(vector<vector<shared_ptr<Node>>> &mesh, const int &time,co
 	cout << "VTK Saved at time_step: " << time << endl;
 }
 
-void Writer::writePointData(vector<vector<shared_ptr<Node>>> &mesh, const int &time, const int &x, const int &y,const string directory_, const string filename_) const
+void Writer::writePointData(const vector<vector<shared_ptr<Node>>> &mesh, const int &time, const int &x, const int &y,const string directory_, const string filename_) const
 {
 
 	//	cout << time << "\time\time\time" << mesh[x][y]->u[0] << "\time\time\time" << mesh[x][y]->u[1] << endl;
@@ -181,7 +197,7 @@ void Writer::writePointData(vector<vector<shared_ptr<Node>>> &mesh, const int &t
 	// myfile << setiosflags(ios::fixed) << setprecision(2);  // fixed point << decimal part
 
 	/// time, x, y, length
-	myfile << time << "\t" << mesh[x][y]->u[0] << "\time" << mesh[x][y]->u[1] << "\time" << sqrt(mesh[x][y]->u[0] * mesh[x][y]->u[0] + mesh[x][y]->u[1] * mesh[x][y]->u[1]) << endl;
+	myfile << time << "\t" << mesh[x][y]->u[0] << "\t" << mesh[x][y]->u[1] << "\t" << sqrt(mesh[x][y]->u[0] * mesh[x][y]->u[0] + mesh[x][y]->u[1] * mesh[x][y]->u[1]) << endl;
 	myfile.close();
 	cout << "Point Data Saved at time_step: " << time << endl;
 }
@@ -230,7 +246,7 @@ void Writer::ClearDirectory(string folderPath_)
 	//fs::create_directory("foobar");
 	//ofstream file("foobar/cheeze");
 	//file << "tastes good!\n";
-	//file.close();
+	//file.close();f
 	//if (!fs::exists("foobar/cheeze"))
 	//std::cout << "Something is rotten in foobar\n";
 }

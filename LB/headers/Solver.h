@@ -22,6 +22,8 @@
 #include "MeshDirector.h"
 #include "ChannelMeshBuider.h"
 #include "LidMeshBuilder.h"
+#include "DiffusionValidatorMeshBuilder.h"
+#include "AdvectionValidatorMeshBuilder.h"
 
 class Solver {
 private:	
@@ -62,8 +64,13 @@ public:
 	{	
 		ChannelMeshBuilder channel_mesh_builder;
 		LidMeshBuilder lid_mesh_builder;
+		DiffusionValidatorMeshBuilder diffusion_validator_mesh_builder;
+		AdvectionValidatorMeshBuilder advection_validator_mesh_builder;
+
 		//meshDirector.SetBuilder(&lid_mesh_builder);
-		meshDirector.SetBuilder(&channel_mesh_builder);
+		//meshDirector.SetBuilder(&diffusion_validator_mesh_builder);
+		meshDirector.SetBuilder(&advection_validator_mesh_builder);
+		//meshDirector.SetBuilder(&channel_mesh_builder);
 
 		mycase = meshDirector.GetCase();
 		omegaNS = 1. / (3 * mycase -> bcValues_.nu + 0.5);      //NS relaxation parameter
@@ -85,7 +92,6 @@ public:
 
 
 	 ~Solver();
-
 };
 
 #endif /* SOLVER_H_ */

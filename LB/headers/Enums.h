@@ -14,5 +14,7 @@ enum NodeType
 	WallType,
 	MovingWallType,
 	VelocityInletType,
-	PressureOutletType
+	PressureOutletType,
+	PeriodicType,
+	SymmetryType
 };

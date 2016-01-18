@@ -110,15 +110,21 @@ public:
 	//	nodeType = nSource.nodeType;
 	//}
 
+	//Node CloneObj() { return *this; }
+	//Node* ClonePtr() { return this; }
 	virtual shared_ptr<Node> CloneShrPtr(){ return make_shared<Node>(*this); }
 
 
 	friend class Writer;
 	friend class Solver;
 
+	//hrhr todo
 	friend class MeshBuilder;
 	friend class LidMeshBuilder;
 	friend class ChannelMeshBuilder;
+	friend class DiffusionValidatorMeshBuilder;
+	friend class AdvectionValidatorMeshBuilder;
+
 	friend class MeshDirector;
 };
 

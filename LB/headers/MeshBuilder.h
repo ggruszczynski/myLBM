@@ -43,6 +43,6 @@ public:
 	void ReserveMeshBlock();
 
 
-	~MeshBuilder(){};
+	virtual ~MeshBuilder(){};
 };
 
