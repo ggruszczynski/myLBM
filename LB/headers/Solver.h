@@ -68,8 +68,9 @@ public:
 		AdvectionValidatorMeshBuilder advection_validator_mesh_builder;
 
 		//meshDirector.SetBuilder(&lid_mesh_builder);
-		//meshDirector.SetBuilder(&diffusion_validator_mesh_builder);
-		meshDirector.SetBuilder(&advection_validator_mesh_builder);
+
+		meshDirector.SetBuilder(&diffusion_validator_mesh_builder);
+		//meshDirector.SetBuilder(&advection_validator_mesh_builder);
 		//meshDirector.SetBuilder(&channel_mesh_builder);
 
 		mycase = meshDirector.GetCase();

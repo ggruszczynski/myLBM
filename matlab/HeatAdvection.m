@@ -4,8 +4,8 @@ clear, clc
 fname = 'CrossSectiondata_advection.dat'; % filename
 data = load (fname);
 data = data'; % first row - timestep, next rows - temp along nodes at y/2
-time_column1 = 7; % from which column(time) --> plot data
-time_column2 = 14;
+time_column1 = 5; % from which column(time) --> plot data
+time_column2 = 19;
 
 figure(1)
 hold on

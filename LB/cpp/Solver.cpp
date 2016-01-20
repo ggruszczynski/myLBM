@@ -5,17 +5,19 @@
 void Solver::Collisions()
 {
 #pragma omp parallel for
-	for (int x = 0; x < static_cast<int>(mesh.size()); ++x) {
-		for (int y = 0; y < static_cast<int>(mesh[x].size()); ++y) {
+	for ( int x = 0; x < mesh.size(); ++x) {
+		for (unsigned int y = 0; y < mesh[x].size(); ++y) {
 			mesh[x][y]->ComputeRho();
 			mesh[x][y]->ComputeU();
 			mesh[x][y]->ComputefEq();
-
-			//mesh[x][y]->CalcEddyViscosity(mycase->bcValues_.nu);
+	
+			/*	
+			mesh[x][y]->CalcEddyViscosity(mycase->bcValues_.nu);
 			omegaNSTurb = 1. / (3 * (mycase->bcValues_.nu + mesh[x][y]->nuTurb) + 0.5);
 			mesh[x][y]->NodeCollisionFout(omegaNSTurb);
+			*/
 
-			//mesh[x][y]->NodeCollisionFout(omegaNS);
+			mesh[x][y]->NodeCollisionFout(omegaNS);
 
 		//thermal stuff:
 			mesh[x][y]->ComputeT();
@@ -29,8 +31,8 @@ void Solver::Collisions()
 void Solver::Stream()
 {
 #pragma omp parallel for
-	for (int x = 0; x < mesh.size(); ++x) {
-		for (int y = 0; y < mesh[x].size(); ++y) {
+	for ( int x = 0; x < mesh.size(); ++x) {
+		for (unsigned int y = 0; y < mesh[x].size(); ++y) {
 			StreamToNeighbour(x, y);
 		}
 	}
@@ -98,6 +100,7 @@ void Solver::Run()
 		/*	if (t%50 == 0)
 			cout << "time: " << t << endl;*/
 
+		//cout << "average T: " << this->GetAverageT() << endl;
 		if (t % mycase->timer_.timeToSavePointData == 0)
 		{
 			writer->writePointData(mesh, t, mycase->meshGeom_.x / 2, mycase->meshGeom_.y / 2, outputDirectory, "PointData");
@@ -161,6 +164,7 @@ double Solver::GetAverageT()
 			Ttotal += node->T;
 		}
 	}
+	//return Ttotal;
 	return Ttotal / mycase->meshGeom_.numberOfNodes;
 }
 

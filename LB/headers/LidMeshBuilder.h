@@ -62,14 +62,25 @@ public:
 inline void LidMeshBuilder::SetPassiveScalarBlobb()
 {
 	auto blob = case_->passive_scalar_blobb_;
-	for (unsigned x = 0; x < mesh.size(); ++x) {
-		for (unsigned y = 0; y < mesh[x].size(); ++y) {
-			if ((x - blob.x)*(x - blob.x) + (y - blob.y)*(y - blob.y) <= blob.r*blob.r)
-			{
-				mesh[x][y]->T = blob.T;
-				for (auto& Tin_ : mesh[x][y]->TIn)
-					Tin_ = Tin_ * mesh[x][y]->T;
-			}
+	//for (unsigned x = 0; x < mesh.size(); ++x) {
+	//	for (unsigned y = 0; y < mesh[x].size(); ++y) {
+	//		if ((x - blob.x)*(x - blob.x) + (y - blob.y)*(y - blob.y) <= blob.r*blob.r)
+	//		{
+	//			mesh[x][y]->T = blob.T;
+	//			for (auto& Tin_ : mesh[x][y]->TIn)
+	//				Tin_ = Tin_ * mesh[x][y]->T;
+	//		}
+	//	}
+	//}
+
+	///test
+	for (unsigned x = 0; x < mesh.size() ; ++x) // skip walls
+	{
+		for (unsigned y = 0; y < mesh[x].size() ; ++y) // skip walls
+		{
+			mesh[x][y]->T = blob.T;
+			for (auto& Tin : mesh[x][y]->TIn)
+				Tin = Tin * mesh[x][y]->T;
 		}
 	}
 }

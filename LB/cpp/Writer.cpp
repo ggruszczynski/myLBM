@@ -11,7 +11,9 @@ void Writer::WritePassiveScalar(const vector<vector<shared_ptr<Node>>> &mesh, FI
 		{
 			for (x = 0; x < this->nx; x++)
 			{
+
 				fprintf(dataFile, "%.4e ", mesh[x][y]->T);
+				//fprintf(dataFile, "%.4e ", mesh[x][y]->T/ mesh[x][y]->rho);
 				//fprintf(dataFile, "%.4e ", rho[x][y][z]);
 			}
 			fprintf(dataFile, "\n");
@@ -161,7 +163,7 @@ void Writer::writeVTK(const vector<vector<shared_ptr<Node>>> &mesh, const int &t
 	//fprintf(dataFile, "  <Piece Extent=\"0 %d 0 %d\">\n", nx - 1, ny - 1);
 	fprintf(dataFile, "    <PointData Scalars=\"scalars\">\n");
 
-	//WriteDensity(mesh, dataFile);
+	WriteDensity(mesh, dataFile);
 	WriteNodeType(mesh, dataFile);
 	WriteVelocity(mesh, dataFile);
 	WritePassiveScalar(mesh, dataFile);

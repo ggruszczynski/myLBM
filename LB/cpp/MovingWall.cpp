@@ -14,7 +14,6 @@ void MovingWall::ComputeU()
 }
 
 
-
 void MovingWall::NodeCollisionFout(double const & omega)
 {
 
@@ -62,7 +61,8 @@ void MovingWall::SetUWall(double setU, double setV)
 	uWall << setU, setV;
 }
 
-void MovingWall::NodeCollisionTout(double const& omega)
+
+void MovingWall::NodeCollisionTout(double const& omegaT)
 {
 	for (unsigned i = 0; i < TOut.size(); ++i)
 	{

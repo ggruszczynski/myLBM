@@ -5,11 +5,11 @@ clear, clc
 % u(x,0) = 0 elsewhere
 
 domain_legth = 200;
-x = -domain_legth : 1:domain_legth; 
+x = (-domain_legth : 1: domain_legth-1)+0.5; 
 t = [1000 2000]; % time 
 TempMax = 499;
-k = 0.25;
-b = 0; % 0 - in the middle
+k = 0.1 * 2/3;
+b = 1.5; % 0 - in the middle
 figure(1)
 hold on
 
@@ -23,7 +23,7 @@ end
  u = u + TempMax/2 + 1;
  x = x + domain_legth ;
 
-fname = 'CrossSectiondata.dat'; % filename
+fname = 'CrossSectionData_diffusionK01.dat'; % filename
 data = load (fname);
 data = data'; % first row - timestep, next rows - temp along nodes at y/2
 time_column = 11; % from which column(time) --> plot data
