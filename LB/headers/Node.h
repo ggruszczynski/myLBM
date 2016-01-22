@@ -124,6 +124,7 @@ public:
 	friend class ChannelMeshBuilder;
 	friend class DiffusionValidatorMeshBuilder;
 	friend class AdvectionValidatorMeshBuilder;
+	friend class WallForceValidatorMeshBuilder;
 
 	friend class MeshDirector;
 };

@@ -45,7 +45,7 @@ public:
 
 	void SetTimer() override
 	{
-		case_->timer_.totalTime = 500; // number of timeSteps
+		case_->timer_.totalTime = 4000; // number of timeSteps
 		case_->timer_.timeToSaveVTK = 50; // after timeSave amount of steps -> save
 		case_->timer_.timeToSavePointData = 50; // after timeSave amount of steps -> save
 	};

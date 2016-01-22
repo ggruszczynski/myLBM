@@ -6,7 +6,7 @@
  */
 
 #include "../headers/D2Q9Constants.h"
-#include <Eigen/StdVector>
+
 
 
 //bool D2Q9Constants::instanceFlag = false;

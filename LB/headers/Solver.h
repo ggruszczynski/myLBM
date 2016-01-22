@@ -24,6 +24,7 @@
 #include "LidMeshBuilder.h"
 #include "DiffusionValidatorMeshBuilder.h"
 #include "AdvectionValidatorMeshBuilder.h"
+#include "WallForceValidatorMeshBuilder.h"
 
 class Solver {
 private:	
@@ -66,12 +67,15 @@ public:
 		LidMeshBuilder lid_mesh_builder;
 		DiffusionValidatorMeshBuilder diffusion_validator_mesh_builder;
 		AdvectionValidatorMeshBuilder advection_validator_mesh_builder;
+		WallForceValidatorMeshBuilder wall_force_validator_mesh_builder;
 
 		//meshDirector.SetBuilder(&lid_mesh_builder);
 
-		meshDirector.SetBuilder(&diffusion_validator_mesh_builder);
+		meshDirector.SetBuilder(&wall_force_validator_mesh_builder);
+		//meshDirector.SetBuilder(&diffusion_validator_mesh_builder);
 		//meshDirector.SetBuilder(&advection_validator_mesh_builder);
 		//meshDirector.SetBuilder(&channel_mesh_builder);
+		mesh = meshDirector.MakeMesh();
 
 		mycase = meshDirector.GetCase();
 		omegaNS = 1. / (3 * mycase -> bcValues_.nu + 0.5);      //NS relaxation parameter
@@ -86,9 +90,7 @@ public:
 		//auto constants_test = DConstantsTest::get_instance();
 		//constants_test->InitializeMe();
 		//constants_test->wtest[0] = 666;
-		//cout << constants_test->wtest[0] << endl;
-
-		mesh = meshDirector.MakeMesh();
+		//cout << constants_test->wtest[0] << endl;		
 	}
 
 

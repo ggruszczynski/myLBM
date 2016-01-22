@@ -11,10 +11,8 @@ void Writer::WritePassiveScalar(const vector<vector<shared_ptr<Node>>> &mesh, FI
 		{
 			for (x = 0; x < this->nx; x++)
 			{
-
 				fprintf(dataFile, "%.4e ", mesh[x][y]->T);
-				//fprintf(dataFile, "%.4e ", mesh[x][y]->T/ mesh[x][y]->rho);
-				//fprintf(dataFile, "%.4e ", rho[x][y][z]);
+			//	fprintf(dataFile, "%.4e ", mesh[x][y]->T/ mesh[x][y]->rho);
 			}
 			fprintf(dataFile, "\n");
 		}
@@ -65,7 +63,7 @@ void Writer::WriteNodeType(const vector<vector<shared_ptr<Node>>>& mesh, FILE* d
 void Writer::WriteVelocity(const vector<vector<shared_ptr<Node>>> &mesh, FILE* dataFile) const
 {
 	int x, y, z;
-	fprintf(dataFile, "      <DataArray type=\"Float32\" Name=\"Velocity\" NumberOfComponents=\"3\" format=\"ascii\">\n");
+	fprintf(dataFile, "      <DataArray type=\"Float32\" Name=\"Velocity\" NumberOfComponents=\"2\" format=\"ascii\">\n");
 	for (z = 0; z < this->nz; z++)
 	{
 		for (y = 0; y < this->ny; y++)
@@ -74,7 +72,7 @@ void Writer::WriteVelocity(const vector<vector<shared_ptr<Node>>> &mesh, FILE* d
 			{
 				fprintf(dataFile, "%.4e ", mesh[x][y]->u[0]);
 				fprintf(dataFile, "%.4e ", mesh[x][y]->u[1]);
-				fprintf(dataFile, "%d ", 0);
+				//fprintf(dataFile, "%d ", 0);
 			}
 			fprintf(dataFile, "\n");
 		}

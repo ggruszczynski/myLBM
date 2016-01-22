@@ -18,3 +18,11 @@ enum NodeType
 	PeriodicType,
 	SymmetryType
 };
+
+enum MeshType
+{
+	diffusion_validation_channel,
+	advection_validation_channel,
+	vonKarman_channel,
+	lid,
+};

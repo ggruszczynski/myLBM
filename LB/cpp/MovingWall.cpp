@@ -64,10 +64,35 @@ void MovingWall::SetUWall(double setU, double setV)
 
 void MovingWall::NodeCollisionTout(double const& omegaT)
 {
+
+	//T = std::accumulate(TIn.begin(), TIn.end(), 0.0);
+
+	//double eu;
+	//Eigen::Matrix<double, 2, 1, Eigen::DontAlign> utemp;
+	////utemp << 0, 0;
+	//utemp = uWall;
+	//for (unsigned i = 0; i < Teq.size(); ++i)
+	//{
+	//	eu = utemp.dot(d2q5Constants->e[i]);
+	//	Teq[i] = 1 + 3 * eu;
+	//	Teq[i] *= T * d2q5Constants->w[i];
+	//}
+
+	//for (unsigned i = 0; i < TOut.size(); ++i)
+	//{
+	//	TOut[i] = (1. - omegaT)* TIn[i] + omegaT* Teq[i];
+	//}
+
+	//for (unsigned i = 0; i < TOut.size(); ++i)
+	//{
+	//	TOut[i] = TOut[oppositeT[i]] ;
+	//}
+
 	for (unsigned i = 0; i < TOut.size(); ++i)
 	{
 		TOut[i] = TIn[oppositeT[i]] ;
 	}
+
 }
 
 
