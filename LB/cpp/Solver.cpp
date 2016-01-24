@@ -61,22 +61,30 @@ void Solver::StreamToNeighbour(const int& x, const int& y)
 	}
 
 
-	// E-->W brutal periodic BC: we know the direction of the fluid flow
-	if (mesh[x][y]->nodeType == NodeType::PeriodicType && x == mesh.size()-1) 
+	//periodic BC
+	if (mesh[x][y]->nodeType == NodeType::PeriodicType) 
 	{
-		// periodic boundary conditions for east moving particles at east/west ends
-		mesh[0][y]->fIn[5] = mesh[x][y]->fOut[5];
-		mesh[0][y]->fIn[1] = mesh[x][y]->fOut[1];
-		mesh[0][y]->fIn[8] = mesh[x][y]->fOut[8];
+		if (x == mesh.size() - 1)	// periodic boundary conditions for east moving particles at east end
+		{
+			nextX = 0;
+			mesh[nextX][y]->fIn[5] = mesh[x][y]->fOut[5];
+			mesh[nextX][y]->fIn[1] = mesh[x][y]->fOut[1];
+			mesh[nextX][y]->fIn[8] = mesh[x][y]->fOut[8];
 
-		mesh[0][y]->TIn[1] = mesh[x][y]->TOut[1];
+			mesh[nextX][y]->TIn[1] = mesh[x][y]->TOut[1];
+		}
+		else if (x == 0) // periodic boundary conditions for west moving particles at west end
+		{
+			nextX = mesh.size() - 1;
+			mesh[nextX][y]->fIn[6] = mesh[0][y]->fOut[6];
+			mesh[nextX][y]->fIn[3] = mesh[0][y]->fOut[3];
+			mesh[nextX][y]->fIn[7] = mesh[0][y]->fOut[7];
 
-		// periodic boundary conditions for west moving particles at east/west ends
-		mesh[0][y]->fIn[6] = mesh[x][y]->fOut[6];
-		mesh[0][y]->fIn[3] = mesh[x][y]->fOut[3];
-		mesh[0][y]->fIn[7] = mesh[x][y]->fOut[7];
+			mesh[nextX][y]->TIn[3] = mesh[0][y]->TOut[3];
+		}
+		else
+			throw std::exception("not implemented");
 
-		mesh[0][y]->TIn[3] = mesh[x][y]->TOut[3];
 	}
 }
 
@@ -103,8 +111,9 @@ void Solver::Run()
 		//cout << "average T: " << this->GetAverageT() << endl;
 		if (t % mycase->timer_.timeToSavePointData == 0)
 		{
-			writer->writePointData(mesh, t, mycase->meshGeom_.x / 2, mycase->meshGeom_.y / 2, outputDirectory, "PointData");
-			writer->WriteCrossSectionData(mesh, t, outputDirectory, "CrossSectionData");
+			cout << "calculating time step: " << t << endl;
+		//	writer->writePointData(mesh, t, mycase->meshGeom_.x / 2, mycase->meshGeom_.y / 2, outputDirectory, "PointData");
+		//	writer->WriteCrossSectionData(mesh, t, outputDirectory, "CrossSectionData");
 			//	cout << "Average Temp: " << this->GetAverageT() << endl;
 		}
 

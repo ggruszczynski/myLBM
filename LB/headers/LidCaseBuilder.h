@@ -34,7 +34,7 @@ public:
 
 	void SetBCValues() override
 	{
-		case_->bcValues_.uLid = 0.5;
+		case_->bcValues_.uLid = 0.1;
 		case_->bcValues_.uInlet = NULL;
 		case_->bcValues_.nu = 1./6.;
 
@@ -45,8 +45,8 @@ public:
 
 	void SetTimer() override
 	{
-		case_->timer_.totalTime = 4000; // number of timeSteps
-		case_->timer_.timeToSaveVTK = 50; // after timeSave amount of steps -> save
+		case_->timer_.totalTime = 3000; // number of timeSteps
+		case_->timer_.timeToSaveVTK = 100; // after timeSave amount of steps -> save
 		case_->timer_.timeToSavePointData = 50; // after timeSave amount of steps -> save
 	};
 

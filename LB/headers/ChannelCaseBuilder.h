@@ -39,10 +39,10 @@ public:
 
 	void SetBCValues() override
 	{
-		case_->bcValues_.uInlet = 0.1;
-		case_->bcValues_.nu = 0.02;
+		case_->bcValues_.uInlet = 0.0;
+		case_->bcValues_.nu = 1. / 6.;// 0.02;
 
-		case_->bcValues_.uLid = 0.0; //for WallForceValidatorMeshBuilder
+		case_->bcValues_.uLid = 0.1; //for WallForceValidatorMeshBuilder
 
 		// double  Re = 100;
 		// bcValues_.nu = bcValues_.uInlet * 2 * obstacle_.r / bcValues_.Re;  // kinematic viscosity
@@ -51,8 +51,8 @@ public:
 
 	void SetTimer() override
 	{
-		case_->timer_.totalTime = 4000; // number of timeSteps
-		case_->timer_.timeToSaveVTK = 50; // after timeSave amount of steps -> save
+		case_->timer_.totalTime = 20000; // number of timeSteps
+		case_->timer_.timeToSaveVTK = 200; // after timeSave amount of steps -> save
 		case_->timer_.timeToSavePointData = 100; // after timeSave amount of steps -> save
 	};
 

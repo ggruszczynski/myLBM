@@ -23,18 +23,14 @@ public:
 
 	CaseBuilder* GetCaseBuilder()override { return &caseBuilder; }
 
-	vector<double> GaussianDistribution( int domainLength, double mean, double Sig)
+	vector<double> GaussianDistribution( int domainLength, double mean, double Sig) const
 	{
 		vector<double> normalDistribution(domainLength,0);
-		//normalDistribution.reserve(domainLength);
-
 		for (int x = 0; x < domainLength; ++x)
 		{
 			normalDistribution[x] = 1/(Sig*sqrt(2* M_PI));
 			normalDistribution[x] *= exp(-(x - mean)*(x - mean)/(2*Sig*Sig));
-
 		}
-
 		return normalDistribution;
 	}
 
@@ -54,11 +50,12 @@ public:
 		int movingWallLength = mesh.size()*(1-2*wallFactor);
 		double Sigma = 20;
 		vector<double> uGaussian = GaussianDistribution(movingWallLength, movingWallLength / 2, Sigma);
-		double uYScale = 2; 
+		double uYScale = case_->bcValues_.uLid;
 
 		int i2 = 0;
 		for (unsigned i = mesh.size() *wallFactor; i < mesh.size() *(1 - wallFactor); ++i, ++i2)
-			mesh[i][mesh[i].size() - 1] = std::move(std::make_shared<MovingWall>(uYScale*uGaussian[i2], 0));
+			mesh[i][mesh[i].size() - 1] = std::move(std::make_shared<MovingWall>(case_->bcValues_.uLid, 0));
+			//mesh[i][mesh[i].size() - 1] = std::move(std::make_shared<MovingWall>(uYScale*uGaussian[i2], 0));
 
 
 		for (unsigned i = mesh.size() *(1-wallFactor) ; i < mesh.size(); ++i)

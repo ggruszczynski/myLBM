@@ -78,6 +78,7 @@ void Node::NodeCollisionFout(double const & omega)
 	for (unsigned i = 0; i < fOut.size(); ++i)
 	{
 		fOut[i] = (1. - omega)* fIn[i] + omega* feq[i];
+		//fOut[i] = fIn[i] + omega* (feq[i]- fIn[i]);  //todo is it faster?
 	}
 }
 

@@ -22,8 +22,8 @@ public:
 	void SetTop()override
 	{
 		for (unsigned i = 0; i < mesh.size(); ++i) {
-		//	mesh[i][mesh[i].size() - 1] = std::move(std::make_shared<MovingWall>(case_->bcValues_.uLid, 0));
-			mesh[i][mesh[i].size() - 1] = std::move(std::make_shared<Wall>());
+			mesh[i][mesh[i].size() - 1] = std::move(std::make_shared<MovingWall>(case_->bcValues_.uLid, 0));
+		//	mesh[i][mesh[i].size() - 1] = std::move(std::make_shared<Wall>());
 		}
 	};
 
