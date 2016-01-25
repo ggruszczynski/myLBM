@@ -1,6 +1,6 @@
 
 //#include "headers/Node.h"
-#include "headers/Solver.h"
+#include "CODE/Solver/Solver.h"
 #include <ctime>
 #include <iostream>
 
