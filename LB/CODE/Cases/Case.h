@@ -20,7 +20,7 @@ struct PassiveScalarBlobb
 	double T; // value
 	double K; // thermal diffusivity [lu^2/ts]
 
-	unsigned x;   // position of the cylinder; (exact
+	unsigned x;   // position of the cylinder; (exact)
 	unsigned y;   // y - symmetry is avoided)
 	unsigned r;  //radius of the cylinder
 

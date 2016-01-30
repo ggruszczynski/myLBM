@@ -5,7 +5,7 @@
 #include "../Cases/CaseDirector.h"
 
 #include "MeshBuilder.h"
-
+#include "../IO/XMLParser.h"
 
 class MeshDirector
 {
@@ -13,6 +13,8 @@ private:
 
 	//shared_ptr<Case> someCase;
 	Case *someCase;
+
+	XMLParser xml_parser_;
 	MeshBuilder *meshBuilder;
 	CaseDirector caseDirector;
 public:
@@ -35,6 +37,7 @@ public:
 
 	vector<vector<shared_ptr<Node>>> MakeMesh()
 	{
+		//meshBuilder->ReadCase();
 		meshBuilder->SetCase( this->GetCase() );
 
 		meshBuilder->ReserveMeshBlock();

@@ -27,6 +27,6 @@ public:
 	};
 
 
-	~MovingWall();
+	~MovingWall(){};
 };
 

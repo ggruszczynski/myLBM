@@ -1,7 +1,7 @@
-#include "Writer.h"
+#include "VTKWriter.h"
 
 
-void Writer::WritePassiveScalar(const vector<vector<shared_ptr<Node>>> &mesh, FILE* dataFile) const
+void VTKWriter::WritePassiveScalar(const vector<vector<shared_ptr<Node>>> &mesh, FILE* dataFile) const
 {
 	int x, y, z;
 	fprintf(dataFile, "      <DataArray type=\"Float32\" Name=\"PassiveScalar\" NumberOfComponents=\"1\" format=\"ascii\">\n");
@@ -20,7 +20,7 @@ void Writer::WritePassiveScalar(const vector<vector<shared_ptr<Node>>> &mesh, FI
 	fprintf(dataFile, "      </DataArray>\n");
 }
 
-void Writer::WriteDensity(const vector<vector<shared_ptr<Node>>> &mesh, FILE *dataFile) const
+void VTKWriter::WriteDensity(const vector<vector<shared_ptr<Node>>> &mesh, FILE *dataFile) const
 {
 	int x, y, z;
 	fprintf(dataFile, "      <DataArray type=\"Float32\" Name=\"Density\" NumberOfComponents=\"1\" format=\"ascii\">\n");
@@ -40,7 +40,7 @@ void Writer::WriteDensity(const vector<vector<shared_ptr<Node>>> &mesh, FILE *da
 	fprintf(dataFile, "      </DataArray>\n");
 }
 
-void Writer::WriteNodeType(const vector<vector<shared_ptr<Node>>>& mesh, FILE* dataFile) const
+void VTKWriter::WriteNodeType(const vector<vector<shared_ptr<Node>>>& mesh, FILE* dataFile) const
 {
 	int x, y, z;
 
@@ -60,7 +60,7 @@ void Writer::WriteNodeType(const vector<vector<shared_ptr<Node>>>& mesh, FILE* d
 	fprintf(dataFile, "      </DataArray>\n");
 }
 
-void Writer::WriteVelocity(const vector<vector<shared_ptr<Node>>> &mesh, FILE* dataFile) const
+void VTKWriter::WriteVelocity(const vector<vector<shared_ptr<Node>>> &mesh, FILE* dataFile) const
 {
 	int x, y, z;
 	fprintf(dataFile, "      <DataArray type=\"Float32\" Name=\"Velocity\" NumberOfComponents=\"2\" format=\"ascii\">\n");
@@ -80,7 +80,7 @@ void Writer::WriteVelocity(const vector<vector<shared_ptr<Node>>> &mesh, FILE* d
 	fprintf(dataFile, "      </DataArray>\n");
 }
 
-void Writer::WriteEddyViscosity(const vector<vector<shared_ptr<Node>>>& mesh, FILE* dataFile) const
+void VTKWriter::WriteEddyViscosity(const vector<vector<shared_ptr<Node>>>& mesh, FILE* dataFile) const
 {
 	int x, y, z;
 
@@ -101,7 +101,7 @@ void Writer::WriteEddyViscosity(const vector<vector<shared_ptr<Node>>>& mesh, FI
 
 }
 
-void Writer::WriteCrossSectionData(const vector<vector<shared_ptr<Node>>> &mesh, const int &time, const string directory_, const string filename_) const
+void VTKWriter::WriteCrossSectionData(const vector<vector<shared_ptr<Node>>> &mesh, const int &time, const string directory_, const string filename_) const
 {
 	const char* directory = directory_.c_str();
 	string nazwa = directory_ + "/" + filename_ + ".dat";
@@ -120,7 +120,7 @@ void Writer::WriteCrossSectionData(const vector<vector<shared_ptr<Node>>> &mesh,
 	cout << "Cross Section Data Saved at time_step: " << time << endl;
 }
 
-void Writer::writeVTK(const vector<vector<shared_ptr<Node>>> &mesh, const int &time,const string directory_, const string filename_)
+void VTKWriter::writeVTK(const vector<vector<shared_ptr<Node>>> &mesh, const int &time,const string directory_, const string filename_)
 {
 	//std::this_thread::sleep_for(std::chrono::milliseconds(20000));
 	//std::cout << "child thread id = " << std::this_thread::get_id() << std::endl;
@@ -181,7 +181,7 @@ void Writer::writeVTK(const vector<vector<shared_ptr<Node>>> &mesh, const int &t
 	cout << "VTK Saved at time_step: " << time << endl;
 }
 
-void Writer::writePointData(const vector<vector<shared_ptr<Node>>> &mesh, const int &time, const int &x, const int &y,const string directory_, const string filename_) const
+void VTKWriter::writePointData(const vector<vector<shared_ptr<Node>>> &mesh, const int &time, const int &x, const int &y,const string directory_, const string filename_) const
 {
 
 	//	cout << time << "\time\time\time" << mesh[x][y]->u[0] << "\time\time\time" << mesh[x][y]->u[1] << endl;
@@ -202,7 +202,7 @@ void Writer::writePointData(const vector<vector<shared_ptr<Node>>> &mesh, const 
 	cout << "Point Data Saved at time_step: " << time << endl;
 }
 
-void Writer::WriteCaseInfo(Case* case_, string directory_, string filename_) const
+void VTKWriter::WriteCaseInfo(Case* case_, string directory_, string filename_) const
 {
 	const char* directory = directory_.c_str();
 	string nazwa = directory_ + "/" + filename_ + ".txt";
@@ -230,7 +230,7 @@ void Writer::WriteCaseInfo(Case* case_, string directory_, string filename_) con
 
 }
 
-void Writer::ClearDirectory(string folderPath_)
+void VTKWriter::ClearDirectory(string folderPath_)
 {
 	const char* folderPath = folderPath_.c_str();
 	fs::path myFolder(folderPath);
@@ -252,7 +252,8 @@ void Writer::ClearDirectory(string folderPath_)
 }
 
 
-void Writer::writeVTK_old(int t, int nx, int ny, int nz, double ***rho, int write_rho, double ***pre, int write_pre, double ***ux, double ***uy, double ***uz, int write_vel, char *directory, char *filename)
+
+void VTKWriter::writeVTK_old(int t, int nx, int ny, int nz, double ***rho, int write_rho, double ***pre, int write_pre, double ***ux, double ***uy, double ***uz, int write_vel, char *directory, char *filename)
 
 {
 	int x, y, z, dir;
@@ -361,13 +362,4 @@ void Writer::writeVTK_old(int t, int nx, int ny, int nz, double ***rho, int writ
 
 	fprintf(dataFile, "</VTKFile>\n");
 	fclose(dataFile);
-}
-
-Writer::Writer()
-{
-}
-
-
-Writer::~Writer()
-{
 }

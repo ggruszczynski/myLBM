@@ -25,7 +25,7 @@ public:
 	void SetPassiveScalarBlobb()override
 	{
 		case_->passive_scalar_blobb_.T = 300;
-		case_->passive_scalar_blobb_.K = 0.25;
+		case_->passive_scalar_blobb_.K = 0.1; //0.25;
 
 		case_->passive_scalar_blobb_.x = case_->meshGeom_.x / 2;
 		case_->passive_scalar_blobb_.y = case_->meshGeom_.y / 2 ; // 2./3.

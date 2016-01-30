@@ -11,15 +11,26 @@
 #include "../Nodes/MovingWall.h"
 
 
+
 class LidMeshBuilder : public MeshBuilder
 {
 private:
 	LidCaseBuilder caseBuilder;
-
+	Case caseVal_;
+	Case* casePtr_;
+	shared_ptr<Case> caseSPtr;
 public:
-	virtual ~LidMeshBuilder()  // TODO;  destructor hides a non virtual function from class
+	virtual ~LidMeshBuilder() {} // TODO;  destructor hides a non virtual function from class
+
+	void ReadCase(const string &caseName_ = "LidDrivenCavity.xml") override
 	{
+		auto  temp = xmlParser.ReadXMLCase(caseName_);
+		caseVal_ = temp;
+		caseSPtr = std::make_shared<Case>(temp);
+		casePtr_ = &temp;
+		//*case_2 = temp;
 	}
+
 
 	CaseBuilder* GetCaseBuilder()override { return &caseBuilder; }
 
@@ -53,9 +64,10 @@ public:
 		double uYScale = case_->bcValues_.uLid;
 
 		int i2 = 0;
-		for (unsigned i = mesh.size() *wallFactor; i < mesh.size() *(1 - wallFactor); ++i, ++i2)
-			mesh[i][mesh[i].size() - 1] = std::move(std::make_shared<MovingWall>(case_->bcValues_.uLid, 0));
-			//mesh[i][mesh[i].size() - 1] = std::move(std::make_shared<MovingWall>(uYScale*uGaussian[i2], 0));
+		for (unsigned i = mesh.size() *wallFactor; i < mesh.size() *(1 - wallFactor); ++i, ++i2) {
+			//mesh[i][mesh[i].size() - 1] = std::move(std::make_shared<MovingWall>(case_->bcValues_.uLid, 0));
+			mesh[i][mesh[i].size() - 1] = std::move(std::make_shared<MovingWall>(uYScale*uGaussian[i2], 0));
+		}
 
 
 		for (unsigned i = mesh.size() *(1-wallFactor) ; i < mesh.size(); ++i)

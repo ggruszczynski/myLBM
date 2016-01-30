@@ -8,12 +8,15 @@
 #ifndef SOLVER_H_
 #define SOLVER_H_
 
-#include "../IO/Writer.h"
+#pragma managed(push, off)
 
-#include <omp.h>
+#include "../IO/VTKWriter.h"
+#include "../IO/XMLParser.h"
+
+#include <thread>
 #include <iostream>
 #include <memory>
-#include <thread>
+
 
 
 #include <boost/date_time/posix_time/posix_time.hpp>
@@ -33,7 +36,8 @@ private:
 
 	//double omegaTturb;
 
-	shared_ptr <Writer> writer;
+	shared_ptr <VTKWriter> writer;
+	shared_ptr <XMLParser> xmlParser;
 
 	Singleton<D2Q9Constants>*d2q9Constants;
 	Singleton<D2Q5Constants>*d2q5Constants;
@@ -44,6 +48,8 @@ private:
 	vector< vector<shared_ptr <Node>> > mesh;
 
 	Case *mycase;
+	//Case *mycase2;
+
 	MeshDirector meshDirector;
 public:
 	void Collisions();
@@ -60,7 +66,7 @@ public:
 
 	vector< vector<shared_ptr <Node>> > CloneMesh();
 
-	Solver() : writer(new Writer)
+	Solver() : writer(new VTKWriter)
 	{	
 		ChannelMeshBuilder channel_mesh_builder;
 		LidMeshBuilder lid_mesh_builder;
@@ -75,6 +81,8 @@ public:
 		//meshDirector.SetBuilder(&advection_validator_mesh_builder);
 		//meshDirector.SetBuilder(&channel_mesh_builder);
 		mesh = meshDirector.MakeMesh();
+
+		//mycase2 = xmlParser->ReadXMLCase()
 
 		mycase = meshDirector.GetCase();
 		omegaNS = 1. / (3 * mycase -> bcValues_.nu + 0.5);      //NS relaxation parameter

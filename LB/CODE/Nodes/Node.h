@@ -115,7 +115,7 @@ public:
 	virtual shared_ptr<Node> CloneShrPtr(){ return make_shared<Node>(*this); }
 
 
-	friend class Writer;
+	friend class VTKWriter;
 	friend class Solver;
 
 	//hrhr todo

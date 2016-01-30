@@ -2,6 +2,7 @@
 #include "Solver.h"
 
 
+
 void Solver::Collisions()
 {
 #pragma omp parallel for
@@ -92,6 +93,8 @@ void Solver::StreamToNeighbour(const int& x, const int& y)
 
 void Solver::Run()
 {
+
+
 	boost::posix_time::ptime now = boost::posix_time::second_clock::universal_time();
 	string nowAsString = to_iso_string(now);
 
@@ -127,7 +130,7 @@ void Solver::Run()
 				break;
 			}
 			vector< vector<shared_ptr <Node>> > tempMesh = std::move(this->CloneMesh()) ;
-			std::thread writingThread(&Writer::writeVTK, writer, tempMesh, t, outputDirectory, fileNameVTK); 
+			std::thread writingThread(&VTKWriter::writeVTK, writer, tempMesh, t, outputDirectory, fileNameVTK); 
 			writingThread.detach(); 
 
 			///old way
@@ -147,6 +150,7 @@ void Solver::Run()
 
 	//   std::for_each(threadList.begin(),threadList.end(), std::mem_fn(&std::thread::join));
 	//   threadList.clear();
+
 }
 
 vector<vector<shared_ptr<Node>>> Solver::CloneMesh()

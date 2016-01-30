@@ -4,12 +4,17 @@
 #include "../Cases/Case.h"
 #include "../Cases/CaseBuilder.h"
 
+#include "../IO/XMLParser.h"
+
 
 class MeshBuilder
 {
 protected:
 	Case* case_;
 	CaseBuilder* caseBuilder;
+
+	XMLParser xmlParser;
+
 	Singleton<D2Q9Constants>*d2q9Constants;
 	Singleton<D2Q5Constants>*d2q5Constants;
 
@@ -28,6 +33,12 @@ public:
 
 	vector<vector<shared_ptr<Node>>> GetMesh() const	{return mesh;}
 
+	virtual void ReadCase(const string &caseName)
+	{
+	//	Case test;
+		//test.bcValues_.uLid = 0;
+		//return test;
+	};
 
 	virtual void SetTop() = 0;
 	virtual void SetBottom() = 0;

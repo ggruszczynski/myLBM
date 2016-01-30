@@ -26,6 +26,7 @@ void MovingWall::NodeCollisionFout(double const & omega)
 
 
 
+
 		//----------old stuff
 		//this->rho = 1. / (1 + u[1]);
 		//this->rho *= (fIn[0] + fIn[1] + fIn[3]) + 2 * (fIn[2] + fIn[5] + fIn[6]);
@@ -65,40 +66,10 @@ void MovingWall::SetUWall(double setU, double setV)
 
 void MovingWall::NodeCollisionTout(double const& omegaT)
 {
-
-	//T = std::accumulate(TIn.begin(), TIn.end(), 0.0);
-
-	//double eu;
-	//Eigen::Matrix<double, 2, 1, Eigen::DontAlign> utemp;
-	////utemp << 0, 0;
-	//utemp = uWall;
-	//for (unsigned i = 0; i < Teq.size(); ++i)
-	//{
-	//	eu = utemp.dot(d2q5Constants->e[i]);
-	//	Teq[i] = 1 + 3 * eu;
-	//	Teq[i] *= T * d2q5Constants->w[i];
-	//}
-
-	//for (unsigned i = 0; i < TOut.size(); ++i)
-	//{
-	//	TOut[i] = (1. - omegaT)* TIn[i] + omegaT* Teq[i];
-	//}
-
-	//for (unsigned i = 0; i < TOut.size(); ++i)
-	//{
-	//	TOut[i] = TOut[oppositeT[i]] ;
-	//}
-
+	TIn[4] = TIn[2];
 	for (unsigned i = 0; i < TOut.size(); ++i)
 	{
-		TOut[i] = TIn[oppositeT[i]] ;
-		//TOut[i] = (1. - omegaT)* TIn[i] + omegaT* Teq[i];
-		//TOut[i] = TOut[oppositeT[i]] ;
+		TOut[i] = (1. - omegaT)* TIn[i] + omegaT* Teq[i];
 	}
-
 }
 
-
-MovingWall::~MovingWall()
-{
-}

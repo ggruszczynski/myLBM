@@ -9,15 +9,17 @@
 #include <iostream>    
 #include "../Cases/Case.h"
 
-
-#include <thread>
 #include "boost/filesystem.hpp"    // includes all needed Boost.Filesystem declarations
 namespace fs = boost::filesystem;
+
+
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/xml_parser.hpp>
 
 #pragma warning(disable : 4996) // some warnings due to old writing functions
 
 
-class Writer
+class VTKWriter
 {
 private:
 	int nx, ny, nz; //mesh dimensions
@@ -35,9 +37,10 @@ public:
 	void writePointData(const vector< vector<shared_ptr<Node>> > &mesh, const int &time,const int &x,const int &y, const string directory, const string filename) const;
 	void ClearDirectory(string folderPath);
 
+
 	void  writeVTK_old(int t, int nx, int ny, int nz, double ***rho, int write_rho, double ***pre, int write_pre, double ***ux, double ***uy, double ***uz, int write_vel, char *directory, char *filename);
 
-	Writer();
-	~Writer();
+	VTKWriter(){};
+	~VTKWriter(){};
 };
 
