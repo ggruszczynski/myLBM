@@ -112,8 +112,8 @@ public:
 
 	//Node CloneObj() { return *this; }
 	//Node* ClonePtr() { return this; }
-	virtual shared_ptr<Node> CloneShrPtr(){ return make_shared<Node>(*this); }
 
+	virtual shared_ptr<Node> CloneShrPtr(){ return make_shared<Node>(*this); }
 
 	friend class VTKWriter;
 	friend class Solver;

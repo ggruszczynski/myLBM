@@ -202,7 +202,7 @@ void VTKWriter::writePointData(const vector<vector<shared_ptr<Node>>> &mesh, con
 	cout << "Point Data Saved at time_step: " << time << endl;
 }
 
-void VTKWriter::WriteCaseInfo(Case* case_, string directory_, string filename_) const
+void VTKWriter::WriteCaseInfo(shared_ptr<Case> case_, string directory_, string filename_) const
 {
 	const char* directory = directory_.c_str();
 	string nazwa = directory_ + "/" + filename_ + ".txt";

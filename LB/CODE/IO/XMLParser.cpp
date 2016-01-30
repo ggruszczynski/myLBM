@@ -1,14 +1,13 @@
 #include "XMLParser.h"
 
 
-#include <set>
 #include <boost/lexical_cast.hpp>
 
 
 Case XMLParser::ReadXMLCase(const std::string& filename)
 {
 // http://www.technical-recipes.com/2014/using-boostproperty_tree/
-
+	
 	read_xml(filename, this->ptree_, boost::property_tree::xml_parser::trim_whitespace);
 
 	Case case_; // make a struct case_ and read into it...

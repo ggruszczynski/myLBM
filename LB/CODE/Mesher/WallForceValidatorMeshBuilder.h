@@ -5,7 +5,7 @@
 #include "../Nodes/PressureOutlet.h"
 #include "../Nodes/VelocityInlet.h"
 #include "../Nodes/Wall.h"
-#include "../Cases/ChannelCaseBuilder.h"
+
 #include "../Mesher/MeshBuilder.h"
 #include "../Nodes/PeriodicNode.h"
 #include "../Nodes/MovingWall.h"
@@ -13,11 +13,9 @@
 class WallForceValidatorMeshBuilder : public MeshBuilder
 {
 private:
-	ChannelCaseBuilder channelCaseBuilder;
 
 public:
-
-	CaseBuilder* GetCaseBuilder()override { return &channelCaseBuilder; }
+	WallForceValidatorMeshBuilder(const string &caseName_) : MeshBuilder(caseName_) {};
 
 	void SetTop()override
 	{

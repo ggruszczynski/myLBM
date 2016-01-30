@@ -5,17 +5,16 @@
 #include "../Nodes/PressureOutlet.h"
 #include "../Nodes/VelocityInlet.h"
 #include "../Nodes/Wall.h"
-#include "../Cases/ChannelCaseBuilder.h"
+
+
 #include "MeshBuilder.h"
 
 class DiffusionValidatorMeshBuilder : public MeshBuilder
 {
 private:
-	ChannelCaseBuilder channelCaseBuilder;
 
 public:
-
-	CaseBuilder* GetCaseBuilder()override { return &channelCaseBuilder; }
+	DiffusionValidatorMeshBuilder(const string &caseName_) : MeshBuilder(caseName_) {};
 
 	void SetTop()override
 	{

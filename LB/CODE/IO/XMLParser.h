@@ -1,14 +1,6 @@
 #pragma once
 
-//#pragma managed(pop)
 #include <tchar.h>
-
-
-//#using <mscorlib.dll>
-//#using <System.xml.dll>
-//
-//using namespace System;
-//using namespace System::Xml;
 
 #include <boost/property_tree/xml_parser.hpp>
 #include <boost/property_tree/ptree.hpp>

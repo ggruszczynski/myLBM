@@ -19,28 +19,8 @@ int main() {
 
 	start = std::clock();
 
-	//int* p1;
-	//int* p2;
-
-	//int a1 = 4;
-
-	//*p1 = a1;
-	//p2 = &a1;
-
-	//cout << "p1" << *p1;
-	//cout << "p2" << *p2;
-
-
-	LidMeshBuilder lid_mesh_builder;
-	lid_mesh_builder.ReadCase();
-
-
 	Solver solver;
 	solver.Run();
-
-	/*XMLParser reader;
-	auto czytanka =	reader.ReadXMLCase("LidDrivenCavity.xml");
-	reader.WriteCaseInfoXML("output","testZapisu");*/
 
 	duration = (std::clock() - start) / (double)CLOCKS_PER_SEC;
 	cout << " \n duration: " << duration << " [s] = " << duration / 60 << " min" << endl;

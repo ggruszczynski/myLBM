@@ -6,7 +6,7 @@
 void Solver::Collisions()
 {
 #pragma omp parallel for
-	for ( int x = 0; x < mesh.size(); ++x) {
+	for ( int x = 0; x < static_cast<int>(mesh.size()); ++x) {
 		for (unsigned int y = 0; y < mesh[x].size(); ++y) {
 			mesh[x][y]->ComputeRho();
 			mesh[x][y]->ComputeU();
@@ -233,7 +233,7 @@ void Solver::ReplaceNode(const int& x, const int& y, shared_ptr <Node> newNode)
 
 Solver::~Solver()
 {
-	delete mycase;
+	//delete mycase;
 	delete d2q5Constants;
 	delete d2q9Constants;
 }

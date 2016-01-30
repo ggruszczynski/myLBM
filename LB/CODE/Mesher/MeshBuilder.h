@@ -2,7 +2,6 @@
 #include "../Nodes/Node.h"
 #include <memory>
 #include "../Cases/Case.h"
-#include "../Cases/CaseBuilder.h"
 
 #include "../IO/XMLParser.h"
 
@@ -10,35 +9,31 @@
 class MeshBuilder
 {
 protected:
-	Case* case_;
-	CaseBuilder* caseBuilder;
-
-	XMLParser xmlParser;
-
 	Singleton<D2Q9Constants>*d2q9Constants;
 	Singleton<D2Q5Constants>*d2q5Constants;
 
+	shared_ptr<Case> case_;
 	vector<vector<shared_ptr<Node>>> mesh;
+
+	void ReadCaseData(const string &caseName_)
+	{
+		XMLParser xmlParser;
+		case_ = std::make_shared<Case>(xmlParser.ReadXMLCase(caseName_));
+	};
+
 public:
 
-	MeshBuilder()
+	MeshBuilder(const string &caseName_)
 	{
 		d2q9Constants = Singleton<D2Q9Constants>::get_instance();
 		d2q5Constants = Singleton<D2Q5Constants>::get_instance();
+		this->ReadCaseData(caseName_);
 	}
 
-	virtual void SetCase(Case *newCase)	{case_ = newCase;}
+	shared_ptr<Case> GetCase() const { return case_; }
+	vector<vector<shared_ptr<Node>>> GetMesh() const { return mesh; }
 
-	virtual CaseBuilder* GetCaseBuilder() = 0; // const { return  caseBuilder; }
-
-	vector<vector<shared_ptr<Node>>> GetMesh() const	{return mesh;}
-
-	virtual void ReadCase(const string &caseName)
-	{
-	//	Case test;
-		//test.bcValues_.uLid = 0;
-		//return test;
-	};
+	void ReserveMeshBlock();
 
 	virtual void SetTop() = 0;
 	virtual void SetBottom() = 0;
@@ -47,13 +42,8 @@ public:
 
 	virtual void SetObstacle() = 0;
 	virtual void SetPassiveScalarBlobb() = 0;
-
 	virtual void InitializeVelocity() = 0;
 
-
-	void ReserveMeshBlock();
-
-
-	virtual ~MeshBuilder(){};
+	virtual ~MeshBuilder() {};
 };
 

@@ -32,7 +32,7 @@ private:
 
 public:
 	void WriteCrossSectionData(const vector<vector<shared_ptr<Node>>> &mesh, const int &time, const string directory_, const string filename_) const;
-	void WriteCaseInfo(Case *case_, string directory_, string filename_) const;
+	void WriteCaseInfo(shared_ptr<Case> case_, string directory_, string filename_) const;
 	void writeVTK(const vector< vector<shared_ptr<Node>> > &mesh, const int &time, const string directory, const string filename);
 	void writePointData(const vector< vector<shared_ptr<Node>> > &mesh, const int &time,const int &x,const int &y, const string directory, const string filename) const;
 	void ClearDirectory(string folderPath);

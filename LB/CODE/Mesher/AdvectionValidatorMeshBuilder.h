@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../Nodes/PressureOutlet.h"
-#include "../Cases/ChannelCaseBuilder.h"
+
 #include "MeshBuilder.h"
 #include "../Nodes/PeriodicNode.h"
 #include "../Nodes/SymmetryNode.h"
@@ -9,11 +9,10 @@
 class AdvectionValidatorMeshBuilder : public MeshBuilder
 {
 private:
-	ChannelCaseBuilder channelCaseBuilder;
 
 public:
 
-	CaseBuilder* GetCaseBuilder()override { return &channelCaseBuilder; }
+	AdvectionValidatorMeshBuilder(const string &caseName_) : MeshBuilder(caseName_) {};
 
 	void SetTop()override
 	{

@@ -4,21 +4,21 @@
 
     <BCValues>
 		<uLid>0.1</uLid> <!-- Lid velocity -->
-		<uInlet>0</uInlet> <!-- inlet velocity (channel flow) -->
+		<uInlet>0.05</uInlet> <!-- inlet velocity (channel flow) -->
 		<nu>0.1666666666666666</nu> <!-- kinematic viscosity -->
     </BCValues>
 	
 	<Obstacle>
-		<x>0</x> <!-- x position of the cylinder -->
-		<y>0</y> <!-- y position of the cylinder -->
-		<r>0</r> <!-- radius of the cylinder-->
+		<x>30</x> <!-- x position of the cylinder -->
+		<y>30</y> <!-- y position of the cylinder -->
+		<r>15</r> <!-- radius of the cylinder-->
 	</Obstacle>
 	
 	<PassiveScalarBlobb>
 		<T>300</T>
 		<K>0.2</K> <!-- thermal diffusivity [lu^2/ts]-->
-		<x>0</x> <!-- x position of the cylinder -->
-		<y>0</y> <!-- y position of the cylinder -->
+		<x>75</x> <!-- x position of the cylinder -->
+		<y>75</y> <!-- y position of the cylinder -->
 		<r>10</r> <!-- radius of the cylinder-->
 	</PassiveScalarBlobb>
 	

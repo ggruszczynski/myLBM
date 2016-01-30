@@ -2,7 +2,6 @@
 #include "../Nodes/Node.h"
 #include <memory>
 #include "../Cases/Case.h"
-#include "../Cases/CaseDirector.h"
 
 #include "MeshBuilder.h"
 #include "../IO/XMLParser.h"
@@ -10,36 +9,17 @@
 class MeshDirector
 {
 private:
-
-	//shared_ptr<Case> someCase;
-	Case *someCase;
-
 	XMLParser xml_parser_;
 	MeshBuilder *meshBuilder;
-	CaseDirector caseDirector;
 public:
 
-	void SetBuilder(MeshBuilder *newBuilder)
+	void SetBuilder(MeshBuilder *newBuilder){meshBuilder = newBuilder;}
+
+
+	shared_ptr<Case> GetCase() const { return meshBuilder->GetCase();	}
+
+	vector<vector<shared_ptr<Node>>> MakeMesh() const
 	{
-		meshBuilder = newBuilder;
-		caseDirector.setBuilder(meshBuilder->GetCaseBuilder());
-	}
-
-
-	Case* GetCase()
-	{
-		if (!someCase)
-		{
-			someCase = caseDirector.GetCase();
-		}
-		return someCase;
-	}
-
-	vector<vector<shared_ptr<Node>>> MakeMesh()
-	{
-		//meshBuilder->ReadCase();
-		meshBuilder->SetCase( this->GetCase() );
-
 		meshBuilder->ReserveMeshBlock();
 		meshBuilder->SetTop();
 		meshBuilder->SetBottom();
@@ -55,8 +35,6 @@ public:
 	}
 
 	MeshDirector(){};
-
-
 	~MeshDirector(){};
 };
 

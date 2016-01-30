@@ -7,7 +7,6 @@
 #include "../Nodes/Wall.h"
 
 #include "MeshBuilder.h"
-#include "../Cases/LidCaseBuilder.h"
 #include "../Nodes/MovingWall.h"
 
 
@@ -15,24 +14,11 @@
 class LidMeshBuilder : public MeshBuilder
 {
 private:
-	LidCaseBuilder caseBuilder;
-	Case caseVal_;
-	Case* casePtr_;
-	shared_ptr<Case> caseSPtr;
+
 public:
+	LidMeshBuilder(const string &caseName_): MeshBuilder(caseName_){};
+
 	virtual ~LidMeshBuilder() {} // TODO;  destructor hides a non virtual function from class
-
-	void ReadCase(const string &caseName_ = "LidDrivenCavity.xml") override
-	{
-		auto  temp = xmlParser.ReadXMLCase(caseName_);
-		caseVal_ = temp;
-		caseSPtr = std::make_shared<Case>(temp);
-		casePtr_ = &temp;
-		//*case_2 = temp;
-	}
-
-
-	CaseBuilder* GetCaseBuilder()override { return &caseBuilder; }
 
 	vector<double> GaussianDistribution( int domainLength, double mean, double Sig) const
 	{
@@ -47,8 +33,6 @@ public:
 
 	void SetTop()override
 	{		
-		
-		
 		//for (unsigned i = 0; i < mesh.size(); ++i) 	
 		//	mesh[i][mesh[i].size() - 1] = std::move(std::make_shared<MovingWall>(case_->bcValues_.uLid, 0));
 
@@ -72,8 +56,6 @@ public:
 
 		for (unsigned i = mesh.size() *(1-wallFactor) ; i < mesh.size(); ++i)
 			mesh[i][mesh[i].size() - 1] = std::move(std::make_shared<Wall>());
-
-
 	};
 
 	void SetBottom()override

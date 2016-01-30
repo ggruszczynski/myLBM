@@ -18,7 +18,6 @@
 #include <memory>
 
 
-
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/date_time/posix_time/posix_time_io.hpp>
 #include "../Mesher/MeshDirector.h"
@@ -47,14 +46,14 @@ private:
 
 	vector< vector<shared_ptr <Node>> > mesh;
 
-	Case *mycase;
-	//Case *mycase2;
+	shared_ptr<Case> mycase;
 
 	MeshDirector meshDirector;
 public:
 	void Collisions();
 	void StreamToNeighbour(const int &x, const int &y);
 	void Stream();
+
 	void Run();
 	double GetAverageT();
 	double GetVarT();
@@ -66,13 +65,18 @@ public:
 
 	vector< vector<shared_ptr <Node>> > CloneMesh();
 
+
+
 	Solver() : writer(new VTKWriter)
 	{	
-		ChannelMeshBuilder channel_mesh_builder;
-		LidMeshBuilder lid_mesh_builder;
-		DiffusionValidatorMeshBuilder diffusion_validator_mesh_builder;
-		AdvectionValidatorMeshBuilder advection_validator_mesh_builder;
-		WallForceValidatorMeshBuilder wall_force_validator_mesh_builder;
+		ChannelMeshBuilder channel_mesh_builder("DefaultCase.xml");
+		LidMeshBuilder lid_mesh_builder("LidDrivenCavity.xml");
+
+		DiffusionValidatorMeshBuilder diffusion_validator_mesh_builder("DefaultCase.xml");
+		AdvectionValidatorMeshBuilder advection_validator_mesh_builder("DefaultCase.xml");
+		WallForceValidatorMeshBuilder wall_force_validator_mesh_builder("DefaultCase.xml");
+
+
 
 		meshDirector.SetBuilder(&lid_mesh_builder);
 
@@ -82,12 +86,9 @@ public:
 		//meshDirector.SetBuilder(&channel_mesh_builder);
 		mesh = meshDirector.MakeMesh();
 
-		//mycase2 = xmlParser->ReadXMLCase()
-
 		mycase = meshDirector.GetCase();
 		omegaNS = 1. / (3 * mycase -> bcValues_.nu + 0.5);      //NS relaxation parameter
-		omegaT  = 1. / (2 * mycase -> passive_scalar_blobb_.K + 0.5 ); //Passive Scalar relaxation parameter
-		//omegaNS = 4.5;
+		omegaT  = 1. / (3 * mycase -> passive_scalar_blobb_.K + 0.5 ); //Passive Scalar relaxation parameter
 		cout << "omegaNS = " << omegaNS << endl;
 		cout << "omegaT = " << omegaT << endl;
 
