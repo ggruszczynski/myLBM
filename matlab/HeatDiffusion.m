@@ -34,9 +34,10 @@ grid on
 xlabel('x')
 ylabel('Temperature')
 set(gcf,'Position',get(0,'Screensize')/1) % enlarge image to ( .../1.5) full screen
-str_legend1 = sprintf('t = %0.1f',t(1));
-str_legend2 = sprintf('t = %0.1f',t(2));
-legend('LBM',str_legend1,str_legend2,'Location','best' );
+str_legend1 = sprintf('analytical t = %0.1f',t(1));
+str_legend2 = sprintf('analytical t = %0.1f',t(2));
+str_legendLBM = sprintf('LBM t = %0.1f',t(1));
+legend(str_legendLBM,str_legend1,str_legend2,'Location','best' );
 %legend('t = 0.1','t = 5','t = 100','Location','best')
 
 str_title = sprintf('Temperatures across material at t = %0.1f, t = %0.1f', t(1),t(2));

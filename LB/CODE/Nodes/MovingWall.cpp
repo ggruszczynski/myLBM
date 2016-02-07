@@ -72,4 +72,3 @@ void MovingWall::NodeCollisionTout(double const& omegaT)
 		TOut[i] = (1. - omegaT)* TIn[i] + omegaT* Teq[i];
 	}
 }
-

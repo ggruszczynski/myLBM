@@ -57,6 +57,7 @@ public:
 	void Run();
 	double GetAverageT();
 	double GetVarT();
+	double GetNWallShearForce();
 
 	shared_ptr <Node> GetNode(const int &x, const int &y);
 
@@ -66,7 +67,6 @@ public:
 	vector< vector<shared_ptr <Node>> > CloneMesh();
 
 
-
 	Solver() : writer(new VTKWriter)
 	{	
 		ChannelMeshBuilder channel_mesh_builder("DefaultCase.xml");
@@ -74,16 +74,18 @@ public:
 
 		DiffusionValidatorMeshBuilder diffusion_validator_mesh_builder("DefaultCase.xml");
 		AdvectionValidatorMeshBuilder advection_validator_mesh_builder("DefaultCase.xml");
-		WallForceValidatorMeshBuilder wall_force_validator_mesh_builder("DefaultCase.xml");
+		WallForceValidatorMeshBuilder wall_force_validator_mesh_builder("WallForceWalidatorCase.xml");
 
 
 
-		meshDirector.SetBuilder(&lid_mesh_builder);
+		//meshDirector.SetBuilder(&lid_mesh_builder);
 
-		//meshDirector.SetBuilder(&wall_force_validator_mesh_builder);
+		meshDirector.SetBuilder(&wall_force_validator_mesh_builder);
 		//meshDirector.SetBuilder(&diffusion_validator_mesh_builder);
 		//meshDirector.SetBuilder(&advection_validator_mesh_builder);
+
 		//meshDirector.SetBuilder(&channel_mesh_builder);
+
 		mesh = meshDirector.MakeMesh();
 
 		mycase = meshDirector.GetCase();

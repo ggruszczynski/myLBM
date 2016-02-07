@@ -23,14 +23,14 @@
 	</PassiveScalarBlobb>
 	
 	<Timer>
-		<totalTime>10000</totalTime><!-- number of timeSteps -->
-		<timeToSaveVTK>100</timeToSaveVTK><!-- after timeToSaveVTK amount of steps -> save VTK -->
-		<timeToSavePointData>50</timeToSavePointData> <!-- after timeToSaveVTK amount of steps -> save Point Data -->
+		<totalTime>25000</totalTime><!-- number of timeSteps -->
+		<timeToSaveVTK>500</timeToSaveVTK><!-- after timeToSaveVTK amount of steps -> save VTK -->
+		<timeToSavePointData>250</timeToSavePointData> <!-- after timeToSaveVTK amount of steps -> save Point Data -->
 	</Timer>
 
 	<BlockGeom>
-		<x>128</x> <!-- x mesh size -->
-		<y>128</y> <!-- y mesh size -->
+		<x>64</x> <!-- x mesh size -->
+		<y>64</y> <!-- y mesh size -->
 	</BlockGeom>
 	
 </case>

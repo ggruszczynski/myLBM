@@ -36,7 +36,7 @@ public:
 	void writeVTK(const vector< vector<shared_ptr<Node>> > &mesh, const int &time, const string directory, const string filename);
 	void writePointData(const vector< vector<shared_ptr<Node>> > &mesh, const int &time,const int &x,const int &y, const string directory, const string filename) const;
 	void ClearDirectory(string folderPath);
-
+	void WriteScalar(const double &data, const int &time, const string directory_, const string filename_) const;
 
 	void  writeVTK_old(int t, int nx, int ny, int nz, double ***rho, int write_rho, double ***pre, int write_pre, double ***ux, double ***uy, double ***uz, int write_vel, char *directory, char *filename);
 

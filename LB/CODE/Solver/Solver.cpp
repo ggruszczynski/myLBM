@@ -6,13 +6,13 @@
 void Solver::Collisions()
 {
 #pragma omp parallel for
-	for ( int x = 0; x < static_cast<int>(mesh.size()); ++x) {
+	for (int x = 0; x < static_cast<int>(mesh.size()); ++x) {
 		for (unsigned int y = 0; y < mesh[x].size(); ++y) {
 			mesh[x][y]->ComputeRho();
 			mesh[x][y]->ComputeU();
 			mesh[x][y]->ComputefEq();
-	
-			/*	
+
+			/*
 			mesh[x][y]->CalcEddyViscosity(mycase->bcValues_.nu);
 			omegaNSTurb = 1. / (3 * (mycase->bcValues_.nu + mesh[x][y]->nuTurb) + 0.5);
 			mesh[x][y]->NodeCollisionFout(omegaNSTurb);
@@ -20,7 +20,7 @@ void Solver::Collisions()
 
 			mesh[x][y]->NodeCollisionFout(omegaNS);
 
-		//thermal stuff:
+			//thermal stuff:
 			mesh[x][y]->ComputeT();
 			mesh[x][y]->ComputeTeq();
 			mesh[x][y]->NodeCollisionTout(omegaT);
@@ -32,7 +32,7 @@ void Solver::Collisions()
 void Solver::Stream()
 {
 #pragma omp parallel for
-	for ( int x = 0; x < mesh.size(); ++x) {
+	for (int x = 0; x < mesh.size(); ++x) {
 		for (unsigned int y = 0; y < mesh[x].size(); ++y) {
 			StreamToNeighbour(x, y);
 		}
@@ -63,7 +63,7 @@ void Solver::StreamToNeighbour(const int& x, const int& y)
 
 
 	//periodic BC
-	if (mesh[x][y]->nodeType == NodeType::PeriodicType) 
+	if (mesh[x][y]->nodeType == NodeType::PeriodicType)
 	{
 		if (x == mesh.size() - 1)	// periodic boundary conditions for east moving particles at east end
 		{
@@ -103,7 +103,9 @@ void Solver::Run()
 
 	writer->ClearDirectory(outputDirectory);
 	writer->WriteCaseInfo(mycase, outputDirectory, "caseInfoData");
+
 	//outputDirectory += "/" + nowAsString;
+	vector<double> LidShearForce;
 
 	unsigned t = 0;
 	while (t < mycase->timer_.totalTime)
@@ -111,13 +113,14 @@ void Solver::Run()
 		/*	if (t%50 == 0)
 			cout << "time: " << t << endl;*/
 
-		//cout << "average T: " << this->GetAverageT() << endl;
+			//cout << "average T: " << this->GetAverageT() << endl;
 		if (t % mycase->timer_.timeToSavePointData == 0)
 		{
 			cout << "calculating time step: " << t << endl;
-		//	writer->writePointData(mesh, t, mycase->meshGeom_.x / 2, mycase->meshGeom_.y / 2, outputDirectory, "PointData");
-		//	writer->WriteCrossSectionData(mesh, t, outputDirectory, "CrossSectionData");
-			//	cout << "Average Temp: " << this->GetAverageT() << endl;
+			//	writer->writePointData(mesh, t, mycase->meshGeom_.x / 2, mycase->meshGeom_.y / 2, outputDirectory, "PointData");
+			//	writer->WriteCrossSectionData(mesh, t, outputDirectory, "CrossSectionData");
+				//	cout << "Average Temp: " << this->GetAverageT() << endl;
+			writer->WriteScalar(GetNWallShearForce(), t, outputDirectory, "NWallShearForce");
 		}
 
 
@@ -129,9 +132,9 @@ void Solver::Run()
 				cout << "Solver exception: " << e.what() << endl;
 				break;
 			}
-			vector< vector<shared_ptr <Node>> > tempMesh = std::move(this->CloneMesh()) ;
-			std::thread writingThread(&VTKWriter::writeVTK, writer, tempMesh, t, outputDirectory, fileNameVTK); 
-			writingThread.detach(); 
+			vector< vector<shared_ptr <Node>> > tempMesh = std::move(this->CloneMesh());
+			std::thread writingThread(&VTKWriter::writeVTK, writer, tempMesh, t, outputDirectory, fileNameVTK);
+			writingThread.detach();
 
 			///old way
 			//writer->writeVTK(mesh, t, outputDirectory, fileNameVTK);
@@ -155,7 +158,7 @@ void Solver::Run()
 
 vector<vector<shared_ptr<Node>>> Solver::CloneMesh()
 {
-	vector< vector<shared_ptr <Node>> > tempMesh (this->mesh); // make a shallow copy
+	vector< vector<shared_ptr <Node>> > tempMesh(this->mesh); // make a shallow copy
 
 #pragma omp parallel for
 	for (int x = 0; x < mesh.size(); ++x) {
@@ -194,6 +197,53 @@ double Solver::GetVarT()
 	return VarT;
 }
 
+double Solver::GetNWallShearForce() 
+{
+	double lidShearForce_fIn;
+	Eigen::Vector2d lidForce_vector_fIn(0, 0);
+
+	double lidShearForce_fOut;
+	Eigen::Vector2d lidForce_vector_fOut(0,0);
+
+	double bottomShearForce_fIn;
+	Eigen::Vector2d bottomForce_vector_fIn(0, 0);
+
+	double bottomShearForce_fOut;
+	Eigen::Vector2d bottomForce_vector_fOut(0, 0);
+
+
+	Eigen::Vector2d Xdirection(1, 0);
+	double yTop = mesh[0].size() -1; //assume rectangular mesh
+
+	//#pragma omp parallel for
+	for (int x = 0; x < mesh.size(); ++x) {
+		// lid
+		lidForce_vector_fIn += mesh[x][yTop]->fIn[5] * d2q9Constants->e[5] + mesh[x][yTop]->fIn[6] * d2q9Constants->e[6]; //incoming
+		lidForce_vector_fIn -= mesh[x][yTop]->fIn[7] * d2q9Constants->e[7] - mesh[x][yTop]->fIn[8] * d2q9Constants->e[8]; //po odbiciu
+
+		lidForce_vector_fOut += mesh[x][yTop]->fOut[5] * d2q9Constants->e[5] + mesh[x][yTop]->fOut[6] * d2q9Constants->e[6];
+		lidForce_vector_fOut -= mesh[x][yTop]->fOut[7] * d2q9Constants->e[7] - mesh[x][yTop]->fOut[8] * d2q9Constants->e[8];
+
+		//bottom wall y = 0;
+		bottomForce_vector_fIn += mesh[x][0]->fIn[5] * d2q9Constants->e[5] + mesh[x][0]->fIn[6] * d2q9Constants->e[6]; //incoming
+		bottomForce_vector_fIn -= mesh[x][0]->fIn[7] * d2q9Constants->e[7] - mesh[x][0]->fIn[8] * d2q9Constants->e[8]; //po odbiciu
+
+		bottomForce_vector_fOut += mesh[x][0]->fOut[5] * d2q9Constants->e[5] + mesh[x][0]->fOut[6] * d2q9Constants->e[6];
+		bottomForce_vector_fOut -= mesh[x][0]->fOut[7] * d2q9Constants->e[7] - mesh[x][0]->fOut[8] * d2q9Constants->e[8];
+	}
+
+	lidShearForce_fIn = lidForce_vector_fIn.dot(Xdirection);
+	lidShearForce_fOut = lidForce_vector_fOut.dot(Xdirection);
+
+	bottomShearForce_fIn = bottomForce_vector_fIn.dot(Xdirection);
+	bottomShearForce_fOut = bottomForce_vector_fOut.dot(Xdirection);
+
+	cout << "--------------------------------------" << endl;
+	cout << "LID sila z dfIn: " << lidShearForce_fIn    << " sila z dfOut: " << lidShearForce_fOut << endl;
+	cout << "BOTTOM WALL sila z dfIn: " << bottomShearForce_fIn << " sila z dfOut: " << bottomShearForce_fOut << endl;
+
+	return lidShearForce_fIn;
+}
 
 shared_ptr<Node> Solver::GetNode(const int& x, const int& y)
 {

@@ -47,8 +47,13 @@ protected:
 	Eigen::Matrix<double, 2, 1, Eigen::DontAlign> u;
 	// see http://eigen.tuxfamily.org/dox/group__TopicUnalignedArrayAssert.html and http://eigen.tuxfamily.org/dox/group__TopicStructHavingEigenMembers.html
 
+	//struct u2D_Struct
+	//{
+	//	double x;
+	//	double y;
+	//	double length() const { return sqrt(x*x + y*y); }
+	//} u2D;
 	
-	//double c; 
 	Node& operator=(const Node& cSource);
 public:
 	EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -66,6 +71,7 @@ public:
 
 	void ComputeT();
 	void ComputeTeq();
+
 	virtual void NodeCollisionTout(double const& omegaT);
 
 	//Node(): fIn(9, 0), feq(9, 0), fOut(9, 0), rho(1), uSqr(0),c(1),u(0,0)
