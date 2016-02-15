@@ -116,11 +116,15 @@ void Solver::Run()
 			//cout << "average T: " << this->GetAverageT() << endl;
 		if (t % mycase->timer_.timeToSavePointData == 0)
 		{
+			cout << endl;
 			cout << "calculating time step: " << t << endl;
 			//	writer->writePointData(mesh, t, mycase->meshGeom_.x / 2, mycase->meshGeom_.y / 2, outputDirectory, "PointData");
 			//	writer->WriteCrossSectionData(mesh, t, outputDirectory, "CrossSectionData");
 				//	cout << "Average Temp: " << this->GetAverageT() << endl;
-			writer->WriteScalar(GetNWallShearForce(), t, outputDirectory, "NWallShearForce");
+
+			//writer->WriteScalar(GetNWallShearForce(), t, outputDirectory, "NWallShearForce");
+			cout << "---------przed kolizja------------" << endl;
+			GetNWallShearForce();
 		}
 
 
@@ -141,6 +145,13 @@ void Solver::Run()
 		}
 
 		this->Collisions();
+
+		if (t% mycase->timer_.timeToSavePointData == 0) {
+		cout << "---------po kolizji------------" << endl;
+		GetNWallShearForce();
+		cout << endl;
+		}
+
 		this->Stream();
 		++t;
 	}
@@ -199,50 +210,47 @@ double Solver::GetVarT()
 
 double Solver::GetNWallShearForce() 
 {
-	double lidShearForce_fIn;
-	Eigen::Vector2d lidForce_vector_fIn(0, 0);
+	double lidShearForce;
+	Eigen::Vector2d lidForce_vector(0, 0);
 
-	double lidShearForce_fOut;
-	Eigen::Vector2d lidForce_vector_fOut(0,0);
-
-	double bottomShearForce_fIn;
-	Eigen::Vector2d bottomForce_vector_fIn(0, 0);
-
-	double bottomShearForce_fOut;
-	Eigen::Vector2d bottomForce_vector_fOut(0, 0);
-
+	double bottomShearForce;
+	Eigen::Vector2d bottomForce_vector(0, 0);
 
 	Eigen::Vector2d Xdirection(1, 0);
-	double yTop = mesh[0].size() -1; //assume rectangular mesh
+	double yTop = mesh[0].size() -1; 
 
-	//#pragma omp parallel for
+	//#pragma omp parallel for  reduction(+:lidForce_vector) 
 	for (int x = 0; x < mesh.size(); ++x) {
 		// lid
-		lidForce_vector_fIn += mesh[x][yTop]->fIn[5] * d2q9Constants->e[5] + mesh[x][yTop]->fIn[6] * d2q9Constants->e[6]; //incoming
-		lidForce_vector_fIn -= mesh[x][yTop]->fIn[7] * d2q9Constants->e[7] - mesh[x][yTop]->fIn[8] * d2q9Constants->e[8]; //po odbiciu
+		//for (unsigned i = 0; i < d2q9Constants->e.size(); ++i)
+		//{
+		//	lidForce_vector += (mesh[x][yTop]->fOut[i] * d2q9Constants->e[i] + mesh[x][yTop]->fOut[i] * d2q9Constants->e[i]);
+		//	lidForce_vector -= (mesh[x][yTop]->fIn[i] * d2q9Constants->e[i] + mesh[x][yTop]->fIn[i] * d2q9Constants->e[i]);
+		//}
 
-		lidForce_vector_fOut += mesh[x][yTop]->fOut[5] * d2q9Constants->e[5] + mesh[x][yTop]->fOut[6] * d2q9Constants->e[6];
-		lidForce_vector_fOut -= mesh[x][yTop]->fOut[7] * d2q9Constants->e[7] - mesh[x][yTop]->fOut[8] * d2q9Constants->e[8];
+		lidForce_vector += (mesh[x][yTop]->fOut[7] * d2q9Constants->e[7] + mesh[x][yTop]->fOut[8] * d2q9Constants->e[8]);
+		lidForce_vector -= (mesh[x][yTop]->fIn[5] * d2q9Constants->e[5] + mesh[x][yTop]->fIn[6] * d2q9Constants->e[6]);
+
+		//lidForce_vector += (mesh[x][yTop]->fOut[1] * d2q9Constants->e[1] + mesh[x][yTop]->fOut[3] * d2q9Constants->e[3]);
+		//lidForce_vector -= (mesh[x][yTop]->fIn[1] * d2q9Constants->e[1] + mesh[x][yTop]->fIn[3] * d2q9Constants->e[3]);
 
 		//bottom wall y = 0;
-		bottomForce_vector_fIn += mesh[x][0]->fIn[5] * d2q9Constants->e[5] + mesh[x][0]->fIn[6] * d2q9Constants->e[6]; //incoming
-		bottomForce_vector_fIn -= mesh[x][0]->fIn[7] * d2q9Constants->e[7] - mesh[x][0]->fIn[8] * d2q9Constants->e[8]; //po odbiciu
-
-		bottomForce_vector_fOut += mesh[x][0]->fOut[5] * d2q9Constants->e[5] + mesh[x][0]->fOut[6] * d2q9Constants->e[6];
-		bottomForce_vector_fOut -= mesh[x][0]->fOut[7] * d2q9Constants->e[7] - mesh[x][0]->fOut[8] * d2q9Constants->e[8];
+		//for (unsigned i = 0; i < d2q9Constants->e.size(); ++i)
+		//{
+		//	bottomForce_vector += (mesh[x][0]->fOut[i] * d2q9Constants->e[i] + mesh[x][0]->fOut[i] * d2q9Constants->e[i]);
+		//	bottomForce_vector -= (mesh[x][0]->fIn[i] * d2q9Constants->e[i] + mesh[x][0]->fIn[i] * d2q9Constants->e[i]);
+		//}
+		bottomForce_vector += (mesh[x][0]->fOut[5] * d2q9Constants->e[5] + mesh[x][0]->fOut[6] * d2q9Constants->e[6]); //po odbiciu
+		bottomForce_vector -= (mesh[x][0]->fIn[7] * d2q9Constants->e[7] + mesh[x][0]->fIn[8] * d2q9Constants->e[8]); //incoming
 	}
 
-	lidShearForce_fIn = lidForce_vector_fIn.dot(Xdirection);
-	lidShearForce_fOut = lidForce_vector_fOut.dot(Xdirection);
+	lidShearForce = lidForce_vector.dot(Xdirection);
+	bottomShearForce = bottomForce_vector.dot(Xdirection);
 
-	bottomShearForce_fIn = bottomForce_vector_fIn.dot(Xdirection);
-	bottomShearForce_fOut = bottomForce_vector_fOut.dot(Xdirection);
+	cout << "LID sila " << lidShearForce << endl;
+	cout << "BOTTOM WALL sila " << bottomShearForce << endl;
 
-	cout << "--------------------------------------" << endl;
-	cout << "LID sila z dfIn: " << lidShearForce_fIn    << " sila z dfOut: " << lidShearForce_fOut << endl;
-	cout << "BOTTOM WALL sila z dfIn: " << bottomShearForce_fIn << " sila z dfOut: " << bottomShearForce_fOut << endl;
-
-	return lidShearForce_fIn;
+	return lidShearForce;
 }
 
 shared_ptr<Node> Solver::GetNode(const int& x, const int& y)

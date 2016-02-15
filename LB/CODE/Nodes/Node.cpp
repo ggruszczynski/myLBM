@@ -10,13 +10,15 @@ void Node::ComputeRho()
 
 void Node::ComputeU()
 {
-	//for_each(d2q9Constants.e.begin(), d2q9Constants.e.end(), [&, this](Vector2d e)) {u = }
-	//D2Q9Constants ::e.begin()
 	u << 0, 0; // reset velocities
-	auto it_f = this->fIn.begin();
-	for (auto it_e = d2q9Constants->e.begin(); it_e != d2q9Constants->e.end(); ++it_e, ++it_f)
-		u += *it_f* *it_e;
+
+	//auto it_f = this->fIn.begin();
+	//for (auto it_e = d2q9Constants->e.begin(); it_e != d2q9Constants->e.end(); ++it_e, ++it_f)
+	//	u += *it_f* *it_e;
 	//u += c* *it_f* *it_e; // c is assumed to be always = 1, thus it may be skipped
+
+	for (unsigned i = 0; i < fIn.size(); ++i)
+		u += fIn[i] * d2q9Constants->e[i];
 
 	u = u / this->rho;
 }

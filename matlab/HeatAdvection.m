@@ -14,6 +14,8 @@ plot(data(2:end,time_column2),'b'); % LBM
 hold off
 grid on
 
+%%
+
 xlabel('x')
 ylabel('Temperature')
 set(gcf,'Position',get(0,'Screensize')/1) % enlarge image to ( .../1.5) full screen

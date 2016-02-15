@@ -12,7 +12,7 @@ using namespace std;
 int main() {
 	cout << "!!!Hello World!!!" << endl;
 
-	//omp_set_num_threads(1);
+	//omp_set_num_threads(2);
 
 	std::clock_t start;
 	double duration;
