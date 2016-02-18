@@ -19,7 +19,7 @@ param.Ct=param.q*param.S*param.C/2; % total drag coeff [-]
 
 param.dt = 1e-3; %  time step
 
-przedzial = 0 : param.dt : 10;
+przedzial = 0 : param.dt : 10; %simulation time
 
 V0 = 1; % predkosc poczatkowa [m/s]
 angle = 45; % kat wystrzalu [deg]
@@ -32,18 +32,21 @@ n=1; % indeks startowy
 
 tic
 while n < numel(przedzial);
-    [ vx(n+1),  vy(n+1)] = oneStepVelocity(vx(n),vy(n),param);
-    [ x(n+1),  y(n+1)] = oneStepPosition(x(n),vx(n), y(n), vy(n), param.dt);
+    [ vx(n+1), vy(n+1), x(n+1), y(n+1)  ] = VPstep(vx(n) ,vy(n), x(n) , y(n), param  ) ;
+%     [ vx(n+1),  vy(n+1)] = oneStepVelocity(vx(n),vy(n),param);
+%     [ x(n+1),  y(n+1)] = oneStepPosition(x(n),vx(n), y(n), vy(n), param.dt);
     [ ax(n), ay(n) ] = oneStepAcceleration(vx(n),vy(n),param);
     
-    if y(n+1) < 0 % ground
-        przedzial = przedzial(1:n+1);
-        ax(n+1) = 0;
-        ay(n+1) = 0;
-        break;
-    end
+%     if y(n+1) < 0 % ground
+%         przedzial = przedzial(1:n+1);
+%         ax(n+1) = 0;
+%         ay(n+1) = 0;
+%         break;
+%     end
     n = n + 1;
 end
+ ax(n) = 0;
+ ay(n) = 0;
 toc
 
 Wykresy

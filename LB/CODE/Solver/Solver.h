@@ -69,7 +69,7 @@ public:
 
 	Solver() : writer(new VTKWriter)
 	{	
-		ChannelMeshBuilder channel_mesh_builder("DefaultCase.xml");
+		ChannelMeshBuilder channel_mesh_builder("KarmanCase.xml");
 		LidMeshBuilder lid_mesh_builder("LidDrivenCavity.xml");
 
 		DiffusionValidatorMeshBuilder diffusion_validator_mesh_builder("DefaultCase.xml");
@@ -80,11 +80,11 @@ public:
 
 		//meshDirector.SetBuilder(&lid_mesh_builder);
 
-		meshDirector.SetBuilder(&wall_force_validator_mesh_builder);
+		//meshDirector.SetBuilder(&wall_force_validator_mesh_builder);
 		//meshDirector.SetBuilder(&diffusion_validator_mesh_builder);
 		//meshDirector.SetBuilder(&advection_validator_mesh_builder);
 
-		//meshDirector.SetBuilder(&channel_mesh_builder);
+		meshDirector.SetBuilder(&channel_mesh_builder);
 
 		mesh = meshDirector.MakeMesh();
 

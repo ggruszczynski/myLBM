@@ -23,7 +23,7 @@
 	</PassiveScalarBlobb>
 	
 	<Timer>
-		<totalTime>100000</totalTime><!-- number of timeSteps -->
+		<totalTime>50000</totalTime><!-- number of timeSteps -->
 		<timeToSaveVTK>2000</timeToSaveVTK><!-- after timeToSaveVTK amount of steps -> save VTK -->
 		<timeToSavePointData>2000</timeToSavePointData> <!-- after timeToSaveVTK amount of steps -> save Point Data -->
 	</Timer>

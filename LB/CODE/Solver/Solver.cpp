@@ -123,8 +123,8 @@ void Solver::Run()
 				//	cout << "Average Temp: " << this->GetAverageT() << endl;
 
 			//writer->WriteScalar(GetNWallShearForce(), t, outputDirectory, "NWallShearForce");
-			cout << "---------przed kolizja------------" << endl;
-			GetNWallShearForce();
+			//cout << "---------przed kolizja------------" << endl;
+			//GetNWallShearForce();
 		}
 
 
@@ -146,11 +146,11 @@ void Solver::Run()
 
 		this->Collisions();
 
-		if (t% mycase->timer_.timeToSavePointData == 0) {
-		cout << "---------po kolizji------------" << endl;
-		GetNWallShearForce();
-		cout << endl;
-		}
+		//if (t% mycase->timer_.timeToSavePointData == 0) {
+		//cout << "---------po kolizji------------" << endl;
+		//GetNWallShearForce();
+		//cout << endl;
+		//}
 
 		this->Stream();
 		++t;
