@@ -3,21 +3,20 @@
 #include <iostream>
 #include <vector>
 
-//#include <Eigen/StdVector>
 #include <eigen3/Eigen/StdVector>
-//#include <Eigen/Dense>
+
 using namespace Eigen;
 using namespace std;
 
+struct lattice_vectors
+{
+    int x;
+    int y;
+};
+
 template <class T> class Singleton
 {
-
 public:
-	vector<Vector2d, Eigen::aligned_allocator<Eigen::Vector2d> > ee; // velocities directions
-
-	double CSmag2 = 0.0009; // = CSmag * CSmag;
-
-
 	template <typename... Args>	static T* get_instance(Args... args)
 	{
 		if (!instance_)

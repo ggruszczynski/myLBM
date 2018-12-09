@@ -1,7 +1,6 @@
 ﻿
 #include "Solver.h"
 
-
 void Solver::Collisions() {
 #pragma omp parallel for
     for (auto x = 0; x < static_cast<int>(mesh.size()); ++x) {
@@ -37,20 +36,21 @@ void Solver::Stream() {
 }
 
 void Solver::StreamToNeighbour(const int &x, const int &y) {
-    unsigned nextX, nextY;
-    for (unsigned i = 0; i < d2q9Constants->ee.size(); ++i) {
-        nextX = x + static_cast<int>(d2q9Constants->ee[i](0));
-        nextY = y + static_cast<int>(d2q9Constants->ee[i](1));
+    int nextX, nextY;
+    for (unsigned i = 0; i < d2q9Constants->ee.size(); ++i) // Hydrodynamics
+    {
+        nextX = x + d2q9Constants->e[i].x;
+        nextY = y + d2q9Constants->e[i].y;
 
         if (nextX >= 0 && nextX < mesh.size() && nextY >= 0 && nextY < mesh[x].size())
             mesh[nextX][nextY]->fIn[i] = mesh[x][y]->fOut[i];
     }
 
-    //thermal stuff:
-    for (unsigned i = 0; i < d2q5Constants->ee.size(); ++i) //Passive Scalar
+
+    for (unsigned i = 0; i < d2q5Constants->n; ++i) // Passive Scalar
     {
-        nextX = x + static_cast<int>(d2q5Constants->ee[i](0));
-        nextY = y + static_cast<int>(d2q5Constants->ee[i](1));
+        nextX = x + d2q5Constants->e[i].x;
+        nextY = y + d2q5Constants->e[i].y;
 
         if (nextX >= 0 && nextX < mesh.size() && nextY >= 0 && nextY < mesh[x].size())
             mesh[nextX][nextY]->TIn[i] = mesh[x][y]->TOut[i];
@@ -83,8 +83,6 @@ void Solver::StreamToNeighbour(const int &x, const int &y) {
 
 
 void Solver::Run() {
-
-
     boost::posix_time::ptime now = boost::posix_time::second_clock::universal_time();
     string nowAsString = to_iso_string(now);
 
@@ -179,7 +177,7 @@ double Solver::GetAverageT() {
             Ttotal += node->T;
         }
     }
-    //return Ttotal;
+
     return Ttotal / mycase->meshGeom_.numberOfNodes;
 }
 
@@ -259,19 +257,9 @@ void Solver::IsDensityValid() {
 }
 
 void Solver::ReplaceNode(const int &x, const int &y, shared_ptr<Node> newNode) {
-    //*mesh[x][y] = newNode;
-    mesh[x][y] = std::move(newNode); // TODO: move vs reset?
-    //mesh[x][y].reset(newNode);
+    mesh[x][y] = std::move(newNode);
 }
 
-
-
-//void Solver::ReplaceNode(const int& x, const int& y, Node newNode) 
-//{
-//	*mesh[x][y] = newNode;
-//	*mesh[x][y] = std::move(newNode); // TODO: which one is better?
-//	//mesh[x][y].reset(newNode);
-//}
 
 
 Solver::~Solver() {
@@ -307,10 +295,5 @@ Solver::Solver() : writer(new VTKWriter) {
 
     d2q9Constants = Singleton<D2Q9Constants>::get_instance();
     d2q5Constants = Singleton<D2Q5Constants>::get_instance();
-
-    //auto constants_test = DConstantsTest::get_instance();
-    //constants_test->InitializeMe();
-    //constants_test->wtest[0] = 666;
-    //cout << constants_test->wtest[0] << endl;
 }
 

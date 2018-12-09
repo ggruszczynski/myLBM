@@ -16,22 +16,22 @@ Case XMLParser::ReadXMLCase(const std::string& filename)
 		case_.bcValues_.uInlet = boost::lexical_cast<double>(this->ptree_.get<std::string>("case.BCValues.uInlet"));
 		case_.bcValues_.nu = boost::lexical_cast<double>(this->ptree_.get<std::string>("case.BCValues.nu"));
 
-		case_.obstacle_.x = boost::lexical_cast<double>(this->ptree_.get<std::string>("case.Obstacle.x"));
-		case_.obstacle_.y = boost::lexical_cast<double>(this->ptree_.get<std::string>("case.Obstacle.y"));
-		case_.obstacle_.r = boost::lexical_cast<double>(this->ptree_.get<std::string>("case.Obstacle.r"));
+		case_.obstacle_.x = boost::lexical_cast<unsigned int>(this->ptree_.get<std::string>("case.Obstacle.x"));
+		case_.obstacle_.y = boost::lexical_cast<unsigned int>(this->ptree_.get<std::string>("case.Obstacle.y"));
+		case_.obstacle_.r = boost::lexical_cast<unsigned int>(this->ptree_.get<std::string>("case.Obstacle.r"));
 
 		case_.passive_scalar_blobb_.T = boost::lexical_cast<double>(this->ptree_.get<std::string>("case.PassiveScalarBlobb.T"));
 		case_.passive_scalar_blobb_.K = boost::lexical_cast<double>(this->ptree_.get<std::string>("case.PassiveScalarBlobb.K"));
-		case_.passive_scalar_blobb_.x = boost::lexical_cast<double>(this->ptree_.get<std::string>("case.PassiveScalarBlobb.x"));
-		case_.passive_scalar_blobb_.y = boost::lexical_cast<double>(this->ptree_.get<std::string>("case.PassiveScalarBlobb.y"));
-		case_.passive_scalar_blobb_.r = boost::lexical_cast<double>(this->ptree_.get<std::string>("case.PassiveScalarBlobb.r"));
+		case_.passive_scalar_blobb_.x = boost::lexical_cast<unsigned int>(this->ptree_.get<std::string>("case.PassiveScalarBlobb.x"));
+		case_.passive_scalar_blobb_.y = boost::lexical_cast<unsigned int>(this->ptree_.get<std::string>("case.PassiveScalarBlobb.y"));
+		case_.passive_scalar_blobb_.r = boost::lexical_cast<unsigned int>(this->ptree_.get<std::string>("case.PassiveScalarBlobb.r"));
 
-		case_.timer_.totalTime = boost::lexical_cast<double>(this->ptree_.get<std::string>("case.Timer.totalTime"));
-		case_.timer_.timeToSaveVTK = boost::lexical_cast<double>(this->ptree_.get<std::string>("case.Timer.timeToSaveVTK"));
-		case_.timer_.timeToSavePointData = boost::lexical_cast<double>(this->ptree_.get<std::string>("case.Timer.timeToSavePointData"));
+		case_.timer_.totalTime = boost::lexical_cast<unsigned int>(this->ptree_.get<std::string>("case.Timer.totalTime"));
+		case_.timer_.timeToSaveVTK = boost::lexical_cast<unsigned int>(this->ptree_.get<std::string>("case.Timer.timeToSaveVTK"));
+		case_.timer_.timeToSavePointData = boost::lexical_cast<unsigned int>(this->ptree_.get<std::string>("case.Timer.timeToSavePointData"));
 
-		case_.meshGeom_.x = boost::lexical_cast<double>(this->ptree_.get<std::string>("case.BlockGeom.x"));
-		case_.meshGeom_.y = boost::lexical_cast<double>(this->ptree_.get<std::string>("case.BlockGeom.y"));
+		case_.meshGeom_.x = boost::lexical_cast<unsigned int>(this->ptree_.get<std::string>("case.BlockGeom.x"));
+		case_.meshGeom_.y = boost::lexical_cast<unsigned int>(this->ptree_.get<std::string>("case.BlockGeom.y"));
 		case_.meshGeom_.numberOfNodes = case_.meshGeom_.x* case_.meshGeom_.y;
 
 		///old fashion way

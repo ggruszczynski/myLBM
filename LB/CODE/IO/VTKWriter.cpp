@@ -72,6 +72,9 @@ void VTKWriter::WriteVelocity(const vector<vector<shared_ptr<Node>>> &mesh, FILE
 			{
 				fprintf(dataFile, "%.4e ", mesh[x][y]->u[0]);
 				fprintf(dataFile, "%.4e ", mesh[x][y]->u[1]);
+
+//				fprintf(dataFile, "%.4e ", mesh[x][y]->u2D.x);
+//				fprintf(dataFile, "%.4e ", mesh[x][y]->u2D.y);
 				//fprintf(dataFile, "%d ", 0);
 			}
 			fprintf(dataFile, "\n");

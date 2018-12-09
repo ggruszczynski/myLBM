@@ -6,55 +6,43 @@
 void Node::ComputeRho()
 {
 	rho = 0;
-
-	for (int i = 0; i < sizeof(fIn)/ sizeof(double); ++i) {
-		rho+=fIn[i];
+	for (double f : fIn) {
+		rho+=f;
 	}
-	//rho = std::accumulate(fIn.begin(), fIn.end(), 0.0);
 }
 
 void Node::ComputeU()
 {
 	u << 0, 0; // reset velocities
 
-	//auto it_f = this->fIn.begin();
-	//for (auto it_e = d2q9Constants->ee.begin(); it_e != d2q9Constants->ee.end(); ++it_e, ++it_f)
-	//	u += *it_f* *it_e;
-	//u += c* *it_f* *it_e; // c is assumed to be always = 1, thus it may be skipped
+//    u2D.x=0;  u2D.y=0;
+    for (unsigned i = 0; i < sizeof(fIn)/ sizeof(double); ++i){
+        u += fIn[i] * d2q9Constants->ee[i];
+//        u2D.x +=fIn[i] *d2q9Constants->e[i].x;
+//        u2D.y +=fIn[i] *d2q9Constants->e[i].y;
+    }
 
-	for (unsigned i = 0; i < sizeof(fIn)/ sizeof(double); ++i)
-		u += fIn[i] * d2q9Constants->ee[i];
 
 	u = u / this->rho;
+
+//    u2D.x/=rho;
+//    u2D.x/=rho;
 }
 
 void Node::ComputefEq()
 {
 	double eu;
 	double u2 = u.dot(u);
+//    double u2 = u2D.x * u2D.x + u2D.y * u2D.y;
 	for (unsigned i = 0; i < sizeof(fIn)/ sizeof(double); ++i)
 	{
 		eu = u.dot(d2q9Constants->ee[i]);
+//        eu = u2D.x * d2q5Constants->e[i].x + u2D.y * d2q5Constants->e[i].y;
 		feq[i] = 1 + 3 * eu;
 		feq[i] += 4.5 * eu*eu;
 		feq[i] -= 1.5 * u2;
-//		feq[i] *= rho * d2q9Constants->vw[i];
 		feq[i] *= rho * d2q9Constants->w[i];
 	}
-
-	/// c is always = 1, thus it may be skipped...
-	//double eu;
-	//double u2 = u.dot(u);
-	//double c2 = c*c;
-	//double c4 = c*c*c*c;
-	//for (unsigned i = 0; i < fIn.size(); ++i)
-	//{
-	//	eu = u.dot(d2q9Constants->ee[i]);
-	//	feq[i] = 1 + 3 * eu / c2;
-	//	feq[i] += 4.5 * eu*eu /c4;
-	//	feq[i] -= 1.5 * u2 / c2;
-	//	feq[i] *= rho * d2q9Constants->vw[i];
-	//}
 }
 
 void Node::CalcEddyViscosity(double nu)
@@ -85,29 +73,28 @@ void Node::NodeCollisionFout(double const & omega)
 {
 	for (unsigned i = 0; i <sizeof(fOut)/ sizeof(double); ++i)
 	{
-		fOut[i] = (1. - omega)* fIn[i] + omega* feq[i];
-		//fOut[i] = fIn[i] + omega* (feq[i]- fIn[i]);  //todo is it faster?
+		fOut[i] = fIn[i] + omega* (feq[i]- fIn[i]);
 	}
 }
 
 void Node::SetU(const double& setU, const double& setV)
 {
 	u << setU, setV;
+//    u2D.x=setU;  u2D.y=setV;
 }
 
 void Node::SetFIn(double newFIn[9])
 {
-	for (int i = 0; i < 9; ++i) {
+	for (int i = 0; i < sizeof(fIn)/ sizeof(double); ++i) {
 		fIn[i] = newFIn[i];
 	}
 }
 
 void Node::ComputeT()
 {
-//	T = std::accumulate(TIn.begin(), TIn.end(), 0.0);
 	T = 0;
-	for (int i = 0; i < sizeof(TIn)/ sizeof(double); ++i) {
-		T+=TIn[i];
+	for (double t : TIn) {
+		T+= t;
 	}
 }
 
@@ -117,7 +104,9 @@ void Node::ComputeTeq()
 
 	for (unsigned i = 0; i < sizeof(Teq)/ sizeof(double); ++i)
 	{
-		eu = u.dot(d2q5Constants->ee[i]);
+//		eu = u.dot(d2q5Constants->ee[i]);
+        eu = u[0] * d2q5Constants->e[i].x + u[1] * d2q5Constants->e[i].y;
+//        eu = u2D.x * d2q5Constants->e[i].x + u2D.y * d2q5Constants->e[i].y;
 		Teq[i] = 1 + 3 * eu;
 		Teq[i] *= T * d2q5Constants->w[i];
 	}

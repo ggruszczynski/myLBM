@@ -1,22 +1,19 @@
 #pragma once
 
-//#include <direct.h>
-#include <sys/stat.h> // mkdir
-
-//#include <stdlib.h>
-//#include <stdio.h>
-#include "../Nodes/Node.h"
 #include <memory>
 #include <iomanip>
-#include <iostream>    
-#include "../Cases/Case.h"
+#include <iostream>
+
+#include <sys/stat.h> // mkdir
 
 #include <boost/filesystem.hpp> // includes all needed Boost.Filesystem declarations
-namespace fs = boost::filesystem;
-
-
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
+
+#include "../Nodes/Node.h"
+#include "../Cases/Case.h"
+
+namespace fs = boost::filesystem;
 
 #pragma warning(disable : 4996) // some warnings due to old writing functions
 

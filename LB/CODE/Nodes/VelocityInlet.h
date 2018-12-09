@@ -10,7 +10,7 @@ class VelocityInlet :
 private:
 	CardinalDirections cardinal_directions;
 	Eigen::Matrix<double, 2, 1, Eigen::DontAlign> uInlet;
-
+//	u2D_Struct  uInlet2D;
 public:
 	void ComputeRho() override;
 	void ComputeU() override;

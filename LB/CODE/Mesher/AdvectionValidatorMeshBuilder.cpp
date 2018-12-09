@@ -1,8 +1,5 @@
 
-
 #include "AdvectionValidatorMeshBuilder.h"
-
-
 
 void AdvectionValidatorMeshBuilder::SetPassiveScalarBlobb()
 {
@@ -64,4 +61,26 @@ void AdvectionValidatorMeshBuilder::InitializeVelocity()
 			}
 		}
 	}
+}
+
+void AdvectionValidatorMeshBuilder::SetTop() {
+    for (unsigned i = 0; i < mesh.size(); ++i)
+        mesh[i][mesh[i].size() - 1] = move(make_shared<SymmetryNode>());
+
+}
+
+void AdvectionValidatorMeshBuilder::SetBottom() {
+	for (unsigned i = 0; i < mesh.size(); ++i)
+		mesh[i][0] = move(make_shared<SymmetryNode>());
+}
+
+void AdvectionValidatorMeshBuilder::SetLeft() {
+	for (unsigned i = 1; i < mesh[0].size() - 1 ; ++i)
+		mesh[0][i] = move(make_shared<PeriodicNode>());
+}
+
+void AdvectionValidatorMeshBuilder::SetRight() {
+	for (unsigned i = 1; i < mesh[0].size() - 1 ; ++i)
+		mesh[mesh.size() - 1][i] = move(make_shared<PeriodicNode>());
+
 }

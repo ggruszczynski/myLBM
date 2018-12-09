@@ -26,22 +26,20 @@ private:
 	double omegaNSTurb; 
 	double omegaT; //relaxation parameter - passive scalar
 
-	//double omegaTturb;
-
 	shared_ptr <VTKWriter> writer;
 	shared_ptr <XMLParser> xmlParser;
 
-	Singleton<D2Q9Constants>*d2q9Constants;
-	Singleton<D2Q5Constants>*d2q5Constants;
+	D2Q9Constants* d2q9Constants;
+	D2Q5Constants* d2q5Constants;
 
+//	Singleton<D2Q5Constants>*d2q5Constants;
 	//DdQqConstants *d2q9Constants;
 	//Singleton<D2Q5Constants> *d2q5Constants;
 
 	vector< vector<shared_ptr <Node>> > mesh;
-
 	shared_ptr<Case> mycase;
-
 	MeshDirector meshDirector;
+
 public:
 	void Collisions();
 	void StreamToNeighbour(const int &x, const int &y);
@@ -59,10 +57,7 @@ public:
 
 	vector< vector<shared_ptr <Node>> > CloneMesh();
 
-
 	Solver();
-
-
 	 ~Solver();
 };
 

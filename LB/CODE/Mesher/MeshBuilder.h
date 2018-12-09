@@ -15,20 +15,11 @@ protected:
 	shared_ptr<Case> case_;
 	vector<vector<shared_ptr<Node>>> mesh;
 
-	void ReadCaseData(const string &caseName_)
-	{
-		XMLParser xmlParser;
-		case_ = std::make_shared<Case>(xmlParser.ReadXMLCase(caseName_));
-	};
+	void ReadCaseData(const string &caseName_);
 
 public:
 
-	MeshBuilder(const string &caseName_)
-	{
-		d2q9Constants = Singleton<D2Q9Constants>::get_instance();
-		d2q5Constants = Singleton<D2Q5Constants>::get_instance();
-		this->ReadCaseData(caseName_);
-	}
+	MeshBuilder(const string &caseName_);
 
 	shared_ptr<Case> GetCase() const { return case_; }
 	vector<vector<shared_ptr<Node>>> GetMesh() const { return mesh; }
@@ -44,6 +35,6 @@ public:
 	virtual void SetPassiveScalarBlobb() = 0;
 	virtual void InitializeVelocity() = 0;
 
-	virtual ~MeshBuilder() {};
+	virtual ~MeshBuilder() = default;
 };
 

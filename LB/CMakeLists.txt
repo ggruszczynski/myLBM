@@ -54,9 +54,7 @@ if(Boost_FOUND)
             CODE/Cases/Case.h
             CODE/Constants/D2Q5Constants.h
             CODE/Constants/D2Q9Constants.h
-            CODE/Constants/DdQqConstants.h
             CODE/Constants/Enums.h
-            CODE/Constants/Singleton.cpp
             CODE/Constants/Singleton.h
 #            CODE/IO/
             CODE/IO/VTKWriter.cpp
@@ -90,7 +88,7 @@ if(Boost_FOUND)
             CODE/Nodes/Wall.h
             CODE/Solver/Solver.cpp
             CODE/Solver/Solver.h
-            MAIN.cpp)
+            MAIN.cpp CODE/Mesher/LidMeshBuilder.h.cpp)
 
 #    set(SOURCE_FILES
 #            CODE/Cases/Case.h

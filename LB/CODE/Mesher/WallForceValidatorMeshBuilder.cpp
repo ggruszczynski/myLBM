@@ -62,3 +62,25 @@ void WallForceValidatorMeshBuilder::InitializeVelocity()
 	//	}
 	//}
 }
+
+void WallForceValidatorMeshBuilder::SetTop() {
+	for (unsigned i = 0; i < mesh.size(); ++i) {
+		mesh[i][mesh[i].size() - 1] = std::move(std::make_shared<MovingWall>(case_->bcValues_.uLid, 0));
+	}
+}
+
+void WallForceValidatorMeshBuilder::SetBottom() {
+	for (unsigned i = 0; i < mesh.size(); ++i)
+		mesh[i][0] = std::move(std::make_shared<Wall>());
+}
+
+void WallForceValidatorMeshBuilder::SetLeft() {
+	for (unsigned i = 1; i < mesh[0].size() - 1; ++i)
+		mesh[0][i] = std::move(std::make_shared<PeriodicNode>());
+}
+
+void WallForceValidatorMeshBuilder::SetRight() {
+	for (unsigned i = 1; i < mesh[0].size() - 1; ++i)
+		mesh[mesh.size() - 1][i] = std::move(std::make_shared<PeriodicNode>());
+
+}

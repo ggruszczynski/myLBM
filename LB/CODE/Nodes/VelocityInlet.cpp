@@ -44,6 +44,9 @@ void VelocityInlet::SetU(const double& setU, const double& setV)
 {
 	u << setU, setV;
 	uInlet << setU, setV;
+
+//	u2D.x=setU;  u2D.y=setV;
+//	uInlet2D.x=setU;  uInlet2D.y=setV;
 }
 
 VelocityInlet::~VelocityInlet()

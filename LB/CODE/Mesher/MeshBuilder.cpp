@@ -14,3 +14,14 @@ void MeshBuilder::ReserveMeshBlock()
 		mesh.emplace_back(vec_pion);
 	}
 }
+
+MeshBuilder::MeshBuilder(const string &caseName_) {
+	d2q9Constants = Singleton<D2Q9Constants>::get_instance();
+	d2q5Constants = Singleton<D2Q5Constants>::get_instance();
+	this->ReadCaseData(caseName_);
+}
+
+void MeshBuilder::ReadCaseData(const string &caseName_) {
+	XMLParser xmlParser;
+	case_ = std::make_shared<Case>(xmlParser.ReadXMLCase(caseName_));
+}

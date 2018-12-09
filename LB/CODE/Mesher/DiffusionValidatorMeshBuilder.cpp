@@ -1,7 +1,5 @@
 
-
 #include "DiffusionValidatorMeshBuilder.h"
-
 
 void DiffusionValidatorMeshBuilder::SetPassiveScalarBlobb()
 {
@@ -16,4 +14,24 @@ void DiffusionValidatorMeshBuilder::SetPassiveScalarBlobb()
 					Tin = Tin * mesh[x][y]->T;
 		}
 	}
+}
+
+void DiffusionValidatorMeshBuilder::SetTop() {
+    for (unsigned i = 0; i < mesh.size(); ++i) // top/bottom
+        mesh[i][mesh[i].size() - 1] = move(make_shared<Wall>());
+}
+
+void DiffusionValidatorMeshBuilder::SetLeft() {
+    for (unsigned i = 0; i < mesh[0].size(); ++i) // sides
+        mesh[0][i] = move(make_shared<Wall>());
+}
+
+void DiffusionValidatorMeshBuilder::SetRight() {
+    for (unsigned i = 0; i < mesh[0].size(); ++i)
+        mesh[mesh.size() - 1][i] = move(make_shared<Wall>());
+}
+
+void DiffusionValidatorMeshBuilder::SetBottom() {
+    for (unsigned i = 0; i < mesh.size(); ++i) // top/bottom
+        mesh[i][0] = move(make_shared<Wall>());
 }

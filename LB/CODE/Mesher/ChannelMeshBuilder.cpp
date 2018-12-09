@@ -1,7 +1,5 @@
 
-
 #include "ChannelMeshBuider.h"
-
 
 void ChannelMeshBuilder::SetObstacle()
 {
@@ -65,4 +63,24 @@ void ChannelMeshBuilder::InitializeVelocity()
 			}
 		}
 	}
+}
+
+void ChannelMeshBuilder::SetTop() {
+    for (unsigned i = 0; i < mesh.size(); ++i) // top/bottom
+        mesh[i][mesh[i].size() - 1] = move(make_shared<Wall>());
+}
+
+void ChannelMeshBuilder::SetBottom() {
+    for (unsigned i = 0; i < mesh.size(); ++i) // top/bottom
+        mesh[i][0] = move(make_shared<Wall>());
+}
+
+void ChannelMeshBuilder::SetLeft() {
+    for (unsigned i = 0; i < mesh[0].size(); ++i) // sides
+        mesh[0][i] = move(make_shared<VelocityInlet>(0, 0)); // std::move(std::make_shared<VelocityInlet>(case_->bcValues_.uInlet, 0));
+}
+
+void ChannelMeshBuilder::SetRight() {
+    for (unsigned i = 0; i < mesh[0].size(); ++i)
+        mesh[mesh.size() - 1][i] = move(make_shared<PressureOutlet>());
 }

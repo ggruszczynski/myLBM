@@ -1,25 +1,11 @@
-/*
- * D2Q9Constants.h
- *
- *  Created on: Dec 12, 2015
- *      Author: muaddieb
- */
 
-#ifndef D2Q9CONSTANTS_H_
-#define D2Q9CONSTANTS_H_
-
+#pragma once
 
 #include <iostream>
 #include <vector>
 
-//#include <Eigen/StdVector>
 #include <eigen3/Eigen/StdVector>
 #include "Singleton.h"
-
-#include "DdQqConstants.h"
-#include "D2Q5Constants.h"
-
-//#include <Eigen/Dense>
 
 using namespace Eigen;
 using namespace std;
@@ -34,21 +20,29 @@ private:
 
 		ee.reserve(9);
 
-		ee.push_back(Eigen::Vector2d(0, 0));
+		ee.emplace_back(Eigen::Vector2d(0, 0));
 
-		ee.push_back(Eigen::Vector2d(1, 0));
-		ee.push_back(Eigen::Vector2d(0, 1));
-		ee.push_back(Eigen::Vector2d(-1, 0));
-		ee.push_back(Eigen::Vector2d(0, -1));
+		ee.emplace_back(Eigen::Vector2d(1, 0));
+		ee.emplace_back(Eigen::Vector2d(0, 1));
+		ee.emplace_back(Eigen::Vector2d(-1, 0));
+		ee.emplace_back(Eigen::Vector2d(0, -1));
 
-		ee.push_back(Eigen::Vector2d(1, 1));
-		ee.push_back(Eigen::Vector2d(-1, 1));
-		ee.push_back(Eigen::Vector2d(-1, -1));
-		ee.push_back(Eigen::Vector2d(1, -1));
+		ee.emplace_back(Eigen::Vector2d(1, 1));
+		ee.emplace_back(Eigen::Vector2d(-1, 1));
+		ee.emplace_back(Eigen::Vector2d(-1, -1));
+		ee.emplace_back(Eigen::Vector2d(1, -1));
 	}
 
 public:
-	double w[9] = {4. / 9, 1. / 9, 1. / 9, 1. / 9, 1. / 9, 1. / 36, 1. / 36, 1. / 36, 1. / 36 } ;
+	vector<Vector2d, Eigen::aligned_allocator<Eigen::Vector2d> > ee;
+	const double CSmag2 = 0.0009; // = CSmag * CSmag;
+
+	const double w[9] = {4. / 9, 1. / 9, 1. / 9, 1. / 9, 1. / 9, 1. / 36, 1. / 36, 1. / 36, 1. / 36 } ;
+
+    const lattice_vectors e[9] = {{0,0},
+                            {1,0},{0,1},{-1,0},{0,-1},
+                            {1,1},{-1,1},{-1,-1},{1,-1}
+    };
 
 	//vector<vector <double> > ee; // velocities directions
 	//static vector<Vector2d, Eigen::aligned_allocator<Eigen::Vector2d> > ee; // velocities directions
@@ -71,6 +65,3 @@ public:
 	//       before deleted status
 };
 
-
-
-#endif /* D2Q9CONSTANTS_H_ */

@@ -3,16 +3,22 @@
 #include <iostream>
 #include <vector>
 #include <numeric>
+#include <eigen3/Eigen/StdVector>
+#include <memory>
+
 #include "../Constants/D2Q9Constants.h"
 #include "../Constants/D2Q5Constants.h"
 #include "../Constants/Enums.h"
-#include <memory>
+
 using namespace std;
-
-//#include <Eigen/Dense>
-
-#include <eigen3/Eigen/StdVector>
 using namespace Eigen;
+
+struct u2D_Struct
+{
+    double x;
+    double y;
+    double length() const { return sqrt(x*x + y*y); }
+};
 
 
 class Node {
@@ -25,13 +31,13 @@ protected:
 
 	NodeType nodeType;
 
-	double fIn[9] = {4. / 9, 1. / 9, 1. / 9, 1. / 9, 1. / 9, 1. / 36, 1. / 36, 1. / 36, 1. / 36 } ; //NS: probability distribution function
+	double fIn[9] = {4. / 9, 1. / 9, 1. / 9, 1. / 9, 1. / 9, 1. / 36, 1. / 36, 1. / 36, 1. / 36 } ; // NS: PDF
 	double feq[9] = {4. / 9, 1. / 9, 1. / 9, 1. / 9, 1. / 9, 1. / 36, 1. / 36, 1. / 36, 1. / 36 } ;
-	double fOut[9] = {4. / 9, 1. / 9, 1. / 9, 1. / 9, 1. / 9, 1. / 36, 1. / 36, 1. / 36, 1. / 36 } ; // probability distribution function - temporary variable
+	double fOut[9] = {4. / 9, 1. / 9, 1. / 9, 1. / 9, 1. / 9, 1. / 36, 1. / 36, 1. / 36, 1. / 36 } ; // PDF - temporary variable
 
-	double TIn[5] = {2. / 6, 1. / 6, 1. / 6, 1. / 6, 1. / 6 } ; //PassiveScalar: probability distribution function
+	double TIn[5] = {2. / 6, 1. / 6, 1. / 6, 1. / 6, 1. / 6 } ; // PassiveScalar: PDF
 	double Teq[5] = {2. / 6, 1. / 6, 1. / 6, 1. / 6, 1. / 6 } ;
-	double TOut[5] = {2. / 6, 1. / 6, 1. / 6, 1. / 6, 1. / 6 } ; // probability distribution function - temporary variable
+	double TOut[5] = {2. / 6, 1. / 6, 1. / 6, 1. / 6, 1. / 6 } ; // PDF - temporary variable
 
 
 	double rho; // density
@@ -41,12 +47,7 @@ protected:
 	Eigen::Matrix<double, 2, 1, Eigen::DontAlign> u;
 	// see http://eigen.tuxfamily.org/dox/group__TopicUnalignedArrayAssert.html and http://eigen.tuxfamily.org/dox/group__TopicStructHavingEigenMembers.html
 
-	//struct u2D_Struct
-	//{
-	//	double x;
-	//	double y;
-	//	double length() const { return sqrt(x*x + y*y); }
-	//} u2D;
+//    u2D_Struct  u2D;
 	
 	Node& operator=(const Node& cSource);
 public:
