@@ -157,7 +157,7 @@ void VTKWriter::writeVTK(const vector<vector<shared_ptr<Node>>> &mesh, const int
 	//dataFile = fopen_s(&dataFile, dataFileName, "vw");
 	fprintf(dataFile, "<?xml version=\"1.0\"?>\n");
 	fprintf(dataFile, "<!-- mojeLB -->\n");
-	fprintf(dataFile, "<VTKFile type=\"ImageData\" version=\"0.1\" byte_order=\"LittleEndian\">\n");
+	fprintf(dataFile, "<VTKFile type=\"ImageData\" version=\"0.1\" byte_order=\"LittleEndian\" header_type=\"Float32\"> \n");
 	fprintf(dataFile, "  <ImageData WholeExtent=\"0 %d 0 %d 0 %d\" Origin=\"0 0 0\" Spacing=\"1 1 1\">\n", nx - 1, ny - 1, nz - 1);
 	fprintf(dataFile, "  <Piece Extent=\"0 %d 0 %d 0 %d\">\n", nx - 1, ny - 1, nz - 1);
 

@@ -1,7 +1,6 @@
 #pragma once
 #include "Node.h"
-class Wall :
-	public Node
+class Wall : public Node
 {
 private:
 	int oppositeF[9] = { 0, 3, 4, 1, 2, 7, 8, 5, 6 };

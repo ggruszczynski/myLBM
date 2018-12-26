@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+
+<case>
+
+    <BCValues>
+		<uLid>0.1</uLid> <!-- Lid velocity -->
+		<uInlet>0</uInlet> <!-- inlet velocity (channel flow) -->
+		<nu>0.1</nu> <!-- kinematic viscosity -->
+    </BCValues>
+	
+	<Obstacle>
+		<x>0</x> <!-- x position of the cylinder -->
+		<y>0</y> <!-- y position of the cylinder -->
+		<r>0</r> <!-- radius of the cylinder-->
+	</Obstacle>
+	
+	<PassiveScalarBlobb>
+		<T>300</T>
+		<K>0.1</K> <!-- thermal diffusivity [lu^2/ts]-->
+		<x>100</x> <!-- x position of the cylinder -->
+		<y>100</y> <!-- y position of the cylinder -->
+		<r>20</r> <!-- radius of the cylinder-->
+	</PassiveScalarBlobb>
+	
+	<Timer>
+		<totalTime>50000</totalTime><!-- number of timeSteps -->
+		<timeToSaveVTK>2000</timeToSaveVTK><!-- after timeToSaveVTK amount of steps -> save VTK -->
+		<timeToSavePointData>2000</timeToSavePointData> <!-- after timeToSaveVTK amount of steps -> save Point Data -->
+	</Timer>
+
+	<BlockGeom>
+		<x>128</x> <!-- x mesh size -->
+		<y>128</y> <!-- y mesh size -->
+	</BlockGeom>
+	
+</case>

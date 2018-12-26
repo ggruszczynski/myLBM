@@ -26,8 +26,7 @@ public:
 		return instance_;
 	}
 
-	static
-		void destroy_instance()
+	static void destroy_instance()
 	{
 		delete instance_;
 		instance_ = nullptr;

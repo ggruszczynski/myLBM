@@ -277,13 +277,13 @@ Solver::Solver() : writer(new VTKWriter) {
     WallForceValidatorMeshBuilder wall_force_validator_mesh_builder("../WallForceWalidatorCase.xml");
 
 
-    meshDirector.SetBuilder(&lid_mesh_builder);
+    //meshDirector.SetBuilder(&lid_mesh_builder);
 
     //meshDirector.SetBuilder(&wall_force_validator_mesh_builder);
     //meshDirector.SetBuilder(&diffusion_validator_mesh_builder);
     //meshDirector.SetBuilder(&advection_validator_mesh_builder);
 
-//    meshDirector.SetBuilder(&channel_mesh_builder);
+    meshDirector.SetBuilder(&channel_mesh_builder);
 
     mesh = meshDirector.MakeMesh();
 

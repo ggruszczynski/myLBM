@@ -7,7 +7,7 @@ class MovingWall :	public Node
 private:
 	CardinalDirections cardinal_directions;
 	Eigen::Matrix<double, 2, 1, Eigen::DontAlign> uWall;
-//	u2D_Struct  uWall2D;
+	u2D_Struct  uWall2D;
 	int oppositeT[5] = { 0, 3, 4, 1, 2 };
 public:
 	//EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -25,8 +25,8 @@ public:
 		nodeType = NodeType::MovingWallType ;
 		uWall << setU, setV;
 
-//		uWall2D.x = setU;
-//		uWall2D.y = setV;
+		uWall2D.x = setU;
+		uWall2D.y = setV;
 	};
 
 

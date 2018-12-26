@@ -47,7 +47,7 @@ protected:
 	Eigen::Matrix<double, 2, 1, Eigen::DontAlign> u;
 	// see http://eigen.tuxfamily.org/dox/group__TopicUnalignedArrayAssert.html and http://eigen.tuxfamily.org/dox/group__TopicStructHavingEigenMembers.html
 
-//    u2D_Struct  u2D;
+    u2D_Struct  u2D;
 	
 	Node& operator=(const Node& cSource);
 public:

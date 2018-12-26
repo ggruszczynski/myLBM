@@ -9,7 +9,7 @@ using namespace std;
 
 int main() {
 	cout << "!!!Hello World!!!" << endl;
-	//omp_set_num_threads(2);
+	omp_set_num_threads(1);
 
     {
         cout << "Testing openMP: START" << endl;
